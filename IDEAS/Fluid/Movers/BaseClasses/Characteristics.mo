@@ -128,8 +128,7 @@ First implementation.
   function pressure
     "Flow vs. head characteristics for fan or pump pressure raise"
     extends Modelica.Icons.Function;
-    input
-      IDEAS.Fluid.Movers.BaseClasses.Characteristics.flowParametersInternal
+    input IDEAS.Fluid.Movers.BaseClasses.Characteristics.flowParametersInternal
                                                                                     data
       "Pressure performance data";
     input Modelica.SIunits.VolumeFlowRate V_flow "Volumetric flow rate";
@@ -159,8 +158,7 @@ First implementation.
       input Real d[dimD]
         "Coefficients for polynomial of pressure vs. flow rate";
       input
-        IDEAS.Fluid.Movers.BaseClasses.Characteristics.flowParametersInternal
-                                                                                      data
+        IDEAS.Fluid.Movers.BaseClasses.Characteristics.flowParametersInternal         data
         "Pressure performance data";
       input Integer dimD "Dimension of data vector";
 
@@ -363,8 +361,7 @@ First implementation.
 
   function efficiency "Flow vs. efficiency characteristics for fan or pump"
     extends Modelica.Icons.Function;
-    input
-      IDEAS.Fluid.Movers.BaseClasses.Characteristics.efficiencyParameters
+    input IDEAS.Fluid.Movers.BaseClasses.Characteristics.efficiencyParameters
       data "Efficiency performance data";
     input Real r_V(unit="1")
       "Volumetric flow rate divided by nominal flow rate";

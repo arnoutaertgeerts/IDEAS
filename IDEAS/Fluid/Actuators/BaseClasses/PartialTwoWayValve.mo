@@ -16,7 +16,7 @@ partial model PartialTwoWayValve "Partial model for a two way valve"
 
   parameter Real l(min=1e-10, max=1) = 0.0001
     "Valve leakage, l=Kv(y=0)/Kv(y=1)";
-  input Real phi 
+  input Real phi
     "Ratio actual to nominal mass flow rate of valve, phi=Kv(y)/Kv(y=1)";
 protected
  parameter Real kFixed(unit="") = if dpFixed_nominal > Modelica.Constants.small
@@ -138,7 +138,7 @@ An example of such a code can be found in
 <a href=\"modelica://IDEAS.Fluid.Actuators.Valves.TwoWayLinear\">
 IDEAS.Fluid.Actuators.Valves.TwoWayLinear</a>.
 </p>
-</html>", 
+</html>",
 revisions="<html>
 <ul>
 <li>

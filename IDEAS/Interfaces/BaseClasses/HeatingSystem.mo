@@ -11,7 +11,7 @@ partial model HeatingSystem "Partial heating/cooling system"
     "Number of conditioned thermal zones in the building";
   parameter Boolean isHea=true "true if system is able to heat";
   parameter Boolean isCoo=false "true if system is able to cool";
-
+  parameter Boolean DH=false "true if system is connected to DH network";
   // --- Ports
   parameter Integer nConvPorts(min=0) = nZones
     "Number of ports in building for convective heating/cooling";
@@ -45,7 +45,15 @@ partial model HeatingSystem "Partial heating/cooling system"
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b[nEmbPorts] heatPortEmb
     "Construction nodes for heat gains by embedded layers"
     annotation (Placement(transformation(extent={{-210,50},{-190,70}})));
-
+  // --- Hydraulic
+  Modelica.Fluid.Interfaces.FluidPort_a port_supply(redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater) if
+                                                       DH
+    annotation (Placement(transformation(extent={{-70,90},{-50,110}})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_return(redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater) if
+                                                       DH
+    annotation (Placement(transformation(extent={{-130,90},{-110,110}})));
   // --- Electrical
   Modelica.Electrical.QuasiStationary.MultiPhase.Interfaces.PositivePlug
     plugLoad(m=1) if nLoads >= 1 "Electricity connection to the Inhome feeder"

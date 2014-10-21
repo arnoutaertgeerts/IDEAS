@@ -5,8 +5,7 @@ model SignalRanker "Example model for signal ranker"
     annotation (Placement(transformation(extent={{-60,-20},{-40,0}}, rotation=0)));
   Modelica.Blocks.Sources.Pulse pulse(period=0.25)
     annotation (Placement(transformation(extent={{-60,20},{-40,40}}, rotation=0)));
-  IDEAS.Controls.Continuous.SignalRanker sigRan(
-                                                  nin=3)
+  IDEAS.Controls.Continuous.SignalRanker sigRan(  nin=3)
     annotation (Placement(transformation(extent={{-20,20},{0,40}}, rotation=0)));
   Modelica.Blocks.Sources.ExpSine expSine(freqHz=10, damping=1)
     annotation (Placement(transformation(extent={{-60,60},{-40,80}}, rotation=0)));

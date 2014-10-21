@@ -19,7 +19,7 @@ initial equation
   // Since the flow model IDEAS.Fluid.BaseClasses.FlowModels.basicFlowFunction_m_flow computes
   // 1/k^2, the parameter l must not be zero.
   assert(l > 0, "Valve leakage parameter l must be bigger than zero.");
-  assert(l < 1/R, "Wrong parameters in valve model.\n" 
+  assert(l < 1/R, "Wrong parameters in valve model.\n"
                 + "  Rangeability R = " + String(R) + "\n"
                 + "  Leakage flow l = " + String(l) + "\n"
                 + "  Must have l < 1/R = " + String(1/R));

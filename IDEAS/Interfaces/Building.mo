@@ -1,17 +1,19 @@
 within IDEAS.Interfaces;
 model Building
+
   outer Modelica.Fluid.System system
     annotation (Placement(transformation(extent={{-80,80},{-60,100}})));
   outer IDEAS.SimInfoManager sim
     annotation (Placement(transformation(extent={{-100,80},{-80,100}})));
   parameter Boolean standAlone=true;
-
+  parameter Boolean DH=false
+    "true/false if building is/is not in district heating network";
   replaceable IDEAS.Interfaces.BaseClasses.Structure building
     "Building structure" annotation (Placement(transformation(extent={{-66,-10},
             {-36,10}})), choicesAllMatching=true);
   replaceable IDEAS.Interfaces.BaseClasses.HeatingSystem heatingSystem(nZones=
-        building.nZones, nEmbPorts=building.nEmb)
-    "Thermal building heating system" annotation (Placement(transformation(
+        building.nZones,DH=DH) "Thermal building heating system"
+                                      annotation (Placement(transformation(
           extent={{-20,-10},{20,10}})), choicesAllMatching=true);
   replaceable IDEAS.Interfaces.BaseClasses.Occupant occupant(nZones=building.nZones)
     constrainedby IDEAS.Interfaces.BaseClasses.Occupant(nZones=building.nZones)
@@ -42,7 +44,15 @@ model Building
   Modelica.Electrical.QuasiStationary.SinglePhase.Basic.Ground ground if
     standAlone
     annotation (Placement(transformation(extent={{60,-80},{80,-60}})));
-
+ Modelica.Fluid.Interfaces.FluidPort_a port_return(redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater) if
+                                                  DH
+    annotation (Placement(transformation(extent={{-26,-110},{-6,-90}})));
+  Modelica.Fluid.Interfaces.FluidPort_b port_supply(redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater) if
+                                                  DH annotation (Placement(
+        transformation(extent={{6,-110},{26,-90}}), iconTransformation(extent=
+           {{8,-104},{18,-94}})));
 equation
   connect(building.heatPortCon, occupant.heatPortCon) annotation (Line(
       points={{-36,2},{-26,2},{-26,-30},{-18,-30}},
@@ -121,6 +131,16 @@ equation
       points={{1,-22},{1,-16},{0,-16},{0,-10.2}},
       color={0,0,127},
       smooth=Smooth.None));
+
+  connect(port_return, heatingSystem.port_return) annotation (Line(
+      points={{-16,-100},{-14,-100},{-14,10},{-12,10}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(port_supply, heatingSystem.port_supply) annotation (Line(
+      points={{16,-100},{6,-100},{6,10},{-6,10}},
+      color={0,127,255},
+      smooth=Smooth.None));
+
   annotation (Icon(graphics={
         Line(
           points={{60,22},{0,74},{-60,24},{-60,-46},{60,-46}},
