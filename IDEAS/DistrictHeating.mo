@@ -2,6 +2,7 @@ within IDEAS;
 package DistrictHeating "Models specific for district heating"
   package Substations
     model HXWithBypass
+      import Buildings;
       //Extensions
       extends DistrictHeating.Interfaces.Baseclasses.Substation(
         flowPort_supply_out(redeclare package Medium =
@@ -18,124 +19,71 @@ package DistrictHeating "Models specific for district heating"
               Modelica.Media.Water.ConstantPropertyLiquidWater));
 
       //Components
-      replaceable IDEAS.Fluid.HeatExchangers.ConstantEffectiveness
-        staticFourPortHeatMassExchanger(
-        redeclare package Medium1 =
-            Modelica.Media.Water.ConstantPropertyLiquidWater,
-        redeclare package Medium2 =
-            Modelica.Media.Water.ConstantPropertyLiquidWater,
-        m1_flow_nominal=0.1,
-        m2_flow_nominal=0.1,
-        dp1_nominal=2,
-        dp2_nominal=2) constrainedby
-        IDEAS.Fluid.Interfaces.StaticFourPortHeatMassExchanger(
-        redeclare package Medium1 =
-            Modelica.Media.Water.ConstantPropertyLiquidWater,
-        redeclare package Medium2 =
-            Modelica.Media.Water.ConstantPropertyLiquidWater,
-        m1_flow_nominal=0.1,
-        m2_flow_nominal=0.1,
-        dp1_nominal=2,
-        dp2_nominal=2) "Building substation"
-        annotation (Placement(transformation(extent={{-10,66},{10,86}})));
       IDEAS.Fluid.FixedResistances.SplitterFixedResistanceDpM spl1(
-        m_flow_nominal={0.1,-0.1,-0.1},
-        dp_nominal={20,20,10},
         redeclare package Medium =
-            Modelica.Media.Water.ConstantPropertyLiquidWater)
-        "Splitter for bypass"
+            Modelica.Media.Water.ConstantPropertyLiquidWater,
+        m_flow_nominal={0.25,-0.25,-0.25},
+        dp_nominal={20,-20,-20}) "Splitter for bypass"
         annotation (Placement(transformation(extent={{-16,-10},{-36,-30}})));
       IDEAS.Fluid.FixedResistances.SplitterFixedResistanceDpM spl2(
-        m_flow_nominal={0.1,-0.1,-0.1},
-        dp_nominal={20,20,10},
         redeclare package Medium =
-            Modelica.Media.Water.ConstantPropertyLiquidWater)
-        "Splitter for bypass"
+            Modelica.Media.Water.ConstantPropertyLiquidWater,
+        m_flow_nominal={0.25,-0.25,-0.25},
+        dp_nominal={20,-20,-20}) "Splitter for bypass"
         annotation (Placement(transformation(extent={{80,30},{60,10}})));
-      replaceable IDEAS.Fluid.FixedResistances.Pipe_Insulated pipe_Insulated(
-        redeclare package Medium =
-            Modelica.Media.Water.ConstantPropertyLiquidWater,
-        m_flow_nominal=0.2,
-        m=5,
-        UA=10) "Insulated pipe with heat exchange to the outside"
-        annotation (
-          Placement(transformation(
-            extent={{-10,-4},{10,4}},
-            rotation=180,
-            origin={-66,-20})));
 
-      replaceable IDEAS.Fluid.FixedResistances.Pipe_Insulated pipe_Insulated1(
+      Fluid.Actuators.Valves.TwoWayLinear val(
         redeclare package Medium =
             Modelica.Media.Water.ConstantPropertyLiquidWater,
-        m_flow_nominal=0.2,
-        UA=10,
-        m=5) "Insulated pipe with heat exchange to the outside"
-        annotation (
-          Placement(transformation(
-            extent={{-10,-4},{10,4}},
-            rotation=180,
-            origin={-66,20})));
-
-      replaceable IDEAS.Fluid.Movers.Pump pump(useInput=true,
-        redeclare package Medium =
-            Modelica.Media.Water.ConstantPropertyLiquidWater,
-        m_flow_nominal=0.1) "Pump of the heat exchanger"
-        annotation (Placement(transformation(
+        m_flow_nominal=0.1,
+        dpValve_nominal=20)                   annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={70,44})));
 
-      Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
-        prescribedTemperature "Ambient Temperature"
-        annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-66,-54})));
-
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature(redeclare package
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(
+                                                            redeclare package
           Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)
         "Sensor of the return temperature" annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=270,
-            origin={-26,44})));
-      IDEAS.Controls.Continuous.LimPID conPID(controllerType=Modelica.Blocks.Types.SimpleController.PI)
-        annotation (Placement(transformation(extent={{30,34},{50,54}})));
-      Modelica.Blocks.Sources.Constant const(k=273.15 + 50)
-        "Temperature below wich the pump should be on"
-        annotation (Placement(transformation(extent={{-6,34},{14,54}})));
+            origin={20,64})));
+      outer SimInfoManager sim
+        annotation (Placement(transformation(extent={{-98,80},{-78,100}})));
+      Modelica.Fluid.Sensors.TemperatureTwoPort Tsupply(redeclare package
+          Medium =
+            Modelica.Media.Water.ConstantPropertyLiquidWater)
+        "Sensor of the return temperature" annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={-4,20})));
+      Modelica.Fluid.Sensors.TemperatureTwoPort TReturn(redeclare package
+          Medium =
+            Modelica.Media.Water.ConstantPropertyLiquidWater)
+        "Sensor of the return temperature" annotation (Placement(transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=0,
+            origin={14,-20})));
+      Fluid.HeatExchangers.ConstantEffectiveness hex(
+        redeclare package Medium1 =
+            Modelica.Media.Water.ConstantPropertyLiquidWater,
+        redeclare package Medium2 =
+            Modelica.Media.Water.ConstantPropertyLiquidWater,
+        m1_flow_nominal=0.25,
+        m2_flow_nominal=0.25,
+        dp1_nominal=200,
+        dp2_nominal=200)
+        annotation (Placement(transformation(extent={{-14,38},{6,58}})));
+      Fluid.Sensors.MassFlowRate senMasFlo1(redeclare package Medium =
+            Modelica.Media.Water.ConstantPropertyLiquidWater) annotation (Placement(
+            transformation(
+            extent={{-10,-10},{10,10}},
+            rotation=270,
+            origin={-20,76})));
+      Control.SupplyTControl supplyTControl
+        annotation (Placement(transformation(extent={{42,74},{62,94}})));
     equation
       //Connections
-      connect(flowPort_b1, staticFourPortHeatMassExchanger.port_a1) annotation (
-          Line(
-          points={{-20,100},{-20,82},{-10,82}},
-          color={0,0,0},
-          smooth=Smooth.None));
-      connect(staticFourPortHeatMassExchanger.port_b1, flowPort_a1) annotation (
-          Line(
-          points={{10,82},{20,82},{20,100}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(spl1.port_2, pipe_Insulated.port_a) annotation (Line(
-          points={{-36,-20},{-56,-20}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(spl2.port_2, pipe_Insulated1.port_a) annotation (Line(
-          points={{60,20},{-56,20}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(pipe_Insulated.heatPort, prescribedTemperature.port) annotation (Line(
-          points={{-66,-16},{-66,-8},{-44,-8},{-44,-30},{-66,-30},{-66,-44}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(pipe_Insulated1.heatPort, prescribedTemperature.port) annotation (
-          Line(
-          points={{-66,24},{-66,40},{-44,40},{-44,-30},{-66,-30},{-66,-44}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.T, u) annotation (Line(
-          points={{-66,-66},{-66,-80},{0,-80},{0,-106}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(flowPort_supply_in, flowPort_supply_in) annotation (Line(
           points={{100,20},{100,20}},
           color={0,0,0},
@@ -144,48 +92,67 @@ package DistrictHeating "Models specific for district heating"
           points={{80,20},{100,20}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(pipe_Insulated1.port_b, flowPort_supply_out) annotation (Line(
-          points={{-76,20},{-100,20}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(spl1.port_1, flowPort_return_out) annotation (Line(
-          points={{-16,-20},{100,-20}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(pipe_Insulated.port_b, flowPort_return_in) annotation (Line(
-          points={{-76,-20},{-100,-20}},
-          color={0,127,255},
-          smooth=Smooth.None));
 
-      connect(staticFourPortHeatMassExchanger.port_a2, pump.port_b) annotation (
-          Line(
-          points={{10,70},{70,70},{70,54}},
+      connect(spl1.port_2, flowPort_return_in) annotation (Line(
+          points={{-36,-20},{-100,-20}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(spl2.port_3, pump.port_a) annotation (Line(
+      connect(spl2.port_3, val.port_a) annotation (Line(
           points={{70,30},{70,34}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(staticFourPortHeatMassExchanger.port_b2, temperature.port_a)
-        annotation (Line(
-          points={{-10,70},{-26,70},{-26,54}},
+      connect(flowPort_a1, temperature1.port_a) annotation (Line(
+          points={{20,100},{20,74}},
+          color={0,0,0},
+          smooth=Smooth.None));
+
+      connect(spl2.port_2, Tsupply.port_b) annotation (Line(
+          points={{60,20},{6,20}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(temperature.T, conPID.u_m) annotation (Line(
-          points={{-15,44},{-10,44},{-10,24},{40,24},{40,32}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(conPID.y, pump.m_flowSet) annotation (Line(
-          points={{51,44},{59.6,44}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(conPID.u_s, const.y) annotation (Line(
-          points={{28,44},{15,44}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(temperature.port_b, spl1.port_3) annotation (Line(
-          points={{-26,34},{-26,-10}},
+      connect(Tsupply.port_a, flowPort_supply_out) annotation (Line(
+          points={{-14,20},{-100,20}},
           color={0,127,255},
+          smooth=Smooth.None));
+      connect(spl1.port_1, TReturn.port_a) annotation (Line(
+          points={{-16,-20},{4,-20}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(TReturn.port_b, flowPort_return_out) annotation (Line(
+          points={{24,-20},{100,-20}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(temperature1.port_b, hex.port_b1) annotation (Line(
+          points={{20,54},{6,54}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(hex.port_b2, spl1.port_3) annotation (Line(
+          points={{-14,42},{-26,42},{-26,-10}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(hex.port_a2, val.port_b) annotation (Line(
+          points={{6,42},{32,42},{32,58},{70,58},{70,54},{70,54}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(flowPort_b1, senMasFlo1.port_a) annotation (Line(
+          points={{-20,100},{-20,86}},
+          color={0,0,0},
+          smooth=Smooth.None));
+      connect(senMasFlo1.port_b, hex.port_a1) annotation (Line(
+          points={{-20,66},{-20,66},{-20,54},{-14,54}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(senMasFlo1.m_flow, supplyTControl.sensFlow) annotation (Line(
+          points={{-9,76},{-4,76},{-4,89.8},{41.6,89.8}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(temperature1.T, supplyTControl.sensTemp) annotation (Line(
+          points={{31,64},{36,64},{36,78},{41.4,78}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(supplyTControl.y, val.y) annotation (Line(
+          points={{62.6,84},{66,84},{66,66},{48,66},{48,44},{58,44}},
+          color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics));
@@ -210,10 +177,76 @@ package DistrictHeating "Models specific for district heating"
             lineColor={0,0,0},
             fillColor={0,0,0},
             fillPattern=FillPattern.Solid)}));
+    package Control
+      model SupplyTControl
+
+        Controls.Continuous.LimPID       conPID(controllerType=Modelica.Blocks.Types.SimpleController.PI,
+          k=100,
+          Ti=30)
+          annotation (Placement(transformation(extent={{-18,-14},{2,6}})));
+        Controls.ControlHeating.HeatingCurve heatingCurve(
+          TSup_nominal=343.15,
+          TSupMin=318.15,
+          TRet_nominal=293.15,
+          TOut_nominal=273.15,
+          dTOutHeaBal=0)
+          annotation (Placement(transformation(extent={{-80,-34},{-60,-14}})));
+        Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=0)
+          annotation (Placement(transformation(extent={{-56,48},{-36,68}})));
+        Modelica.Blocks.Math.BooleanToReal booleanToReal
+          annotation (Placement(transformation(extent={{-8,48},{12,68}})));
+        Modelica.Blocks.Math.Product product
+          annotation (Placement(transformation(extent={{48,14},{68,34}})));
+        Modelica.Blocks.Interfaces.RealInput sensFlow "Measured flow"
+          annotation (Placement(transformation(extent={{-124,38},{-84,78}})));
+        Modelica.Blocks.Interfaces.RealInput sensTemp "Measured temperature"
+          annotation (Placement(transformation(extent={{-126,-80},{-86,-40}})));
+        Modelica.Blocks.Interfaces.RealOutput y
+          annotation (Placement(transformation(extent={{96,-10},{116,10}})));
+        outer SimInfoManager sim
+          annotation (Placement(transformation(extent={{-94,78},{-74,98}})));
+      equation
+        connect(conPID.u_s,heatingCurve. TSup) annotation (Line(
+            points={{-20,-4},{-36,-4},{-36,-18},{-59,-18}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(conPID.y, product.u2) annotation (Line(
+            points={{3,-4},{20,-4},{20,18},{46,18}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(booleanToReal.y, product.u1) annotation (Line(
+            points={{13,58},{34,58},{34,30},{46,30}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(sensFlow, greaterThreshold.u) annotation (Line(
+            points={{-104,58},{-58,58}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(greaterThreshold.y, booleanToReal.u) annotation (Line(
+            points={{-35,58},{-10,58}},
+            color={255,0,255},
+            smooth=Smooth.None));
+        connect(sensTemp, conPID.u_m) annotation (Line(
+            points={{-106,-60},{-8,-60},{-8,-16}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(product.y, y) annotation (Line(
+            points={{69,24},{76,24},{76,0},{106,0},{106,0}},
+            color={0,0,127},
+            smooth=Smooth.None));
+
+        sim.Te = heatingCurve.TOut;
+        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics), Icon(coordinateSystem(
+                preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+              graphics={Rectangle(extent={{-100,100},{100,-100}}, lineColor={0,
+                    0,255})}));
+      end SupplyTControl;
+    end Control;
   end Substations;
 
   package Production "Production units for district heating"
-    model BoilerWithPump "Boiler for production of hot water"
+    model Boiler "Boiler for production of hot water"
 
       //Extensions
       extends DistrictHeating.Interfaces.Baseclasses.Production(flowPort_supply(
@@ -235,9 +268,6 @@ package DistrictHeating "Models specific for district heating"
         annotation (Placement(transformation(extent={{-10,-10},{10,10}},
             rotation=180,
             origin={32,28})));
-      IDEAS.Fluid.Movers.Pump pump(redeclare package Medium =
-            Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.2)
-        annotation (Placement(transformation(extent={{-48,-10},{-28,10}})));
     equation
       connect(realExpression.y,boiler. TSet) annotation (Line(
           points={{21,28},{10,28},{10,27}},
@@ -247,17 +277,13 @@ package DistrictHeating "Models specific for district heating"
           points={{2,16},{2,0},{100,0}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(flowPort_return, pump.port_a) annotation (Line(
-          points={{-100,0},{-48,0}},
+      connect(flowPort_return, boiler.port_a) annotation (Line(
+          points={{-100,0},{-6,0},{-6,16}},
           color={0,0,0},
-          smooth=Smooth.None));
-      connect(boiler.port_a, pump.port_b) annotation (Line(
-          points={{-6,16},{-18,16},{-18,0},{-28,0}},
-          color={0,127,255},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                 -100},{100,100}}), graphics));
-    end BoilerWithPump;
+    end Boiler;
   annotation (Icon(graphics={
           Rectangle(
             lineColor={200,200,200},
@@ -311,11 +337,6 @@ package DistrictHeating "Models specific for district heating"
           "Flowport supply to the building"
           annotation (Placement(transformation(extent={{10,90},{30,110}})));
 
-        Modelica.Blocks.Interfaces.RealInput u "Outside temperature connector"
-          annotation (Placement(transformation(
-              extent={{-20,-20},{20,20}},
-              rotation=90,
-              origin={0,-106})));
         IDEAS.Fluid.Interfaces.FlowPort_b flowPort_supply_out
           "Supply line out connection"
           annotation (Placement(transformation(extent={{-110,10},{-90,30}})));
@@ -529,59 +550,177 @@ package DistrictHeating "Models specific for district heating"
     inner Modelica.Fluid.System system
       annotation (Placement(transformation(extent={{-68,76},{-48,96}})));
     IDEAS.Interfaces.Building building(
-      redeclare IDEAS.HeatingSystems.Examples.DummyBuilding building(nZones=1,
-          nEmb=0),
-      redeclare IDEAS.HeatingSystems.Heating_Radiators_DH heatingSystem,
-      redeclare IDEAS.Buildings.Validation.BaseClasses.Occupant.None occupant,
       redeclare IDEAS.Interfaces.BaseClasses.CausalInhomeFeeder inHomeGrid,
       redeclare IDEAS.VentilationSystems.None ventilationSystem,
-      DH=true) annotation (Placement(transformation(extent={{-16,6},{4,26}})));
+      DH=true,
+      redeclare Buildings.Examples.BaseClasses.structure building,
+      redeclare IDEAS.Occupants.Standards.None occupant(TSet_val=296.15),
+      redeclare IDEAS.HeatingSystems.Heating_Radiators_DH heatingSystem(
+          dTSupRetNom=20, TSupNom=318.15))
+               annotation (Placement(transformation(extent={{-18,22},{2,42}})));
     IDEAS.DistrictHeating.Substations.HXWithBypass hXWithBypass
       annotation (Placement(transformation(extent={{-18,-26},{2,-6}})));
-    IDEAS.DistrictHeating.Production.BoilerWithPump boilerWithPump
-      annotation (Placement(transformation(extent={{26,-24},{46,-4}})));
-    IDEAS.Fluid.Sources.FixedBoundary bou(
+    IDEAS.DistrictHeating.Production.Boiler boiler(boiler(dp_nominal=10000, QNom=30000),
+        realExpression(y=343)) annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={80,-16})));
+    Fluid.FixedResistances.Pipe_Insulated pipe_Insulated(
+      redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      dp_nominal=10000,
+      m_flow_nominal=0.25,
+      UA=250,
+      from_dp=true)
+              annotation (Placement(transformation(extent={{20,-2},{40,6}})));
+
+    Fluid.FixedResistances.Pipe_Insulated pipe_Insulated1(
+      redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      dp_nominal=10000,
+      m_flow_nominal=0.25,
+      UA=250,
+      from_dp=true)
+              annotation (Placement(transformation(extent={{22,-34},{42,-26}})));
+
+    Fluid.Movers.FlowMachine_dp fan1(
+      redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      motorCooledByFluid=false,
+      m_flow_nominal=0.5)            annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=180,
+          origin={62,2})));
+
+    IDEAS.Interfaces.Building building1(
+      redeclare Occupants.Standards.None                             occupant(TSet_val=
+            296.15),
+      redeclare IDEAS.Interfaces.BaseClasses.CausalInhomeFeeder inHomeGrid,
+      redeclare IDEAS.VentilationSystems.None ventilationSystem,
+      DH=true,
+      redeclare Buildings.Examples.BaseClasses.structure building,
+      redeclare IDEAS.HeatingSystems.Heating_Radiators_DH heatingSystem(
+          dTSupRetNom=20, TSupNom=318.15))
+               annotation (Placement(transformation(extent={{-78,22},{-58,42}})));
+    IDEAS.DistrictHeating.Substations.HXWithBypass hXWithBypass1
+      annotation (Placement(transformation(extent={{-78,-26},{-58,-6}})));
+    Fluid.FixedResistances.Pipe_Insulated pipe_Insulated2(
+      redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      m_flow_nominal=0.25,
+      UA=50,
+      from_dp=true,
+      dp_nominal=10)
+             annotation (Placement(transformation(extent={{-46,-10},{-26,-2}})));
+
+    Fluid.FixedResistances.Pipe_Insulated pipe_Insulated3(
+      redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      m_flow_nominal=0.25,
+      UA=50,
+      from_dp=true,
+      dp_nominal=10)
+             annotation (Placement(transformation(extent={{-46,-30},{-26,-22}})));
+
+    Modelica.Blocks.Sources.Constant const(k=100000)
+      annotation (Placement(transformation(extent={{28,-70},{48,-50}})));
+    Fluid.Sources.FixedBoundary bou(
       nPorts=1,
       redeclare package Medium =
           Modelica.Media.Water.ConstantPropertyLiquidWater,
-      p=300000,
+      p=100000,
       use_T=false)
-      annotation (Placement(transformation(extent={{-58,-42},{-38,-22}})));
-    Modelica.Blocks.Sources.RealExpression realExpression(y=273)
-      annotation (Placement(transformation(extent={{-38,-80},{-18,-60}})));
+      annotation (Placement(transformation(extent={{-20,-68},{0,-48}})));
+
+    Fluid.FixedResistances.Pipe_Insulated pipe_Insulated4(
+      redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      m_flow_nominal=0.25,
+      UA=50,
+      from_dp=true,
+      dp_nominal=10000)
+             annotation (Placement(transformation(extent={{-10,-4},{10,4}},
+          rotation=270,
+          origin={-104,-18})));
   equation
     connect(hXWithBypass.flowPort_b1, building.port_return) annotation (Line(
-        points={{-10,-6},{-10,6},{-7.6,6}},
+        points={{-10,-6},{-10,22},{-9.6,22}},
         color={0,0,0},
         smooth=Smooth.None));
     connect(hXWithBypass.flowPort_a1, building.port_supply) annotation (Line(
-        points={{-6,-6},{-4.7,-6},{-4.7,6.1}},
+        points={{-6,-6},{-6.7,-6},{-6.7,22.1}},
         color={0,0,0},
         smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_supply_in, boilerWithPump.flowPort_return)
-      annotation (Line(
-        points={{2,-14},{26,-14}},
+    connect(hXWithBypass.flowPort_supply_in, pipe_Insulated.port_a) annotation (
+        Line(
+        points={{2,-14},{2,2},{20,2}},
         color={0,0,0},
         smooth=Smooth.None));
-    connect(boilerWithPump.flowPort_supply, hXWithBypass.flowPort_return_out)
-      annotation (Line(
-        points={{46,-14},{50,-14},{50,-18},{2,-18}},
+    connect(hXWithBypass.flowPort_return_out, pipe_Insulated1.port_a) annotation (
+       Line(
+        points={{2,-18},{2,-30},{22,-30}},
         color={0,0,0},
         smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_supply_out, hXWithBypass.flowPort_return_in)
-      annotation (Line(
-        points={{-18,-14},{-18,-18}},
+    connect(boiler.flowPort_return, pipe_Insulated1.port_b) annotation (Line(
+        points={{80,-26},{80,-30},{42,-30}},
         color={0,0,0},
         smooth=Smooth.None));
-    connect(bou.ports[1], hXWithBypass.flowPort_return_in) annotation (Line(
-        points={{-38,-32},{-30,-32},{-30,-18},{-18,-18}},
+    connect(pipe_Insulated.port_b, fan1.port_b) annotation (Line(
+        points={{40,2},{52,2}},
         color={0,127,255},
         smooth=Smooth.None));
-    connect(realExpression.y, hXWithBypass.u) annotation (Line(
-        points={{-17,-70},{-8,-70},{-8,-26.6}},
+    connect(boiler.flowPort_supply, fan1.port_a) annotation (Line(
+        points={{80,-6},{80,2},{72,2}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(hXWithBypass1.flowPort_b1, building1.port_return) annotation (Line(
+        points={{-70,-6},{-70,22},{-69.6,22}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(building1.port_supply, hXWithBypass1.flowPort_a1) annotation (Line(
+        points={{-66.7,22.1},{-66.7,-6},{-66,-6}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(hXWithBypass1.flowPort_supply_in, pipe_Insulated2.port_a) annotation (
+       Line(
+        points={{-58,-14},{-52,-14},{-52,-6},{-46,-6}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(hXWithBypass.flowPort_supply_out, pipe_Insulated2.port_b) annotation (
+       Line(
+        points={{-18,-14},{-22,-14},{-22,-6},{-26,-6}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(hXWithBypass1.flowPort_return_out, pipe_Insulated3.port_a)
+      annotation (Line(
+        points={{-58,-18},{-52,-18},{-52,-26},{-46,-26}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(hXWithBypass.flowPort_return_in, pipe_Insulated3.port_b) annotation (
+        Line(
+        points={{-18,-18},{-22,-18},{-22,-26},{-26,-26}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(fan1.dp_in, const.y) annotation (Line(
+        points={{62.2,-10},{62,-10},{62,-60},{49,-60}},
         color={0,0,127},
         smooth=Smooth.None));
-    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
-              -100,-100},{100,100}}), graphics));
+    connect(pipe_Insulated1.port_a, bou.ports[1]) annotation (Line(
+        points={{22,-30},{12,-30},{12,-58},{0,-58}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(pipe_Insulated4.port_a, hXWithBypass1.flowPort_supply_out)
+      annotation (Line(
+        points={{-104,-8},{-78,-8},{-78,-14}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(pipe_Insulated4.port_b, hXWithBypass1.flowPort_return_in) annotation (
+       Line(
+        points={{-104,-28},{-78,-28},{-78,-18}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-140,
+              -100},{100,100}}),      graphics), Icon(coordinateSystem(extent={{-140,
+              -100},{100,100}})));
   end Example;
 end DistrictHeating;
