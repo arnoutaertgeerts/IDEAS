@@ -299,8 +299,6 @@ package DistrictHeating "Models specific for district heating"
 
       extends Modelica.Icons.InterfacesPackage;
 
-
-
       partial model Substation "Interface for a local substation"
 
         //Connectors
@@ -549,7 +547,7 @@ package DistrictHeating "Models specific for district heating"
       p=300000,
       use_T=false)
       annotation (Placement(transformation(extent={{-58,-42},{-38,-22}})));
-    Modelica.Blocks.Sources.RealExpression realExpression(y=270)
+    Modelica.Blocks.Sources.RealExpression realExpression(y=273)
       annotation (Placement(transformation(extent={{-38,-80},{-18,-60}})));
   equation
     connect(hXWithBypass.flowPort_b1, building.port_return) annotation (Line(
@@ -580,7 +578,7 @@ package DistrictHeating "Models specific for district heating"
         color={0,127,255},
         smooth=Smooth.None));
     connect(realExpression.y, hXWithBypass.u) annotation (Line(
-        points={{-17,-70},{-12,-70},{-12,-26.6},{-8,-26.6}},
+        points={{-17,-70},{-8,-70},{-8,-26.6}},
         color={0,0,127},
         smooth=Smooth.None));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
