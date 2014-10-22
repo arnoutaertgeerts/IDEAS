@@ -191,20 +191,19 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   connect(heatPortRad, emission.heatPortRad) annotation (Line(
-      points={{-200,-20},{-178,-20},{-178,90},{148,90},{148,44},{148.5,44}},
+      points={{-200,-20},{-150,-20},{-150,72},{148,72},{148,44},{148.5,44}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(heatPortCon, emission.heatPortCon) annotation (Line(
-      points={{-200,20},{-194,20},{-194,20},{-180,20},{-180,88},{142.5,88},{
-          142.5,44}},
+      points={{-200,20},{-156,20},{-156,80},{142.5,80},{142.5,44}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(port_supply, pipeSupply.port_a) annotation (Line(
-      points={{-60,100},{-38,100},{-38,58},{-16,58}},
+      points={{-60,100},{-60,100},{-60,58},{-16,58}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(port_return, pipeReturn.port_b) annotation (Line(
-      points={{-120,100},{-70,100},{-70,-92},{-18,-92}},
+      points={{-120,100},{-120,100},{-120,24},{-68,24},{-68,-92},{-18,-92}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(pipeSupply.port_b, senTemEm_in.port_a) annotation (Line(
