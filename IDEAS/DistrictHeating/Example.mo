@@ -14,7 +14,7 @@ model Example
     redeclare IDEAS.HeatingSystems.Heating_Radiators_DH heatingSystem(
         dTSupRetNom=20, TSupNom=318.15))
              annotation (Placement(transformation(extent={{-18,22},{2,42}})));
-  IDEAS.DistrictHeating.Substations.HXWithBypass hXWithBypass
+  IDEAS.DistrictHeating.Substations.SingleHeatExchanger hXWithBypass
     annotation (Placement(transformation(extent={{-18,-26},{2,-6}})));
   IDEAS.DistrictHeating.Production.Boiler boiler(boiler(dp_nominal=10000, QNom=
           30000), realExpression(y=343)) annotation (Placement(transformation(
@@ -55,7 +55,7 @@ model Example
     redeclare IDEAS.HeatingSystems.Heating_Radiators_DH heatingSystem(
         dTSupRetNom=20, TSupNom=318.15))
              annotation (Placement(transformation(extent={{-78,22},{-58,42}})));
-  IDEAS.DistrictHeating.Substations.HXWithBypass hXWithBypass1
+  IDEAS.DistrictHeating.Substations.SingleHeatExchanger hXWithBypass1
     annotation (Placement(transformation(extent={{-78,-26},{-58,-6}})));
   Fluid.FixedResistances.Pipe_Insulated pipe_Insulated2(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
@@ -92,22 +92,14 @@ model Example
         rotation=270,
         origin={-104,-18})));
 equation
-  connect(hXWithBypass.flowPort_b1, building.port_return) annotation (Line(
-      points={{-10,-6},{-10,22},{-9.6,22}},
-      color={0,0,0},
-      smooth=Smooth.None));
-  connect(hXWithBypass.flowPort_a1, building.port_supply) annotation (Line(
-      points={{-6,-6},{-6.7,-6},{-6.7,22.1}},
-      color={0,0,0},
-      smooth=Smooth.None));
   connect(hXWithBypass.flowPort_supply_in, pipe_Insulated.port_a) annotation (
       Line(
-      points={{2,-14},{2,2},{20,2}},
+      points={{2,-20},{2,2},{20,2}},
       color={0,0,0},
       smooth=Smooth.None));
   connect(hXWithBypass.flowPort_return_out, pipe_Insulated1.port_a) annotation (
      Line(
-      points={{2,-18},{2,-30},{22,-30}},
+      points={{2,-24},{2,-30},{22,-30}},
       color={0,0,0},
       smooth=Smooth.None));
   connect(boiler.flowPort_return, pipe_Insulated1.port_b) annotation (Line(
@@ -122,32 +114,24 @@ equation
       points={{80,-6},{80,2},{72,2}},
       color={0,0,0},
       smooth=Smooth.None));
-  connect(hXWithBypass1.flowPort_b1, building1.port_return) annotation (Line(
-      points={{-70,-6},{-70,22},{-69.6,22}},
-      color={0,0,0},
-      smooth=Smooth.None));
-  connect(building1.port_supply, hXWithBypass1.flowPort_a1) annotation (Line(
-      points={{-66.7,22.1},{-66.7,-6},{-66,-6}},
-      color={0,127,255},
-      smooth=Smooth.None));
   connect(hXWithBypass1.flowPort_supply_in, pipe_Insulated2.port_a) annotation (
      Line(
-      points={{-58,-14},{-52,-14},{-52,-6},{-46,-6}},
+      points={{-58,-20},{-52,-20},{-52,-6},{-46,-6}},
       color={0,0,0},
       smooth=Smooth.None));
   connect(hXWithBypass.flowPort_supply_out, pipe_Insulated2.port_b) annotation (
      Line(
-      points={{-18,-14},{-22,-14},{-22,-6},{-26,-6}},
+      points={{-18,-20},{-22,-20},{-22,-6},{-26,-6}},
       color={0,0,0},
       smooth=Smooth.None));
   connect(hXWithBypass1.flowPort_return_out, pipe_Insulated3.port_a)
     annotation (Line(
-      points={{-58,-18},{-52,-18},{-52,-26},{-46,-26}},
+      points={{-58,-24},{-52,-24},{-52,-26},{-46,-26}},
       color={0,0,0},
       smooth=Smooth.None));
   connect(hXWithBypass.flowPort_return_in, pipe_Insulated3.port_b) annotation (
       Line(
-      points={{-18,-18},{-22,-18},{-22,-26},{-26,-26}},
+      points={{-18,-24},{-22,-24},{-22,-26},{-26,-26}},
       color={0,0,0},
       smooth=Smooth.None));
   connect(fan1.dp_in, const.y) annotation (Line(
@@ -160,13 +144,29 @@ equation
       smooth=Smooth.None));
   connect(pipe_Insulated4.port_a, hXWithBypass1.flowPort_supply_out)
     annotation (Line(
-      points={{-104,-8},{-78,-8},{-78,-14}},
+      points={{-104,-8},{-78,-8},{-78,-20}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(pipe_Insulated4.port_b, hXWithBypass1.flowPort_return_in) annotation (
      Line(
-      points={{-104,-28},{-78,-28},{-78,-18}},
+      points={{-104,-28},{-78,-28},{-78,-24}},
       color={0,127,255},
+      smooth=Smooth.None));
+  connect(hXWithBypass1.flowPort_b1[1], building1.port_return) annotation (Line(
+      points={{-70,-6},{-70,22},{-69.6,22}},
+      color={0,0,0},
+      smooth=Smooth.None));
+  connect(hXWithBypass1.flowPort_a1[1], building1.port_supply) annotation (Line(
+      points={{-66,-6},{-66,22.1},{-66.7,22.1}},
+      color={0,0,0},
+      smooth=Smooth.None));
+  connect(hXWithBypass.flowPort_b1[1], building.port_return) annotation (Line(
+      points={{-10,-6},{-10,8},{-10,22},{-9.6,22}},
+      color={0,0,0},
+      smooth=Smooth.None));
+  connect(hXWithBypass.flowPort_a1[1], building.port_supply) annotation (Line(
+      points={{-6,-6},{-6,8},{-6,22.1},{-6.7,22.1}},
+      color={0,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-140,
             -100},{100,100}}),      graphics), Icon(coordinateSystem(extent={{-140,
