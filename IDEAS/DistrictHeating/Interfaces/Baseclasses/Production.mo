@@ -1,10 +1,12 @@
 within IDEAS.DistrictHeating.Interfaces.Baseclasses;
 partial model Production "Interface for a district heating production unit"
 
-  IDEAS.Fluid.Interfaces.FlowPort_b flowPort_return
+  IDEAS.Fluid.Interfaces.FlowPort_b flowPort_return(redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Return side of the production (cold water)"
     annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-  IDEAS.Fluid.Interfaces.FlowPort_a flowPort_supply
+  IDEAS.Fluid.Interfaces.FlowPort_a flowPort_supply(redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Supply flow port (hot water)"
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,

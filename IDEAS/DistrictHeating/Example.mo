@@ -153,11 +153,11 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
   connect(hXWithBypass1.flowPort_b1[1], building1.port_return) annotation (Line(
-      points={{-70,-6},{-70,8},{-70,22},{-69.6,22}},
+      points={{-70,-6},{-70,22},{-69.6,22}},
       color={0,0,0},
       smooth=Smooth.None));
   connect(hXWithBypass1.flowPort_a1[1], building1.port_supply) annotation (Line(
-      points={{-66,-6},{-66,8},{-66,22.1},{-66.7,22.1}},
+      points={{-66,-6},{-66,22.1},{-66.7,22.1}},
       color={0,0,0},
       smooth=Smooth.None));
   connect(hXWithBypass.flowPort_b1[1], building.port_return) annotation (Line(

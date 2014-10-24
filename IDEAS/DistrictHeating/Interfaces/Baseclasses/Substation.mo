@@ -16,16 +16,20 @@ partial model Substation "Interface for a local substation"
     "Flowport supply to the building"
     annotation (Placement(transformation(extent={{10,90},{30,110}})));
 
-  IDEAS.Fluid.Interfaces.FlowPort_b flowPort_supply_out
+  IDEAS.Fluid.Interfaces.FlowPort_b flowPort_supply_out(redeclare package
+      Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Supply line out connection"
     annotation (Placement(transformation(extent={{-110,-50},{-90,-30}})));
-  IDEAS.Fluid.Interfaces.FlowPort_a flowPort_supply_in
+  IDEAS.Fluid.Interfaces.FlowPort_a flowPort_supply_in(redeclare package Medium
+      = Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Supply line in connection"
     annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
-  IDEAS.Fluid.Interfaces.FlowPort_a flowPort_return_in
+  IDEAS.Fluid.Interfaces.FlowPort_a flowPort_return_in(redeclare package Medium
+      = Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Return line in connection"
     annotation (Placement(transformation(extent={{-110,-90},{-90,-70}})));
-  IDEAS.Fluid.Interfaces.FlowPort_b flowPort_return_out
+  IDEAS.Fluid.Interfaces.FlowPort_b flowPort_return_out(redeclare package
+      Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Return line out connection"
     annotation (Placement(transformation(extent={{90,-90},{110,-70}})));
 
