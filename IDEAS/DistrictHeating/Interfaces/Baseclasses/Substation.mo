@@ -1,12 +1,17 @@
 within IDEAS.DistrictHeating.Interfaces.Baseclasses;
 partial model Substation "Interface for a local substation"
 
+  //Parameters
+  parameter Integer numberOfConnections = 1;
+
   //Connectors
-  IDEAS.Fluid.Interfaces.FlowPort_b flowPort_b1(redeclare package Medium =
+  IDEAS.Fluid.Interfaces.FlowPort_b flowPort_b1[numberOfConnections](redeclare
+      package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Flowport return from to the building"
     annotation (Placement(transformation(extent={{-30,90},{-10,110}})));
-  IDEAS.Fluid.Interfaces.FlowPort_a flowPort_a1(redeclare package Medium =
+  IDEAS.Fluid.Interfaces.FlowPort_a flowPort_a1[numberOfConnections](redeclare
+      package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Flowport supply to the building"
     annotation (Placement(transformation(extent={{10,90},{30,110}})));
