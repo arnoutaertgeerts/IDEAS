@@ -107,9 +107,9 @@ equation
       smooth=Smooth.None));
   connect(bou.ports[1], production.flowPort_return) annotation (Line(
       points={{-24,-60},{-10,-60},{-10,-20},{0,-20},{0,-40},{80,-40},{80,-20}},
-
       color={0,127,255},
       smooth=Smooth.None));
+
   connect(const.y, fan1.dp_in) annotation (Line(
       points={{29,-10},{40.2,-10},{40.2,10}},
       color={0,0,127},

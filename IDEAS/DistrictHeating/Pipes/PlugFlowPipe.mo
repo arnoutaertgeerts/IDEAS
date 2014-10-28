@@ -1,4 +1,4 @@
-within IDEAS.Fluid.FixedResistances;
+within IDEAS.DistrictHeating.Pipes;
 model PlugFlowPipe
   //Extensions
   extends IDEAS.Fluid.Interfaces.PartialTwoPortInterface;
@@ -11,12 +11,13 @@ model PlugFlowPipe
   parameter Modelica.SIunits.PressureDifference dp_nominal;
 
   //Components
-  PlugFlowLosslessPipe plug(
+  DistrictHeating.Pipes.PlugFlowLosslessPipe plug(
     L=pipeLength/2,
     D=pipeDiameter,
     m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
-  FixedResistanceDpM res(m_flow_nominal=m_flow_nominal, dp_nominal=dp_nominal)
+  Fluid.FixedResistances.FixedResistanceDpM res(m_flow_nominal=m_flow_nominal,
+      dp_nominal=dp_nominal)
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
 
 equation
