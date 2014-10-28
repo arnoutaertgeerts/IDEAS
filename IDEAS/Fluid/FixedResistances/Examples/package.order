@@ -6,3 +6,4 @@ OpenHydraulicSystem
 Pipe_HeatPortExample
 PumpWithPipeHeatPorts
 SplitterFixedResistanceDpM
+PlugFlowTemperaturePipe

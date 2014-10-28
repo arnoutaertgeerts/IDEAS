@@ -72,7 +72,7 @@ equation
     dp = 0;
   end if;  // computeFlowResistance
 
-  annotation (Diagram(coordinateSystem(preserveAspectRatio=true,  extent={{-100,
+  annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}}),
                       graphics),
 defaultComponentName="res",
@@ -216,7 +216,7 @@ First implementation.
 </html>"),
     Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
             100}}), graphics={Text(
-          extent={{-102,86},{-4,22}},
+          extent={{-102,94},{-4,30}},
           lineColor={0,0,255},
           textString="dp_nominal=%dp_nominal"), Text(
           extent={{-106,106},{6,60}},
