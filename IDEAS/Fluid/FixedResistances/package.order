@@ -4,8 +4,5 @@ Pipe
 Pipe_HeatPort
 Pipe_Insulated
 SplitterFixedResistanceDpM
-PlugFlowLosslessPipe
-PlugFlowPipe
-PlugFlowHeatPort
 ParallelFixedResistanceDpM
 Examples

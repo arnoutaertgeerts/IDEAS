@@ -1,4 +1,4 @@
-within IDEAS.Fluid.FixedResistances;
+within IDEAS.DistrictHeating.Pipes;
 model PlugFlowLosslessPipe
   "Pipe with a temperature plug flow without pressure losses"
    //Extensions

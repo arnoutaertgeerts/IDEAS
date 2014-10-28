@@ -1,4 +1,4 @@
-within IDEAS.Fluid.FixedResistances;
+within IDEAS.DistrictHeating.Pipes;
 model PlugFlowHeatPort
   "Pipe model with a temperature plug flow, pressure losses and heat exchange to the environment"
 
@@ -16,14 +16,16 @@ model PlugFlowHeatPort
     "Port for heat exchange with mixing volume" annotation (Placement(
         transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},
             {10,110}})));
-  PlugFlowPipe plugFlowPipe
+  DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
-  PlugFlowPipe plugFlowPipe1
+  DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe1
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
-  MixingVolumes.MixingVolume             vol(
+  Fluid.MixingVolumes.MixingVolume vol(
     redeclare package Medium = Medium,
     energyDynamics=if dynamicBalance then energyDynamics else Modelica.Fluid.Types.Dynamics.SteadyState,
+
     massDynamics=if dynamicBalance then massDynamics else Modelica.Fluid.Types.Dynamics.SteadyState,
+
     T_start=T_start,
     X_start=X_start,
     C_start=C_start,
@@ -31,7 +33,10 @@ model PlugFlowHeatPort
     p_start=p_start,
     allowFlowReversal=allowFlowReversal,
     nPorts=2,
-    final V=m/Medium.density(Medium.setState_phX(Medium.p_default, Medium.h_default, Medium.X_default)))
+    final V=m/Medium.density(Medium.setState_phX(
+        Medium.p_default,
+        Medium.h_default,
+        Medium.X_default)))
     annotation (Placement(transformation(extent={{10,0},{-10,20}})));
 equation
   connect(port_a, plugFlowPipe.port_a) annotation (Line(

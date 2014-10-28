@@ -1,4 +1,4 @@
-within IDEAS.Fluid.FixedResistances.Examples;
+within IDEAS.DistrictHeating.Pipes;
 model PlugFlowTemperaturePipe
   extends Modelica.Icons.Example;
   import IDEAS;
@@ -24,26 +24,26 @@ model PlugFlowTemperaturePipe
   IDEAS.Fluid.Sources.FixedBoundary bou(
     nPorts=1,
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
     p=100000,
     T=373.15) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=270,
         origin={-60,86})));
+
   IDEAS.Fluid.Sources.FixedBoundary bou1(
     nPorts=1,
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
     use_T=false,
     use_p=true,
     p=100000) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-60,-70})));
+
   inner Modelica.Fluid.System system(p_ambient=101325)
                                    annotation (Placement(transformation(extent={{60,60},
             {80,80}},          rotation=0)));
-  IDEAS.Fluid.FixedResistances.PlugFlowPipe plugFlowPipe(
+  IDEAS.DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
 
     pipeDiameter=0.1,
@@ -57,6 +57,7 @@ model PlugFlowTemperaturePipe
         extent={{-10,-10},{10,10}},
         rotation=270,
         origin={-60,-6})));
+
   IDEAS.Fluid.Movers.Pump pump1(redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=1)
     annotation (Placement(transformation(
@@ -78,30 +79,30 @@ model PlugFlowTemperaturePipe
   IDEAS.Fluid.Sources.FixedBoundary bou2(
     nPorts=1,
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
     p=100000,
     T=373.15) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=270,
         origin={-20,86})));
+
   IDEAS.Fluid.Sources.FixedBoundary bou3(
     nPorts=1,
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
     use_T=false,
     use_p=true,
     p=100000) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-20,-70})));
+
   IDEAS.Fluid.FixedResistances.FixedResistanceDpM res(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
     m_flow_nominal=0.1,
     dp_nominal=20) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=270,
         origin={-20,-6})));
+
 equation
   connect(pump.port_b, senTem.port_a) annotation (Line(
       points={{-60,50},{-60,34}},
