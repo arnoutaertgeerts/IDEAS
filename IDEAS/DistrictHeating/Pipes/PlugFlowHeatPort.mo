@@ -18,6 +18,10 @@ model PlugFlowHeatPort
     annotation (Evaluate=true, Dialog(tab="Dynamics", group="Equations"));
 
   //Interface
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a[2] heatPort1
+    "Port for heat exchange with mixing volume" annotation (Placement(
+        transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},
+            {10,110}})));
 
   //Components
   DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe1(
@@ -54,10 +58,6 @@ model PlugFlowHeatPort
     final V=V/2)
     annotation (Placement(transformation(extent={{-44,0},{-64,20}})));
 
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a[2] heatPort1
-    "Port for heat exchange with mixing volume" annotation (Placement(
-        transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},
-            {10,110}})));
 equation
   connect(port_a, vol1.ports[1]) annotation (Line(
       points={{-100,0},{-52,0}},
