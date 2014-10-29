@@ -56,7 +56,8 @@ model PlugFlowTemperaturePipe
         Modelica.Fluid.Pipes.BaseClasses.FlowModels.DetailedPipeFlow,
     use_HeatTransfer=true,
     redeclare model HeatTransfer =
-        Modelica.Fluid.Pipes.BaseClasses.HeatTransfer.ConstantFlowHeatTransfer)
+        Modelica.Fluid.Pipes.BaseClasses.HeatTransfer.ConstantFlowHeatTransfer
+        (alpha0=10))
     annotation (Placement(transformation(extent={{-80,0},{-60,20}})));
 
   IDEAS.Fluid.Movers.Pump pump2(redeclare package Medium =
@@ -87,7 +88,8 @@ model PlugFlowTemperaturePipe
     length=32,
     use_HeatTransfer=true,
     redeclare model HeatTransfer =
-        Modelica.Fluid.Pipes.BaseClasses.HeatTransfer.LocalPipeFlowHeatTransfer)
+        Modelica.Fluid.Pipes.BaseClasses.HeatTransfer.LocalPipeFlowHeatTransfer
+        (alpha0=10))
     annotation (Placement(transformation(extent={{-80,-78},{-60,-58}})));
 
   IDEAS.Fluid.Movers.Pump pump3(redeclare package Medium =
@@ -110,17 +112,22 @@ model PlugFlowTemperaturePipe
         origin={-20,74})));
   IDEAS.DistrictHeating.Pipes.PlugFlowHeatPort plugFlowHeatPort(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
     pipeLength=32,
     pipeDiameter=0.1,
-    dp_nominal=0)
+    dp_nominal=0,
+    plugFlowPipe1(redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater),
+    m_flow_nominal=0.1)
     annotation (Placement(transformation(extent={{-80,64},{-60,84}})));
-  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature fixedTemperature(T=293.15)
-    annotation (Placement(transformation(extent={{-100,86},{-80,106}})));
+
+  Modelica.Thermal.HeatTransfer.Sources.FixedTemperature[2] T2(T=293.15)
+    annotation (Placement(transformation(extent={{-122,106},{-102,126}})));
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature[100] T100(T=293.15)
     annotation (Placement(transformation(extent={{-100,30},{-80,50}})));
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature[10] T10(T=293.15)
     annotation (Placement(transformation(extent={{-100,-40},{-80,-20}})));
+  Modelica.Thermal.HeatTransfer.Components.ThermalResistor thermalResistor[2](R=10)
+    annotation (Placement(transformation(extent={{-94,106},{-74,126}})));
 equation
   connect(pump1.port_b, senTem2.port_a) annotation (Line(
       points={{-148,10},{-128,10}},
@@ -182,16 +189,20 @@ equation
       points={{-30,74},{-60,74}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(fixedTemperature.port, plugFlowHeatPort.heatPort) annotation (Line(
-      points={{-80,96},{-70,96},{-70,84}},
-      color={191,0,0},
-      smooth=Smooth.None));
   connect(T100.port, pipe.heatPorts) annotation (Line(
       points={{-80,40},{-69.9,40},{-69.9,14.4}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(T10.port, pipe1.heatPorts) annotation (Line(
       points={{-80,-30},{-69.9,-30},{-69.9,-63.6}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(T2.port, thermalResistor.port_a) annotation (Line(
+      points={{-102,116},{-94,116}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(thermalResistor.port_b, plugFlowHeatPort.heatPort1) annotation (Line(
+      points={{-74,116},{-70,116},{-70,84}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-220,

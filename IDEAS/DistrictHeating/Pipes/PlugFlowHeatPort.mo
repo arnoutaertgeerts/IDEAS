@@ -4,27 +4,28 @@ model PlugFlowHeatPort
 
   //Extensions
   extends IDEAS.Fluid.Interfaces.PartialTwoPortInterface;
+  extends IDEAS.Fluid.Interfaces.LumpedVolumeDeclarations;
 
   //Parameters
   parameter Modelica.SIunits.Length pipeLength;
   parameter Modelica.SIunits.Length pipeDiameter;
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal;
-  parameter Modelica.SIunits.PressureDifference dp_nominal;
+  parameter Modelica.SIunits.PressureDifference dp_nominal=0;
 
   parameter Modelica.SIunits.Volume V=pipeLength*Modelica.Constants.pi*(pipeDiameter/2)^2;
+  parameter Boolean dynamicBalance = true
+    "Set to true to use a dynamic balance, which often leads to smaller systems of equations"
+    annotation (Evaluate=true, Dialog(tab="Dynamics", group="Equations"));
 
   //Interface
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
-    "Port for heat exchange with mixing volume" annotation (Placement(
-        transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},
-            {10,110}})));
 
   //Components
   DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe1(
     pipeLength=pipeLength,
     pipeDiameter=pipeDiameter,
     m_flow_nominal=m_flow_nominal,
-    dp_nominal=dp_nominal)
+    dp_nominal=dp_nominal,
+    redeclare package Medium=Medium)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Fluid.MixingVolumes.MixingVolume vol(
     redeclare package Medium = Medium,
@@ -53,11 +54,11 @@ model PlugFlowHeatPort
     final V=V/2)
     annotation (Placement(transformation(extent={{-44,0},{-64,20}})));
 
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a[2] heatPort1
+    "Port for heat exchange with mixing volume" annotation (Placement(
+        transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},
+            {10,110}})));
 equation
-  connect(vol.heatPort, heatPort) annotation (Line(
-      points={{52,10},{62,10},{62,54},{0,54},{0,100}},
-      color={191,0,0},
-      smooth=Smooth.None));
   connect(port_a, vol1.ports[1]) annotation (Line(
       points={{-100,0},{-52,0}},
       color={0,127,255},
@@ -74,8 +75,12 @@ equation
       points={{40,0},{100,0}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(vol1.heatPort, heatPort) annotation (Line(
-      points={{-44,10},{-26,10},{-26,54},{0,54},{0,100}},
+  connect(vol1.heatPort, heatPort1[1]) annotation (Line(
+      points={{-44,10},{-20,10},{-20,80},{0,80},{0,95}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(vol.heatPort, heatPort1[2]) annotation (Line(
+      points={{52,10},{56,10},{56,80},{14,80},{14,105},{0,105}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Icon(graphics={

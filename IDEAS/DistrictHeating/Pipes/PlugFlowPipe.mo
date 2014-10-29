@@ -9,18 +9,18 @@ model PlugFlowPipe
   parameter Modelica.SIunits.Length pipeLength;
   parameter Modelica.SIunits.Length pipeDiameter;
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal;
-  parameter Modelica.SIunits.PressureDifference dp_nominal;
+  parameter Modelica.SIunits.PressureDifference dp_nominal=0;
 
   //Components
   DistrictHeating.Pipes.PlugFlowLosslessPipe plug(
     L=pipeLength,
     D=pipeDiameter,
     m_flow_nominal=m_flow_nominal,
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)
+    redeclare package Medium=Medium)
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
   Fluid.FixedResistances.FixedResistanceDpM res(m_flow_nominal=m_flow_nominal,
       dp_nominal=dp_nominal,
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)
+      redeclare package Medium=Medium)
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
 
 equation
