@@ -103,7 +103,7 @@ model PartialHeater "A partial for a production component which heats a fluid"
      redeclare package Medium = Medium)
       constrainedby
     IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatSource
-    annotation (Placement(transformation(extent={{-38,66},{-18,86}})), choicesAllMatching=true);
+    annotation (Placement(transformation(extent={{-40,60},{-20,80}})), choicesAllMatching=true);
 equation
 
   connect(mDry.port, thermalLosses.port_a) annotation (Line(

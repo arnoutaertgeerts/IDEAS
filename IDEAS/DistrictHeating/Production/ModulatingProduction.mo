@@ -22,7 +22,7 @@ model ModulatingProduction
   replaceable Data.BaseClasses.PartialModulatingData productionData
     constrainedby Data.BaseClasses.PartialModulatingData
     "Production data for the modulating heat source"
-    annotation (Placement(transformation(extent={{-82,66},{-62,86}})),
+    annotation (Placement(transformation(extent={{-80,60},{-60,80}})),
       choicesAllMatching=true,
       Dialog(group="Data file with modulation data"));
 equation
@@ -31,7 +31,7 @@ equation
   eta = heatSource.eta;
 
   connect(heatSource.heatPort, pipe_HeatPort.heatPort) annotation (Line(
-      points={{-18,76},{28,76},{28,-6}},
+      points={{-20,70},{28,70},{28,-6}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
