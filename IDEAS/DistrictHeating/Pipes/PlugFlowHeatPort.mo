@@ -16,11 +16,26 @@ model PlugFlowHeatPort
     "Port for heat exchange with mixing volume" annotation (Placement(
         transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},
             {10,110}})));
-  DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe
-    annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
   DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe1
-    annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Fluid.MixingVolumes.MixingVolume vol(
+    redeclare package Medium = Medium,
+    energyDynamics=if dynamicBalance then energyDynamics else Modelica.Fluid.Types.Dynamics.SteadyState,
+
+    massDynamics=if dynamicBalance then massDynamics else Modelica.Fluid.Types.Dynamics.SteadyState,
+
+    T_start=T_start,
+    X_start=X_start,
+    C_start=C_start,
+    m_flow_nominal=m_flow_nominal,
+    p_start=p_start,
+    allowFlowReversal=allowFlowReversal,
+    final V=m/Medium.density(Medium.setState_phX(
+        Medium.p_default,
+        Medium.h_default,
+        Medium.X_default)),
+    nPorts=2) annotation (Placement(transformation(extent={{52,0},{32,20}})));
+  Fluid.MixingVolumes.MixingVolume vol1(
     redeclare package Medium = Medium,
     energyDynamics=if dynamicBalance then energyDynamics else Modelica.Fluid.Types.Dynamics.SteadyState,
 
@@ -37,27 +52,27 @@ model PlugFlowHeatPort
         Medium.p_default,
         Medium.h_default,
         Medium.X_default)))
-    annotation (Placement(transformation(extent={{10,0},{-10,20}})));
+    annotation (Placement(transformation(extent={{-44,0},{-64,20}})));
 equation
-  connect(port_a, plugFlowPipe.port_a) annotation (Line(
-      points={{-100,0},{-60,0}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(port_b, plugFlowPipe1.port_b) annotation (Line(
-      points={{100,0},{60,0}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(plugFlowPipe.port_b, vol.ports[1]) annotation (Line(
-      points={{-40,0},{2,0}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(plugFlowPipe1.port_a, vol.ports[2]) annotation (Line(
-      points={{40,0},{-2,0}},
-      color={0,127,255},
-      smooth=Smooth.None));
   connect(vol.heatPort, heatPort) annotation (Line(
-      points={{10,10},{10,10},{20,10},{20,54},{0,54},{0,100}},
+      points={{52,10},{62,10},{62,54},{0,54},{0,100}},
       color={191,0,0},
+      smooth=Smooth.None));
+  connect(port_a, vol1.ports[1]) annotation (Line(
+      points={{-100,0},{-52,0}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(vol1.ports[2], plugFlowPipe1.port_a) annotation (Line(
+      points={{-56,0},{-10,0}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(plugFlowPipe1.port_b, vol.ports[1]) annotation (Line(
+      points={{10,0},{44,0}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(vol.ports[2], port_b) annotation (Line(
+      points={{40,0},{100,0}},
+      color={0,127,255},
       smooth=Smooth.None));
   annotation (Icon(graphics={
         Polygon(

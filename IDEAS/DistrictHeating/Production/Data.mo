@@ -1,7 +1,8 @@
 within IDEAS.DistrictHeating.Production;
 package Data "Performance table data for production components"
   record Boiler "Data for a boiler with 6 modulation steps"
-    extends BaseClasses.PartialProdutionData(
+    extends
+      IDEAS.DistrictHeating.Production.Data.BaseClasses.PartialModulatingData(
       eta100=
         [0, 100, 400, 700, 1000, 1300; 20.0, 0.9015, 0.9441, 0.9599, 0.9691,
           0.9753; 30.0, 0.8824, 0.9184, 0.9324, 0.941, 0.9471; 40.0, 0.8736,
@@ -33,6 +34,38 @@ package Data "Performance table data for production components"
           0.999; 30.0, 0.9671, 0.9859, 0.99, 0.9921, 0.9934; 40.0, 0.9293, 0.9498,
           0.9549, 0.9575, 0.9592; 50.0, 0.8831, 0.9003, 0.9056, 0.9083, 0.9101;
           60.0, 0.8562, 0.857, 0.8575, 0.8576, 0.8577; 70.0, 0.8398, 0.8479,
-          0.8481, 0.8482, 0.8483; 80.0, 0.8374, 0.8384, 0.8386, 0.8387, 0.8388]);
+          0.8481, 0.8482, 0.8483; 80.0, 0.8374, 0.8384, 0.8386, 0.8387, 0.8388],
+       QNom0=10100,
+       etaNom=0.922,
+       modulationMin=10,
+       modulationStart=20,
+       TMax=273.15+80,
+       TMin=273.15+20);
+
   end Boiler;
+
+  package BaseClasses
+    partial record PartialModulatingData
+      "Partial for a heat source data record which holds data of 6 modulation steps"
+      extends Modelica.Icons.Record;
+
+      parameter Real[:,:] eta100;
+      parameter Real[:,:] eta80;
+      parameter Real[:,:] eta60;
+      parameter Real[:,:] eta40;
+      parameter Real[:,:] eta20;
+
+      final parameter Modelica.SIunits.Power QNom0
+        "Nominal power of the boiler from which the power data are used in this model";
+      constant Real etaNom
+        "Nominal efficiency (higher heating value)of the xxx boiler at 50/30degC.  See datafile";
+      parameter Real modulationMin(max=29) "Minimal modulation percentage";
+      parameter Real modulationStart(min=min(30, modulationMin + 5))
+        "Min estimated modulation level required for start of the heat source";
+      parameter Modelica.SIunits.Temperature TMax
+        "Maximum set point temperature";
+      parameter Modelica.SIunits.Temperature TMin;
+
+    end PartialModulatingData;
+  end BaseClasses;
 end Data;

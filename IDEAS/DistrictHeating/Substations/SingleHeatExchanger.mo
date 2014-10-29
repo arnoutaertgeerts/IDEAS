@@ -121,7 +121,7 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
   connect(hex.port_a2, val.port_b) annotation (Line(
-      points={{4,14},{36,14},{36,14},{70,14},{70,10},{72,10},{72,6}},
+      points={{4,14},{72,14},{72,10},{72,10},{72,6}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(senMasFlo1.port_b, hex.port_a1) annotation (Line(

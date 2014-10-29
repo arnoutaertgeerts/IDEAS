@@ -1,30 +1,36 @@
-within IDEAS.DistrictHeating.Production.BaseClasses;
-model HeatSource
+within IDEAS.DistrictHeating.Production.HeatSources;
+model ModulatingHeatSource
   "General presentation of a heat source which uses performance tables for 6 modulation steps"
   import IDEAS;
+
+  //Extensions
+  extends IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatSource;
 
   replaceable package Medium =
     Modelica.Media.Interfaces.PartialMedium;
 
   //Parameters
-
   final parameter Real[6] modVector = {0,20,40,60,80,100}
     "Vector of the modulation steps";
-  parameter Modelica.SIunits.ThermalConductance UALoss
+
+protected
+  parameter Modelica.SIunits.ThermalConductance UALoss = productionData.UALoss
     "UA of heat losses of the heat source to environment";
-  parameter Modelica.SIunits.Power QNom "The power at nominal conditions";
-  final parameter Modelica.SIunits.Power QNom0 = 10100
+  final parameter Modelica.SIunits.Power QNom0 = productionData.QNom0
     "Nominal power of the boiler from which the power data are used in this model";
-  constant Real etaNom=0.922
+  constant Real etaNom = productionData.etaNom
     "Nominal efficiency (higher heating value)of the xxx boiler at 50/30degC.  See datafile";
-  parameter Real modulationMin(max=29) = 10 "Minimal modulation percentage";
-  parameter Real modulationStart(min=min(30, modulationMin + 5)) = 20
+  parameter Real modulationMin = productionData.modulationMin
+    "Minimal modulation percentage";
+  parameter Real modulationStart = productionData.modulationStart
     "Min estimated modulation level required for start of the heat source";
-  parameter Modelica.SIunits.Temperature TMax "Maximum set point temperature";
-  parameter Modelica.SIunits.Temperature TMin "Minimum set point temperature";
+  parameter Modelica.SIunits.Temperature TMax=productionData.TMax
+    "Maximum set point temperature";
+  parameter Modelica.SIunits.Temperature TMin=productionData.TMin
+    "Minimum set point temperature";
 
   //Variables
-
+public
   Real[6] etaVector "Thermal efficiency for the modulation steps";
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
   Real[6] QVector "Thermal power for the 6 modulation steps";
@@ -35,26 +41,7 @@ model HeatSource
   Real modulation(min=0, max=1) "Current modulation percentage";
   Modelica.SIunits.Power PFuel "Resulting fuel consumption";
 
-  //Inputs
-
-  input Modelica.SIunits.Temperature THxIn "Condensor temperature";
-  input Modelica.SIunits.Temperature TSet
-    "Setpoint temperature for the fluid.  Not always possible to reach it";
-  input Modelica.SIunits.MassFlowRate m_flowHx "Condensor mass flow rate";
-  input Modelica.SIunits.Temperature TEnvironment
-    "Temperature of environment for heat losses";
-  input Modelica.SIunits.SpecificEnthalpy hIn "Specific enthalpy at the inlet";
-
   //Components
-
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
-    "heatPort connection to water in condensor"
-    annotation (Placement(transformation(extent={{90,-10},{110,10}})));
-
-  replaceable IDEAS.DistrictHeating.Production.BaseClasses.PartialProdutionData
-    ProductionData
-    annotation (Placement(transformation(extent={{-90,0},{-70,20}})));
-
   replaceable IDEAS.Controls.Control_fixme.Hyst_NoEvent_Var Control(
     use_input=false,
     enableRelease=true,
@@ -67,19 +54,19 @@ model HeatSource
   Modelica.Blocks.Sources.RealExpression realExpression(y=modulationInit)
     annotation (Placement(transformation(extent={{-6,0},{14,20}})));
 
-  Modelica.Blocks.Tables.CombiTable2D eta100(table=ProductionData.eta100,
+  Modelica.Blocks.Tables.CombiTable2D eta100(table=productionData.eta100,
     smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
     annotation (Placement(transformation(extent={{-40,80},{-20,100}})));
-  Modelica.Blocks.Tables.CombiTable2D eta80(table=ProductionData.eta80,
+  Modelica.Blocks.Tables.CombiTable2D eta80(table=productionData.eta80,
     smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
     annotation (Placement(transformation(extent={{-40,40},{-20,60}})));
-  Modelica.Blocks.Tables.CombiTable2D eta60(table=ProductionData.eta60,
+  Modelica.Blocks.Tables.CombiTable2D eta60(table=productionData.eta60,
     smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
     annotation (Placement(transformation(extent={{-40,0},{-20,20}})));
-  Modelica.Blocks.Tables.CombiTable2D eta40(table=ProductionData.eta40,
+  Modelica.Blocks.Tables.CombiTable2D eta40(table=productionData.eta40,
     smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
     annotation (Placement(transformation(extent={{-40,-40},{-20,-20}})));
-  Modelica.Blocks.Tables.CombiTable2D eta20(table=ProductionData.eta20,
+  Modelica.Blocks.Tables.CombiTable2D eta20(table=productionData.eta20,
     smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
     annotation (Placement(transformation(extent={{-40,-80},{-20,-60}})));
 
@@ -93,6 +80,12 @@ protected
   Modelica.SIunits.HeatFlowRate QLossesToCompensate "Environment losses";
   Integer i "Integer to select data interval";
 
+public
+  replaceable
+    IDEAS.DistrictHeating.Production.Data.BaseClasses.PartialModulatingData
+    productionData constrainedby
+    IDEAS.DistrictHeating.Production.Data.BaseClasses.PartialModulatingData
+     annotation (Placement(transformation(extent={{-98,-8},{-78,12}})), choicesAllMatching=true);
 algorithm
   // efficiency coefficients
   eta100.u1 :=THxIn - 273.15;
@@ -176,16 +169,5 @@ equation
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{100,100}},
           preserveAspectRatio=false), graphics),                         Icon(
         coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=false),
-        graphics={Rectangle(
-          extent={{-80,40},{40,-40}},
-          lineColor={255,128,0},
-          fillColor={255,128,0},
-          fillPattern=FillPattern.Backward), Polygon(
-          points={{-60,-30},{60,-30},{0,30},{-60,-30}},
-          lineColor={255,128,0},
-          smooth=Smooth.None,
-          fillColor={255,128,0},
-          fillPattern=FillPattern.Solid,
-          origin={70,0},
-          rotation=270)}));
-end HeatSource;
+        graphics));
+end ModulatingHeatSource;
