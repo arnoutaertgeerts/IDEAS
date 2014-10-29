@@ -4,7 +4,6 @@ model PlugFlowHeatPort
 
   //Extensions
   extends IDEAS.Fluid.Interfaces.PartialTwoPortInterface;
-  final parameter Boolean from_dp=true "Used to satisfy replaceable models";
 
   //Parameters
   parameter Modelica.SIunits.Length pipeLength;
@@ -12,35 +11,38 @@ model PlugFlowHeatPort
   parameter Modelica.SIunits.MassFlowRate m_flow_nominal;
   parameter Modelica.SIunits.PressureDifference dp_nominal;
 
+  parameter Modelica.SIunits.Volume V=pipeLength*Modelica.Constants.pi*(pipeDiameter/2)^2;
+
+  //Interface
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
     "Port for heat exchange with mixing volume" annotation (Placement(
         transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},
             {10,110}})));
-  DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe1
+
+  //Components
+  DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe1(
+    pipeLength=pipeLength,
+    pipeDiameter=pipeDiameter,
+    m_flow_nominal=m_flow_nominal,
+    dp_nominal=dp_nominal)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
   Fluid.MixingVolumes.MixingVolume vol(
     redeclare package Medium = Medium,
     energyDynamics=if dynamicBalance then energyDynamics else Modelica.Fluid.Types.Dynamics.SteadyState,
-
     massDynamics=if dynamicBalance then massDynamics else Modelica.Fluid.Types.Dynamics.SteadyState,
-
     T_start=T_start,
     X_start=X_start,
     C_start=C_start,
     m_flow_nominal=m_flow_nominal,
     p_start=p_start,
     allowFlowReversal=allowFlowReversal,
-    final V=m/Medium.density(Medium.setState_phX(
-        Medium.p_default,
-        Medium.h_default,
-        Medium.X_default)),
+    final V=V/2,
     nPorts=2) annotation (Placement(transformation(extent={{52,0},{32,20}})));
+
   Fluid.MixingVolumes.MixingVolume vol1(
     redeclare package Medium = Medium,
     energyDynamics=if dynamicBalance then energyDynamics else Modelica.Fluid.Types.Dynamics.SteadyState,
-
     massDynamics=if dynamicBalance then massDynamics else Modelica.Fluid.Types.Dynamics.SteadyState,
-
     T_start=T_start,
     X_start=X_start,
     C_start=C_start,
@@ -48,11 +50,9 @@ model PlugFlowHeatPort
     p_start=p_start,
     allowFlowReversal=allowFlowReversal,
     nPorts=2,
-    final V=m/Medium.density(Medium.setState_phX(
-        Medium.p_default,
-        Medium.h_default,
-        Medium.X_default)))
+    final V=V/2)
     annotation (Placement(transformation(extent={{-44,0},{-64,20}})));
+
 equation
   connect(vol.heatPort, heatPort) annotation (Line(
       points={{52,10},{62,10},{62,54},{0,54},{0,100}},
@@ -73,6 +73,10 @@ equation
   connect(vol.ports[2], port_b) annotation (Line(
       points={{40,0},{100,0}},
       color={0,127,255},
+      smooth=Smooth.None));
+  connect(vol1.heatPort, heatPort) annotation (Line(
+      points={{-44,10},{-26,10},{-26,54},{0,54},{0,100}},
+      color={191,0,0},
       smooth=Smooth.None));
   annotation (Icon(graphics={
         Polygon(

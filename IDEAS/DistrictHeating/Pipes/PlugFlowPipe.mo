@@ -2,7 +2,8 @@ within IDEAS.DistrictHeating.Pipes;
 model PlugFlowPipe
   //Extensions
   extends IDEAS.Fluid.Interfaces.PartialTwoPortInterface;
-  final parameter Boolean from_dp=true "Used to satisfy replaceable models";
+  extends IDEAS.Fluid.Interfaces.TwoPortFlowResistanceParameters(
+    final computeFlowResistance=true, dp_nominal = 0);
 
   //Parameters
   parameter Modelica.SIunits.Length pipeLength;
@@ -12,12 +13,14 @@ model PlugFlowPipe
 
   //Components
   DistrictHeating.Pipes.PlugFlowLosslessPipe plug(
-    L=pipeLength/2,
+    L=pipeLength,
     D=pipeDiameter,
-    m_flow_nominal=m_flow_nominal)
+    m_flow_nominal=m_flow_nominal,
+    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)
     annotation (Placement(transformation(extent={{40,-10},{60,10}})));
   Fluid.FixedResistances.FixedResistanceDpM res(m_flow_nominal=m_flow_nominal,
-      dp_nominal=dp_nominal)
+      dp_nominal=dp_nominal,
+    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)
     annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
 
 equation

@@ -19,12 +19,12 @@ model ModulatingProduction
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
 
   //Components
-  replaceable Data.BaseClasses.PartialModulatingData productionData
-    constrainedby Data.BaseClasses.PartialModulatingData
-    "Production data for the modulating heat source"
-    annotation (Placement(transformation(extent={{-80,60},{-60,80}})),
-      choicesAllMatching=true,
-      Dialog(group="Data file with modulation data"));
+  replaceable BaseClasses.PartialModulatingData productionData constrainedby
+    BaseClasses.PartialModulatingData
+    "Production data for the modulating heat source" annotation (
+    Placement(transformation(extent={{-80,60},{-60,80}})),
+    choicesAllMatching=true,
+    Dialog(group="Data file with modulation data"));
 equation
   PEl = 7 + heatSource.modulation/100*(33 - 7);
   PFuel = heatSource.PFuel;

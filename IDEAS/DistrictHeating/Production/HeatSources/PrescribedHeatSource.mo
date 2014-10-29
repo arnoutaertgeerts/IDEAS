@@ -1,5 +1,5 @@
 within IDEAS.DistrictHeating.Production.HeatSources;
-model ConstantHeat
+model PrescribedHeatSource "A prescribed heat source"
   //Extensions
   extends IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatSource;
 
@@ -18,4 +18,4 @@ equation
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
             {100,100}}), graphics));
-end ConstantHeat;
+end PrescribedHeatSource;

@@ -1,6 +1,6 @@
 within IDEAS.DistrictHeating.Production.HeatSources;
 model ModulatingHeatSource
-  "General presentation of a heat source which uses performance tables for 6 modulation steps"
+  "A modulating heat source based on performance tables"
   import IDEAS;
 
   //Extensions
@@ -82,10 +82,11 @@ protected
 
 public
   replaceable
-    IDEAS.DistrictHeating.Production.Data.BaseClasses.PartialModulatingData
+    IDEAS.DistrictHeating.Production.BaseClasses.PartialModulatingData
     productionData constrainedby
-    IDEAS.DistrictHeating.Production.Data.BaseClasses.PartialModulatingData
-     annotation (Placement(transformation(extent={{-98,-8},{-78,12}})), choicesAllMatching=true);
+    IDEAS.DistrictHeating.Production.BaseClasses.PartialModulatingData
+    annotation (Placement(transformation(extent={{-98,-8},{-78,12}})),
+      choicesAllMatching=true);
 algorithm
   // efficiency coefficients
   eta100.u1 :=THxIn - 273.15;
