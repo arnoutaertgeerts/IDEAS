@@ -1,6 +1,6 @@
 within IDEAS.DistrictHeating.Production;
 package Data "Performance table data for production components"
-  record Boiler "Data for a boiler with 6 modulation steps"
+  record Boiler "Boiler with 6 modulation steps"
     extends
       IDEAS.DistrictHeating.Production.Data.BaseClasses.PartialModulatingData(
       eta100=

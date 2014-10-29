@@ -7,7 +7,8 @@ model PartialHeater "A partial for a production component which heats a fluid"
   extends IDEAS.Fluid.Interfaces.LumpedVolumeDeclarations(T_start=293.15);
 
   //Parameters
-  parameter Modelica.SIunits.Power QNom "Nominal power";
+  parameter Modelica.SIunits.Power QNom "Nominal power"
+  annotation(Dialog(group = "Nominal condition"));
   parameter Modelica.SIunits.Time tauHeatLoss=7200
     "Time constant of environmental heat losses";
   parameter Modelica.SIunits.Mass mWater=5 "Mass of water in the condensor";
@@ -17,7 +18,8 @@ model PartialHeater "A partial for a production component which heats a fluid"
   final parameter Modelica.SIunits.ThermalConductance UALoss=(cDry + mWater*
       Medium.specificHeatCapacityCp(Medium.setState_pTX(Medium.p_default, Medium.T_default,Medium.X_default)))/tauHeatLoss;
 
-  parameter SI.MassFlowRate m_flow_nominal "Nominal mass flow rate";
+  parameter SI.MassFlowRate m_flow_nominal "Nominal mass flow rate"
+  annotation(Dialog(group = "Nominal condition"));
   parameter SI.Pressure dp_nominal=0 "Pressure";
 
   parameter Boolean dynamicBalance=true
@@ -101,7 +103,7 @@ model PartialHeater "A partial for a production component which heats a fluid"
      redeclare package Medium = Medium)
       constrainedby
     IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatSource
-    annotation (Placement(transformation(extent={{-70,66},{-50,86}})), choicesAllMatching=true);
+    annotation (Placement(transformation(extent={{-38,66},{-18,86}})), choicesAllMatching=true);
 equation
 
   connect(mDry.port, thermalLosses.port_a) annotation (Line(
@@ -176,5 +178,4 @@ equation
 <li>2014 March, Filip Jorissen, Annex60 compatibility</li>
 </ul>
 </html>"));
-
 end PartialHeater;

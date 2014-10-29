@@ -77,15 +77,17 @@ model Example
     p=100000)
     annotation (Placement(transformation(extent={{-20,-68},{0,-48}})));
 
-
-  Production.Boiler boilerViaPartials(
+  Production.ModulatingProduction boilerViaPartials(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
 
     QNom=30000,
-    m_flow_nominal=0.1) annotation (Placement(transformation(
+    m_flow_nominal=0.1,
+    redeclare IDEAS.DistrictHeating.Production.Data.Boiler productionData)
+    annotation (Placement(transformation(
         extent={{-10,11},{10,-11}},
         rotation=180,
         origin={84,-13})));
+
   Modelica.Blocks.Sources.Constant const1(k=343)
     annotation (Placement(transformation(extent={{54,28},{74,48}})));
 equation

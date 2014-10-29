@@ -1,9 +1,11 @@
 within IDEAS.DistrictHeating.Production;
-model Boiler
+model ModulatingProduction
+  "A production model which is based on performance tables for different modulation steps"
   //Extensions
   extends IDEAS.DistrictHeating.Production.BaseClasses.PartialHeater(redeclare
       HeatSources.ModulatingHeatSource heatSource(redeclare
-        IDEAS.DistrictHeating.Production.Data.Boiler productionData,
+        IDEAS.DistrictHeating.Production.Data.Boiler productionData=
+                       productionData,
         QNom=QNom,
         UALoss=UALoss,
         TEnvironment=heatPort.T,
@@ -16,15 +18,22 @@ model Boiler
   //Variables
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
 
+  //Components
+  replaceable Data.BaseClasses.PartialModulatingData productionData
+    constrainedby Data.BaseClasses.PartialModulatingData
+    "Production data for the modulating heat source"
+    annotation (Placement(transformation(extent={{-82,66},{-62,86}})),
+      choicesAllMatching=true,
+      Dialog(group="Data file with modulation data"));
 equation
   PEl = 7 + heatSource.modulation/100*(33 - 7);
   PFuel = heatSource.PFuel;
   eta = heatSource.eta;
 
   connect(heatSource.heatPort, pipe_HeatPort.heatPort) annotation (Line(
-      points={{-50,76},{-22,76},{-22,76},{28,76},{28,-6}},
+      points={{-18,76},{28,76},{28,-6}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
             {100,120}}),       graphics));
-end Boiler;
+end ModulatingProduction;
