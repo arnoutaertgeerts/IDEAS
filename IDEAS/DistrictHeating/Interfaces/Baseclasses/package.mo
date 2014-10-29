@@ -4,5 +4,4 @@ partial package Baseclasses "Baseclasses for the construction of a district heat
 
   extends Modelica.Icons.InterfacesPackage;
 
-
 end Baseclasses;

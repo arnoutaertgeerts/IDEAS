@@ -20,14 +20,14 @@ model HXWithBypass
   IDEAS.Fluid.FixedResistances.SplitterFixedResistanceDpM spl1(
     redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater,
-    m_flow_nominal={0.25,-0.25,-0.25},
-    dp_nominal={20,-20,-20}) "Splitter for bypass"
+    dp_nominal={20,-20,-20},
+    m_flow_nominal={0.5,-0.5,-0.25}) "Splitter for bypass"
     annotation (Placement(transformation(extent={{-16,-10},{-36,-30}})));
   IDEAS.Fluid.FixedResistances.SplitterFixedResistanceDpM spl2(
     redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater,
-    m_flow_nominal={0.25,-0.25,-0.25},
-    dp_nominal={20,-20,-20}) "Splitter for bypass"
+    dp_nominal={20,-20,-20},
+    m_flow_nominal={0.5,-0.5,-0.25}) "Splitter for bypass"
     annotation (Placement(transformation(extent={{80,30},{60,10}})));
 
   Fluid.Actuators.Valves.TwoWayLinear val(
@@ -38,10 +38,10 @@ model HXWithBypass
         rotation=90,
         origin={70,44})));
 
-  Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(
-                                                        redeclare package
-      Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)
-    "Sensor of the return temperature" annotation (Placement(transformation(
+  Modelica.Fluid.Sensors.TemperatureTwoPort TSupSec(redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater)
+    "Sensor of the supply temperature in the secondary circuit" annotation (
+      Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=270,
         origin={20,64})));
@@ -96,7 +96,7 @@ equation
       points={{70,30},{70,34}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(flowPort_a1, temperature1.port_a) annotation (Line(
+  connect(flowPort_a1, TSupSec.port_a) annotation (Line(
       points={{20,100},{20,74}},
       color={0,0,0},
       smooth=Smooth.None));
@@ -117,7 +117,7 @@ equation
       points={{24,-20},{100,-20}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(temperature1.port_b, hex.port_b1) annotation (Line(
+  connect(TSupSec.port_b, hex.port_b1) annotation (Line(
       points={{20,54},{6,54}},
       color={0,127,255},
       smooth=Smooth.None));
@@ -141,7 +141,7 @@ equation
       points={{-9,76},{-4,76},{-4,89.8},{41.6,89.8}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(temperature1.T, supplyTControl.sensTemp) annotation (Line(
+  connect(TSupSec.T, supplyTControl.sensTemp) annotation (Line(
       points={{31,64},{36,64},{36,78},{41.4,78}},
       color={0,0,127},
       smooth=Smooth.None));
