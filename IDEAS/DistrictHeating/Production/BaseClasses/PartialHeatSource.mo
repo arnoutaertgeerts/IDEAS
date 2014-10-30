@@ -7,6 +7,8 @@ partial model PartialHeatSource
 
   //Parameters
   parameter Modelica.SIunits.Power QNom "The power at nominal conditions";
+  parameter Modelica.SIunits.ThermalConductance UALoss
+    "UA of heat losses of the heat source to environment";
 
   //Inputs
   input Modelica.SIunits.Temperature THxIn "Condensor temperature";

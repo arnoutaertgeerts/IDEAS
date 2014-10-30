@@ -3,24 +3,25 @@ model ModulatingProduction
   "A production model which is based on performance tables for different modulation steps"
   //Extensions
   extends IDEAS.DistrictHeating.Production.BaseClasses.PartialHeater(redeclare
-      HeatSources.ModulatingHeatSource heatSource(redeclare
-        IDEAS.DistrictHeating.Production.Data.Boiler productionData=
-                       productionData,
-        QNom=QNom,
-        UALoss=UALoss,
-        TEnvironment=heatPort.T,
-        THxIn=Tin.T,
-        hIn=inStream(port_a.h_outflow),
-        m_flowHx=port_a.m_flow,
-        TSet=TSet,
-        redeclare package Medium = Medium));
+      HeatSources.GenericModulatingHeatSource
+                                       heatSource(redeclare
+        IDEAS.DistrictHeating.Production.Data.GenericBoiler productionData=
+         productionData,
+         QNom=QNom,
+         UALoss=UALoss,
+         TEnvironment=heatPort.T,
+         THxIn=Tin.T,
+         hIn=inStream(port_a.h_outflow),
+         m_flowHx=port_a.m_flow,
+         TSet=TSet,
+         redeclare package Medium = Medium));
 
   //Variables
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
 
   //Components
-  replaceable BaseClasses.PartialModulatingData productionData constrainedby
-    BaseClasses.PartialModulatingData
+  replaceable Data.GenericBoiler                productionData constrainedby
+    BaseClasses.PartialGenericModulatingData
     "Production data for the modulating heat source" annotation (
     Placement(transformation(extent={{-80,60},{-60,80}})),
     choicesAllMatching=true,

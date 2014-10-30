@@ -1,6 +1,6 @@
 within IDEAS.DistrictHeating.Production.HeatSources;
-model ModulatingHeatSource
-  "A modulating heat source based on performance tables"
+model GenericModulatingHeatSource
+  "A generic modulating heat source based on performance tables"
   import IDEAS;
 
   //Extensions
@@ -9,11 +9,18 @@ model ModulatingHeatSource
   replaceable package Medium =
     Modelica.Media.Interfaces.PartialMedium;
 
+  //Production Data
+  replaceable
+    IDEAS.DistrictHeating.Production.BaseClasses.PartialGenericModulatingData
+    productionData constrainedby
+    IDEAS.DistrictHeating.Production.BaseClasses.PartialGenericModulatingData
+    annotation (Placement(transformation(extent={{-90,0},{-70,20}})),
+      choicesAllMatching=true);
+
   //Parameters
-  final parameter Integer numberOfModulationSteps = productionData.numberOfModulationSteps
-    "Number of modulation steps";
-  final parameter Real[numberOfModulationSteps] modVector = {0,20,40,60,80,100}
-    "Vector of the modulation steps";
+  constant Integer numberOfModulationSteps = 6 "Number of modulation steps";
+  final parameter Real[numberOfModulationSteps] modVector = productionData.modVector
+    "Vector of the modulation steps, from low to high";
 
 protected
   final parameter Modelica.SIunits.Power QNom0 = productionData.QNom0
@@ -56,21 +63,11 @@ public
   Modelica.Blocks.Sources.RealExpression realExpression(y=modulationInit)
     annotation (Placement(transformation(extent={{-6,0},{14,20}})));
 
-  Modelica.Blocks.Tables.CombiTable2D eta100(table=productionData.eta100,
-    smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
-    annotation (Placement(transformation(extent={{-40,80},{-20,100}})));
-  Modelica.Blocks.Tables.CombiTable2D eta80(table=productionData.eta80,
-    smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
-    annotation (Placement(transformation(extent={{-40,40},{-20,60}})));
-  Modelica.Blocks.Tables.CombiTable2D eta60(table=productionData.eta60,
-    smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
+  Modelica.Blocks.Tables.CombiTable2D modulations[numberOfModulationSteps-1](
+    each smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments,
+    table={productionData.modulations[i].table for i in 1:numberOfModulationSteps-1})
+    "Array of tables with modulation data, from low to high"
     annotation (Placement(transformation(extent={{-40,0},{-20,20}})));
-  Modelica.Blocks.Tables.CombiTable2D eta40(table=productionData.eta40,
-    smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
-    annotation (Placement(transformation(extent={{-40,-40},{-20,-20}})));
-  Modelica.Blocks.Tables.CombiTable2D eta20(table=productionData.eta20,
-    smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments)
-    annotation (Placement(transformation(extent={{-40,-80},{-20,-60}})));
 
 protected
   Real m_flowHx_scaled = IDEAS.Utilities.Math.Functions.smoothMax(x1=m_flowHx, x2=0,deltaX=0.001) * QNom0/QNom
@@ -82,40 +79,26 @@ protected
   Modelica.SIunits.HeatFlowRate QLossesToCompensate "Environment losses";
   Integer i "Integer to select data interval";
 
-public
-  replaceable
-    IDEAS.DistrictHeating.Production.BaseClasses.PartialModulatingData
-    productionData constrainedby
-    IDEAS.DistrictHeating.Production.BaseClasses.PartialModulatingData
-    annotation (Placement(transformation(extent={{-98,-8},{-78,12}})),
-      choicesAllMatching=true);
 algorithm
   // efficiency coefficients
-  eta100.u1 :=THxIn - 273.15;
-  eta100.u2 :=m_flowHx_scaled*kgps2lph;
-  eta80.u1 :=THxIn - 273.15;
-  eta80.u2 :=m_flowHx_scaled*kgps2lph;
-  eta60.u1 :=THxIn - 273.15;
-  eta60.u2 :=m_flowHx_scaled*kgps2lph;
-  eta40.u1 :=THxIn - 273.15;
-  eta40.u2 :=m_flowHx_scaled*kgps2lph;
-  eta20.u1 :=THxIn - 273.15;
-  eta20.u2 :=m_flowHx_scaled*kgps2lph;
+  for i in 1:numberOfModulationSteps-1 loop
+    modulations[i].u1 := THxIn - 273.15;
+    modulations[i].u2 :=m_flowHx_scaled*kgps2lph;
+  end for;
 
   // all these are in kW
-  etaVector[1] :=0;
-  etaVector[2] :=eta20.y;
-  etaVector[3] :=eta40.y;
-  etaVector[4] :=eta60.y;
-  etaVector[5] :=eta80.y;
-  etaVector[6] :=eta100.y;
+  etaVector[1]:=0;
+  for i in 2:numberOfModulationSteps loop
+    etaVector[i]:=modulations[i-1].y;
+  end for;
+
   QVector :=etaVector/etaNom .* modVector/100*QNom;
   // in W
-  QMax :=QVector[6];
+  QMax :=QVector[numberOfModulationSteps];
 
   // Interpolation if  QVector[1]<QAsked<QVector[6], other wise extrapolation with slope = 0
   i := 1;
-  for j in 1:6-1 loop
+  for j in 1:numberOfModulationSteps-1 loop
     if QAsked > QVector[j] then
       i := j;
     end if;
@@ -173,4 +156,4 @@ equation
           preserveAspectRatio=false), graphics),                         Icon(
         coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=false),
         graphics));
-end ModulatingHeatSource;
+end GenericModulatingHeatSource;

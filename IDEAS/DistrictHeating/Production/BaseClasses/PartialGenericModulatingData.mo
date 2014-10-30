@@ -1,16 +1,13 @@
 within IDEAS.DistrictHeating.Production.BaseClasses;
-partial record PartialModulatingData
+partial record PartialGenericModulatingData
   "Partial for a heat source data record which holds data of 6 modulation steps"
   extends Modelica.Icons.Record;
 
   parameter Integer numberOfModulationSteps;
-  parameter Real modVector[numberOfModulationSteps];
+  parameter Real modVector[numberOfModulationSteps]
+    "Modulation steps corresponding to the data in the modulation array";
 
-  parameter Real[:,:] eta100;
-  parameter Real[:,:] eta80;
-  parameter Real[:,:] eta60;
-  parameter Real[:,:] eta40;
-  parameter Real[:,:] eta20;
+  parameter Real[numberOfModulationSteps-1] modulations;
 
   final parameter Modelica.SIunits.Power QNom0
     "Nominal power of the boiler from which the power data are used in this model";
@@ -22,4 +19,4 @@ partial record PartialModulatingData
   parameter Modelica.SIunits.Temperature TMax "Maximum set point temperature";
   parameter Modelica.SIunits.Temperature TMin;
 
-end PartialModulatingData;
+end PartialGenericModulatingData;

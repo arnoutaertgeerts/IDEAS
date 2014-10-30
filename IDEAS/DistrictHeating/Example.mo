@@ -77,13 +77,13 @@ model Example
     p=100000)
     annotation (Placement(transformation(extent={{-20,-68},{0,-48}})));
 
-  Production.ModulatingProduction boilerViaPartials(
+  Production.ModulatingProduction boiler(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
 
     QNom=30000,
     m_flow_nominal=0.1,
-    redeclare IDEAS.DistrictHeating.Production.Data.Boiler productionData)
-    annotation (Placement(transformation(
+    redeclare IDEAS.DistrictHeating.Production.Data.GenericBoiler
+      productionData) annotation (Placement(transformation(
         extent={{-10,11},{10,-11}},
         rotation=180,
         origin={84,-13})));
@@ -151,15 +151,15 @@ equation
       smooth=Smooth.None));
 
   //BoilerViaPartials.TSet = sim.Te;
-  connect(fan1.port_a, boilerViaPartials.port_b) annotation (Line(
+  connect(fan1.port_a, boiler.port_b) annotation (Line(
       points={{72,2},{74,2},{74,-8}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(pipe_Insulated1.port_b, boilerViaPartials.port_a) annotation (Line(
+  connect(pipe_Insulated1.port_b, boiler.port_a) annotation (Line(
       points={{42,-30},{58,-30},{58,-16},{74,-16}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(const1.y, boilerViaPartials.TSet) annotation (Line(
+  connect(const1.y, boiler.TSet) annotation (Line(
       points={{75,38},{85,38},{85,0}},
       color={0,0,127},
       smooth=Smooth.None));
