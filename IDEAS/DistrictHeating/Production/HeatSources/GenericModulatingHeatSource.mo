@@ -22,7 +22,6 @@ model GenericModulatingHeatSource
   final parameter Real[numberOfModulationSteps] modVector = productionData.modVector
     "Vector of the modulation steps, from low to high";
 
-protected
   final parameter Modelica.SIunits.Power QNom0 = productionData.QNom0
     "Nominal power of the boiler from which the power data are used in this model";
   constant Real etaNom = productionData.etaNom
@@ -37,7 +36,7 @@ protected
     "Minimum set point temperature";
 
   //Variables
-public
+
   Real[numberOfModulationSteps] etaVector
     "Thermal efficiency for the modulation steps";
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
