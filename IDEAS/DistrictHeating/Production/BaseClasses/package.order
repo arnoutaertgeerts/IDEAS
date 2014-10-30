@@ -1,3 +1,5 @@
 PartialHeater
-HeatSource
-PartialProdutionData
+PartialHeatSource
+PartialModulatingData
+PartialGenericModulatingData
+ModulationTable
