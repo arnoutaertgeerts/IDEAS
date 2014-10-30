@@ -32,6 +32,15 @@ package Examples
       m_flow_nominal=0.1,
       redeclare IDEAS.DistrictHeating.Production.Data.Boiler productionData)
       annotation (Placement(transformation(extent={{-50,22},{-30,44}})));
+    Fluid.Movers.Pump pump(redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.01)
+      annotation (Placement(transformation(extent={{2,32},{22,52}})));
+    Fluid.Sources.FixedBoundary bou(nPorts=1, redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater) annotation (
+        Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=270,
+          origin={-12,76})));
   equation
     connect(fixedTemperature.port, pipe_Insulated.heatPort) annotation (Line(
         points={{-12,-28},{2,-28},{2,32},{40,32}},
@@ -51,6 +60,18 @@ package Examples
         points={{-43,22},{-44,22},{-44,-4},{-4,-4},{-4,-28},{2,-28},{2,32},{40,
             32}},
         color={191,0,0},
+        smooth=Smooth.None));
+    connect(modulatingProduction.port_b, pump.port_a) annotation (Line(
+        points={{-30,36},{-14,36},{-14,42},{2,42}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(pipe_Insulated.port_a, pump.port_b) annotation (Line(
+        points={{44,42},{22,42}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(bou.ports[1], pump.port_a) annotation (Line(
+        points={{-12,66},{-12,42},{2,42}},
+        color={0,127,255},
         smooth=Smooth.None));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}),      graphics));
