@@ -1,6 +1,6 @@
 within IDEAS.DistrictHeating.Production.HeatSources;
 model ModulatingHeatSource
-  "A modulating heat source based on performance tables"
+  "General presentation of a heat source which uses performance tables for 6 modulation steps"
   import IDEAS;
 
   //Extensions
@@ -9,10 +9,14 @@ model ModulatingHeatSource
   replaceable package Medium =
     Modelica.Media.Interfaces.PartialMedium;
 
+  replaceable
+    IDEAS.DistrictHeating.Production.BaseClasses.PartialModulatingData
+    productionData constrainedby
+    IDEAS.DistrictHeating.Production.BaseClasses.PartialModulatingData
+     annotation (Placement(transformation(extent={{-98,-8},{-78,12}})), choicesAllMatching=true);
+
   //Parameters
-  final parameter Integer numberOfModulationSteps = productionData.numberOfModulationSteps
-    "Number of modulation steps";
-  final parameter Real[numberOfModulationSteps] modVector = {0,20,40,60,80,100}
+  final parameter Real[6] modVector = {0,20,40,60,80,100}
     "Vector of the modulation steps";
 
 protected
@@ -31,11 +35,9 @@ protected
 
   //Variables
 public
-  Real[numberOfModulationSteps] etaVector
-    "Thermal efficiency for the modulation steps";
+  Real[6] etaVector "Thermal efficiency for the modulation steps";
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
-  Real[numberOfModulationSteps] QVector
-    "Thermal power for the 6 modulation steps";
+  Real[6] QVector "Thermal power for the 6 modulation steps";
   Modelica.SIunits.Power QMax
     "Maximum thermal power at specified evap and condr temperatures, in W";
   Modelica.SIunits.Power QAsked(start=0) "Output of the heatSource";
@@ -82,13 +84,6 @@ protected
   Modelica.SIunits.HeatFlowRate QLossesToCompensate "Environment losses";
   Integer i "Integer to select data interval";
 
-public
-  replaceable
-    IDEAS.DistrictHeating.Production.BaseClasses.PartialModulatingData
-    productionData constrainedby
-    IDEAS.DistrictHeating.Production.BaseClasses.PartialModulatingData
-    annotation (Placement(transformation(extent={{-98,-8},{-78,12}})),
-      choicesAllMatching=true);
 algorithm
   // efficiency coefficients
   eta100.u1 :=THxIn - 273.15;
