@@ -4,10 +4,10 @@ partial record PartialGenericModulatingData
   extends Modelica.Icons.Record;
 
   parameter Integer numberOfModulationSteps;
-  parameter Real modVector[numberOfModulationSteps]
+  parameter Real[numberOfModulationSteps] modVector
     "Modulation steps corresponding to the data in the modulation array";
 
-  parameter Real[numberOfModulationSteps-1] modulations;
+  parameter Real[numberOfModulationSteps-1,:,:] modulations;
 
   final parameter Modelica.SIunits.Power QNom0
     "Nominal power of the boiler from which the power data are used in this model";

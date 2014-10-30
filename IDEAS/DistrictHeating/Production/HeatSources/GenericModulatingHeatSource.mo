@@ -63,9 +63,9 @@ public
   Modelica.Blocks.Sources.RealExpression realExpression(y=modulationInit)
     annotation (Placement(transformation(extent={{-6,0},{14,20}})));
 
-  Modelica.Blocks.Tables.CombiTable2D modulations[numberOfModulationSteps-1](
+  Modelica.Blocks.Tables.CombiTable2D[numberOfModulationSteps-1] modulations(
     each smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments,
-    table={productionData.modulations[i] for i in 1:numberOfModulationSteps-1})
+    table={productionData.modulations[i,:,:] for i in 1:numberOfModulationSteps-1})
     "Array of tables with modulation data, from low to high"
     annotation (Placement(transformation(extent={{-40,0},{-20,20}})));
 

@@ -88,12 +88,12 @@ package Data "Performance table data for production components"
       IDEAS.DistrictHeating.Production.BaseClasses.PartialGenericModulatingData(
       numberOfModulationSteps=6,
       modVector={0,20,40,60,80,100},
-      modulations=[
+      modulations={
         eta20,
         eta40,
         eta60,
         eta80,
-        eta100],
+        eta100},
        QNom0=10100,
        etaNom=0.922,
        modulationMin=10,
