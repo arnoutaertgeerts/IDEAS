@@ -5,7 +5,7 @@ model ModulatingProduction
   extends IDEAS.DistrictHeating.Production.BaseClasses.PartialHeater(redeclare
       HeatSources.ModulatingHeatSource heatSource(redeclare
         IDEAS.DistrictHeating.Production.Data.Boiler productionData=
-                       productionData,
+        productionData,
         QNom=QNom,
         UALoss=UALoss,
         TEnvironment=heatPort.T,

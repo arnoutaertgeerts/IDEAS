@@ -18,7 +18,7 @@ model GenericModulatingHeatSource
       choicesAllMatching=true);
 
   //Parameters
-  constant Integer numberOfModulationSteps = 6 "Number of modulation steps";
+  final parameter Integer numberOfModulationSteps "Number of modulation steps";
   final parameter Real[numberOfModulationSteps] modVector = productionData.modVector
     "Vector of the modulation steps, from low to high";
 

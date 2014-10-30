@@ -3,7 +3,7 @@ partial record PartialGenericModulatingData
   "Partial for a heat source data record which holds data of 6 modulation steps"
   extends Modelica.Icons.Record;
 
-  parameter Integer numberOfModulationSteps;
+  final parameter Integer numberOfModulationSteps;
   parameter Real[numberOfModulationSteps] modVector
     "Modulation steps corresponding to the data in the modulation array";
 
