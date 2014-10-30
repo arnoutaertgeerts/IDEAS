@@ -65,7 +65,7 @@ public
 
   Modelica.Blocks.Tables.CombiTable2D modulations[numberOfModulationSteps-1](
     each smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments,
-    table={productionData.modulations[i].table for i in 1:numberOfModulationSteps-1})
+    table={productionData.modulations[i] for i in 1:numberOfModulationSteps-1})
     "Array of tables with modulation data, from low to high"
     annotation (Placement(transformation(extent={{-40,0},{-20,20}})));
 
