@@ -25,39 +25,15 @@ partial model PartialHeatSource
         iconTransformation(extent={{90,-10},{110,10}})));
   annotation (Icon(coordinateSystem(extent={{-100,-100},{100,100}},
           preserveAspectRatio=false),
-                   graphics={
-        Rectangle(
-          extent={{-80,76},{20,64}},
-          lineColor={255,0,0},
+                   graphics={Rectangle(
+          extent={{-80,80},{100,-80}},
+          fillColor={255,255,255},
           fillPattern=FillPattern.Solid,
-          fillColor={255,0,0}),
-        Polygon(
-          points={{0,100},{0,40},{40,70},{0,100}},
-          lineColor={255,0,0},
-          smooth=Smooth.None,
-          fillPattern=FillPattern.Solid,
-          fillColor={255,0,0}),
-        Rectangle(
-          extent={{-80,6},{20,-6}},
-          lineColor={255,0,0},
-          fillPattern=FillPattern.Solid,
-          fillColor={255,0,0}),
-        Polygon(
-          points={{0,30},{0,-30},{40,0},{0,30}},
-          lineColor={255,0,0},
-          smooth=Smooth.None,
-          fillPattern=FillPattern.Solid,
-          fillColor={255,0,0}),
-        Rectangle(
-          extent={{-80,-64},{20,-76}},
-          lineColor={255,0,0},
-          fillPattern=FillPattern.Solid,
-          fillColor={255,0,0}),
-        Polygon(
-          points={{0,-40},{0,-100},{40,-70},{0,-40}},
-          lineColor={255,0,0},
-          smooth=Smooth.None,
-          fillPattern=FillPattern.Solid,
-          fillColor={255,0,0})}), Diagram(coordinateSystem(extent={{-100,-100},
-            {100,100}})));
+          pattern=LinePattern.None,
+          lineColor={0,0,0}), Line(
+          points={{-60,60},{-38,60},{60,60},{40,40},{60,20},{40,0},{60,-20},{40,
+              -40},{60,-60},{-60,-60}},
+          color={255,0,0},
+          smooth=Smooth.None)}), Diagram(coordinateSystem(extent={{-100,-100},{
+            100,100}})));
 end PartialHeatSource;

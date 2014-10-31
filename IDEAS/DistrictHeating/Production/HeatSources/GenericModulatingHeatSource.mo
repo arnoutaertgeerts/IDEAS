@@ -163,7 +163,7 @@ equation
           preserveAspectRatio=false), graphics),                         Icon(
         coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=false),
         graphics={Line(
-          points={{0,100},{-80,-76}},
+          points={{-52,-2},{-10,38},{-32,-40},{10,0}},
           color={255,0,0},
           smooth=Smooth.None)}));
 end GenericModulatingHeatSource;
