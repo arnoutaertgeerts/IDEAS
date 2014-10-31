@@ -112,7 +112,7 @@ model PlugFlowTemperaturePipe
         origin={52,86})));
 
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature[2] T2(T=293.15)
-    annotation (Placement(transformation(extent={{-76,118},{-56,138}})));
+    annotation (Placement(transformation(extent={{-44,112},{-24,132}})));
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature[100] T100(T=293.15)
     annotation (Placement(transformation(extent={{-28,42},{-8,62}})));
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature[10] T10(T=293.15)
@@ -161,13 +161,13 @@ model PlugFlowTemperaturePipe
     m_flow_nominal=0.1,
     m=1000*plug.pipeLength*plug.pipeDiameter*plug.pipeDiameter/4*Modelica.Constants.pi)
     annotation (Placement(transformation(extent={{0,-126},{20,-134}})));
-  IDEAS.DistrictHeating.Pipes.PlugFlowPipe plug(
+  IDEAS.DistrictHeating.Pipes.InsulatedPlugFlow plug(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
 
     m_flow_nominal=0.1,
     pipeLength=32,
-    pipeDiameter=0.1)
-    annotation (Placement(transformation(extent={{-10,76},{10,96}})));
+    pipeDiameter=0.1,
+    UA=10) annotation (Placement(transformation(extent={{-10,76},{10,96}})));
 equation
   connect(pump1.port_b, senTem2.port_a) annotation (Line(
       points={{-76,22},{-56,22}},
@@ -260,6 +260,10 @@ equation
   connect(plug.port_b, PlugFlowT.port_a) annotation (Line(
       points={{10,86},{42,86}},
       color={0,127,255},
+      smooth=Smooth.None));
+  connect(T2.port, plug.heatPort1) annotation (Line(
+      points={{-24,122},{0,122},{0,92.2}},
+      color={191,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-160,
             -160},{120,140}}), graphics), Icon(coordinateSystem(extent={{-160,
