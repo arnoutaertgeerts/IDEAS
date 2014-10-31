@@ -35,5 +35,6 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-            {100,120}}),       graphics));
+            {100,120}}),       graphics), Icon(coordinateSystem(
+          preserveAspectRatio=false, extent={{-100,-100},{100,120}}), graphics));
 end ModulatingProduction;

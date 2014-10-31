@@ -34,7 +34,13 @@ equation
   //Spatial distribution of the enthalpy
   (port_a.h_outflow, port_b.h_outflow) =
     spatialDistribution(
-      inStream(port_a.h_outflow), inStream(port_b.h_outflow), x, true, {0.0, 1}, {1, 1});
+      inStream(port_a.h_outflow),
+      inStream(port_b.h_outflow),
+      x,
+      true,
+      {0.0, 1},
+      {inStream(port_a.h_outflow),
+      inStream(port_b.h_outflow)});
 
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}}), graphics), Icon(coordinateSystem(

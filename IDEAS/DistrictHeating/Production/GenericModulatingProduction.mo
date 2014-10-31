@@ -19,7 +19,6 @@ model GenericModulatingProduction
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
 
   //Components
-
   replaceable BaseClasses.PartialGenericModulatingData productionData constrainedby
     BaseClasses.PartialGenericModulatingData
     "Production data for the modulating heat source" annotation (
@@ -36,5 +35,8 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
-            {100,120}}),       graphics));
+            {100,120}}),       graphics), Icon(graphics={Line(
+          points={{-100,0},{-58,40},{-82,-38},{-38,2}},
+          color={255,0,0},
+          smooth=Smooth.None)}));
 end GenericModulatingProduction;

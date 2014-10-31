@@ -23,17 +23,17 @@ partial model PartialHeatSource
     "heatPort connection to water in condensor"
     annotation (Placement(transformation(extent={{90,-10},{110,10}}),
         iconTransformation(extent={{90,-10},{110,10}})));
-  annotation (Icon(graphics={
-                  Rectangle(
-          extent={{-76,40},{44,-40}},
-          lineColor={255,128,0},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid),    Polygon(
-          points={{-60,-30},{60,-30},{0,30},{-60,-30}},
-          lineColor={255,128,0},
-          smooth=Smooth.None,
+  annotation (Icon(coordinateSystem(extent={{-100,-100},{100,100}},
+          preserveAspectRatio=false),
+                   graphics={Rectangle(
+          extent={{-80,80},{100,-80}},
           fillColor={255,255,255},
           fillPattern=FillPattern.Solid,
-          origin={74,0},
-          rotation=270)}));
+          pattern=LinePattern.None,
+          lineColor={0,0,0}), Line(
+          points={{-60,60},{-38,60},{60,60},{40,40},{60,20},{40,0},{60,-20},{40,
+              -40},{60,-60},{-60,-60}},
+          color={255,0,0},
+          smooth=Smooth.None)}), Diagram(coordinateSystem(extent={{-100,-100},{
+            100,100}})));
 end PartialHeatSource;

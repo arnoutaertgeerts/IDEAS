@@ -36,7 +36,6 @@ model GenericModulatingHeatSource
     "Minimum set point temperature";
 
   //Variables
-
   Real[numberOfModulationSteps] etaVector
     "Thermal efficiency for the modulation steps";
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
@@ -62,15 +61,15 @@ model GenericModulatingHeatSource
   Modelica.Blocks.Sources.RealExpression realExpression(y=modulationInit)
     annotation (Placement(transformation(extent={{-4,0},{16,20}})));
 
-  Modelica.Blocks.Sources.RealExpression ThxIn[numberOfModulationSteps-1](
-     y=THxIn)
+  Modelica.Blocks.Sources.RealExpression ThxIn[numberOfModulationSteps-1](y=THxIn
+         - 273.15)
     annotation (Placement(transformation(extent={{-88,26},{-68,46}})));
   Modelica.Blocks.Sources.RealExpression mFlowHx[numberOfModulationSteps-1](
      y=m_flowHx_scaled*kgps2lph)
-    annotation (Placement(transformation(extent={{-84,-26},{-64,-6}})));
+    annotation (Placement(transformation(extent={{-88,-26},{-68,-6}})));
 
   Modelica.Blocks.Tables.CombiTable2D[numberOfModulationSteps-1] modulationTables(
-    each smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments,
+    each smoothness=Modelica.Blocks.Types.Smoothness.ContinuousDerivative,
     table={productionData.modulations[i,:,:] for i in 1:numberOfModulationSteps-1})
     "Array of tables with modulation data, from low to high"
     annotation (Placement(transformation(extent={{-42,0},{-22,20}})));
@@ -88,8 +87,8 @@ protected
 algorithm
   // all these are in kW
   etaVector[1]:=0;
-  for i in 2:numberOfModulationSteps loop
-    etaVector[i]:=modulationTables[i-1].y;
+  for i in 1:numberOfModulationSteps-1 loop
+    etaVector[i+1]:=modulationTables[i].y;
   end for;
 
   QVector :=etaVector/etaNom .* modVector/100*QNom;
@@ -153,7 +152,7 @@ equation
       color={0,0,127},
       smooth=Smooth.None));
   connect(mFlowHx.y, modulationTables.u2) annotation (Line(
-      points={{-63,-16},{-54,-16},{-54,4},{-44,4}},
+      points={{-67,-16},{-54,-16},{-54,4},{-44,4}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(realExpression.y, Control.u) annotation (Line(
@@ -163,5 +162,8 @@ equation
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{100,100}},
           preserveAspectRatio=false), graphics),                         Icon(
         coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=false),
-        graphics));
+        graphics={Line(
+          points={{-52,-2},{-10,38},{-32,-40},{10,0}},
+          color={255,0,0},
+          smooth=Smooth.None)}));
 end GenericModulatingHeatSource;
