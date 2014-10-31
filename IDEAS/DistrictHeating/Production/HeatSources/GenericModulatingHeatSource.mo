@@ -162,5 +162,8 @@ equation
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{100,100}},
           preserveAspectRatio=false), graphics),                         Icon(
         coordinateSystem(extent={{-100,-100},{100,100}}, preserveAspectRatio=false),
-        graphics));
+        graphics={Line(
+          points={{0,100},{-80,-76}},
+          color={255,0,0},
+          smooth=Smooth.None)}));
 end GenericModulatingHeatSource;

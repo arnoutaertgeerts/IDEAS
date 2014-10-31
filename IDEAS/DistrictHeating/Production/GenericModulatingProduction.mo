@@ -19,7 +19,6 @@ model GenericModulatingProduction
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
 
   //Components
-
   replaceable BaseClasses.PartialGenericModulatingData productionData constrainedby
     BaseClasses.PartialGenericModulatingData
     "Production data for the modulating heat source" annotation (

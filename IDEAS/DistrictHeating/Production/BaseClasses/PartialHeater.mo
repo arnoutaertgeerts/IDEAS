@@ -142,14 +142,13 @@ equation
           points={{98,40},{18,40},{38,20},{18,0},{38,-20},{18,-40},{98,-40}},
           color={0,0,255},
           smooth=Smooth.None),
-        Line(
-          points={{-18,0},{10,0}},
-          color={255,0,0},
-          smooth=Smooth.None),
-        Line(
-          points={{0,10},{10,0},{0,-10}},
-          color={255,0,0},
-          smooth=Smooth.None)}),
+      Polygon(
+        origin={27.533,-20.062},
+        lineColor = {255,0,0},
+        fillColor = {255,0,0},
+        fillPattern = FillPattern.Solid,
+        points = {{-40,-90},{-20,-70},{0,-90},{0,-50},{-20,-30},{-40,-50},{-40,-90}},
+          rotation=270)}),
     Documentation(info="<html>
 <p><b>Description</b> </p>
 <p>This is a partial model from which most heaters (boilers, heat pumps) will extend. This model is <u>dynamic</u> (there is a water content in the heater and a dry mass lumped to it) and it has <u>thermal losses to the environment</u>. To complete this model and turn it into a heater, a <u>heatSource</u> has to be added, specifying how much heat is injected in the heatedFluid pipe, at which efficiency, if there is a maximum power, etc. HeatSource models are grouped in <a href=\"modelica://IDEAS.Thermal.Components.Production.BaseClasses\">IDEAS.Thermal.Components.Production.BaseClasses.</a></p>
