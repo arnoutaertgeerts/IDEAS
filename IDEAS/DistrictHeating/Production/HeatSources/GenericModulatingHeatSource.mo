@@ -14,15 +14,14 @@ model GenericModulatingHeatSource
     IDEAS.DistrictHeating.Production.BaseClasses.PartialGenericModulatingData
     productionData constrainedby
     IDEAS.DistrictHeating.Production.BaseClasses.PartialGenericModulatingData
-    annotation (Placement(transformation(extent={{-90,0},{-70,20}})),
+    annotation (Placement(transformation(extent={{-88,70},{-68,90}})),
       choicesAllMatching=true);
 
   //Parameters
-  constant Integer numberOfModulationSteps = 6 "Number of modulation steps";
+  final parameter Integer numberOfModulationSteps "Number of modulation steps";
   final parameter Real[numberOfModulationSteps] modVector = productionData.modVector
     "Vector of the modulation steps, from low to high";
 
-protected
   final parameter Modelica.SIunits.Power QNom0 = productionData.QNom0
     "Nominal power of the boiler from which the power data are used in this model";
   constant Real etaNom = productionData.etaNom
@@ -37,7 +36,7 @@ protected
     "Minimum set point temperature";
 
   //Variables
-public
+
   Real[numberOfModulationSteps] etaVector
     "Thermal efficiency for the modulation steps";
   Real eta "Instantaneous efficiency of the boiler (higher heating value)";
@@ -61,13 +60,20 @@ public
     annotation (Placement(transformation(extent={{32,0},{52,20}})));
 
   Modelica.Blocks.Sources.RealExpression realExpression(y=modulationInit)
-    annotation (Placement(transformation(extent={{-6,0},{14,20}})));
+    annotation (Placement(transformation(extent={{-4,0},{16,20}})));
 
-  Modelica.Blocks.Tables.CombiTable2D[numberOfModulationSteps-1] modulations(
+  Modelica.Blocks.Sources.RealExpression ThxIn[numberOfModulationSteps-1](
+     y=THxIn)
+    annotation (Placement(transformation(extent={{-88,26},{-68,46}})));
+  Modelica.Blocks.Sources.RealExpression mFlowHx[numberOfModulationSteps-1](
+     y=m_flowHx_scaled*kgps2lph)
+    annotation (Placement(transformation(extent={{-84,-26},{-64,-6}})));
+
+  Modelica.Blocks.Tables.CombiTable2D[numberOfModulationSteps-1] modulationTables(
     each smoothness=Modelica.Blocks.Types.Smoothness.LinearSegments,
     table={productionData.modulations[i,:,:] for i in 1:numberOfModulationSteps-1})
     "Array of tables with modulation data, from low to high"
-    annotation (Placement(transformation(extent={{-40,0},{-20,20}})));
+    annotation (Placement(transformation(extent={{-42,0},{-22,20}})));
 
 protected
   Real m_flowHx_scaled = IDEAS.Utilities.Math.Functions.smoothMax(x1=m_flowHx, x2=0,deltaX=0.001) * QNom0/QNom
@@ -80,16 +86,10 @@ protected
   Integer i "Integer to select data interval";
 
 algorithm
-  // efficiency coefficients
-  for i in 1:numberOfModulationSteps-1 loop
-    modulations[i].u1 := THxIn - 273.15;
-    modulations[i].u2 :=m_flowHx_scaled*kgps2lph;
-  end for;
-
   // all these are in kW
   etaVector[1]:=0;
   for i in 2:numberOfModulationSteps loop
-    etaVector[i]:=modulations[i-1].y;
+    etaVector[i]:=modulationTables[i-1].y;
   end for;
 
   QVector :=etaVector/etaNom .* modVector/100*QNom;
@@ -148,8 +148,16 @@ equation
 
   PFuel = if Control.release > 0.5 and noEvent(eta>Modelica.Constants.eps) then -heatPort.Q_flow/eta else 0;
 
+  connect(ThxIn.y, modulationTables.u1) annotation (Line(
+      points={{-67,36},{-54,36},{-54,16},{-44,16}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  connect(mFlowHx.y, modulationTables.u2) annotation (Line(
+      points={{-63,-16},{-54,-16},{-54,4},{-44,4}},
+      color={0,0,127},
+      smooth=Smooth.None));
   connect(realExpression.y, Control.u) annotation (Line(
-      points={{15,10},{30,10}},
+      points={{17,10},{30,10}},
       color={0,0,127},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(extent={{-100,-100},{100,100}},
