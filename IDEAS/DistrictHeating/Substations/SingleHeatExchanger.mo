@@ -49,7 +49,7 @@ model SingleHeatExchanger "Substation with a single heat exchanger"
   Modelica.Fluid.Sensors.TemperatureTwoPort Tsupply(redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Sensor of the return temperature" annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
+        extent={{10,-10},{-10,10}},
         rotation=0,
         origin={-2,-40})));
   Modelica.Fluid.Sensors.TemperatureTwoPort TReturn(redeclare package Medium =
@@ -96,14 +96,6 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
 
-  connect(spl2.port_2, Tsupply.port_b) annotation (Line(
-      points={{62,-40},{8,-40}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(Tsupply.port_a, flowPort_supply_out) annotation (Line(
-      points={{-12,-40},{-100,-40}},
-      color={0,127,255},
-      smooth=Smooth.None));
   connect(spl1.port_1, TReturn.port_a) annotation (Line(
       points={{-16,-80},{4,-80}},
       color={0,127,255},
@@ -146,6 +138,14 @@ equation
       smooth=Smooth.None));
   connect(temperature1.port_a, flowPort_a1[1]) annotation (Line(
       points={{20,74},{20,100}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(Tsupply.port_a, spl2.port_2) annotation (Line(
+      points={{8,-40},{62,-40}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(Tsupply.port_b, flowPort_supply_out) annotation (Line(
+      points={{-12,-40},{-100,-40}},
       color={0,127,255},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,

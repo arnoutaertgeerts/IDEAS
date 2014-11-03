@@ -8,11 +8,16 @@ model Building
   parameter Boolean standAlone=true;
   parameter Boolean DH=false
     "true/false if building is/is not in district heating network";
+
+  parameter Integer numberOfConnections if DH
+    "Number of connections to the DH substation";
   replaceable IDEAS.Interfaces.BaseClasses.Structure building
     "Building structure" annotation (Placement(transformation(extent={{-66,-10},
             {-36,10}})), choicesAllMatching=true);
-  replaceable IDEAS.Interfaces.BaseClasses.HeatingSystem heatingSystem(nZones=
-        building.nZones,DH=DH) "Thermal building heating system"
+  replaceable IDEAS.Interfaces.BaseClasses.HeatingSystem heatingSystem(
+    nZones=building.nZones,
+    DH=DH,
+    numberOfConnections=numberOfConnections) "Thermal building heating system"
                                       annotation (Placement(transformation(
           extent={{-20,-10},{20,10}})), choicesAllMatching=true);
   replaceable IDEAS.Interfaces.BaseClasses.Occupant occupant(nZones=building.nZones)
@@ -44,15 +49,17 @@ model Building
   Modelica.Electrical.QuasiStationary.SinglePhase.Basic.Ground ground if
     standAlone
     annotation (Placement(transformation(extent={{60,-80},{80,-60}})));
- Modelica.Fluid.Interfaces.FluidPort_a port_return(redeclare package Medium =
+ Modelica.Fluid.Interfaces.FluidPort_a port_return[numberOfConnections](redeclare
+      package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater) if
                                                   DH
     annotation (Placement(transformation(extent={{-26,-110},{-6,-90}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_supply(redeclare package Medium =
+  Modelica.Fluid.Interfaces.FluidPort_b port_supply[numberOfConnections](redeclare
+      package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater) if
                                                   DH annotation (Placement(
-        transformation(extent={{6,-110},{26,-90}}), iconTransformation(extent=
-           {{8,-104},{18,-94}})));
+        transformation(extent={{6,-110},{26,-90}}), iconTransformation(extent={{6,-110},
+            {26,-90}})));
 equation
   connect(building.heatPortCon, occupant.heatPortCon) annotation (Line(
       points={{-36,2},{-26,2},{-26,-30},{-18,-30}},
@@ -141,7 +148,9 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
 
-  annotation (Icon(graphics={
+  annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+            {100,100}}),
+                   graphics={
         Line(
           points={{60,22},{0,74},{-60,24},{-60,-46},{60,-46}},
           color={127,0,0},

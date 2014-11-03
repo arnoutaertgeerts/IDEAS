@@ -4,8 +4,8 @@ model PlugFlowTemperaturePipe
   import IDEAS;
 
   inner Modelica.Fluid.System system(p_ambient=101325)
-                                   annotation (Placement(transformation(extent={{132,132},
-            {152,152}},        rotation=0)));
+                                   annotation (Placement(transformation(extent={{80,108},
+            {100,128}},        rotation=0)));
 
   IDEAS.Fluid.Sensors.TemperatureTwoPort MSL100T(redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.1)
@@ -156,18 +156,17 @@ model PlugFlowTemperaturePipe
         origin={98,-130})));
   IDEAS.Fluid.FixedResistances.Pipe_Insulated pipe_Insulated(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
-    UA=10,
     m_flow_nominal=0.1,
-    m=1000*plug.pipeLength*plug.pipeDiameter*plug.pipeDiameter/4*Modelica.Constants.pi)
-    annotation (Placement(transformation(extent={{0,-126},{20,-134}})));
+    m=1000*plug.pipeLength*plug.pipeDiameter*plug.pipeDiameter/4*Modelica.Constants.pi,
+    UA=0.08) annotation (Placement(transformation(extent={{0,-126},{20,-134}})));
+
   IDEAS.DistrictHeating.Pipes.InsulatedPlugFlow plug(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
     m_flow_nominal=0.1,
     pipeLength=32,
     pipeDiameter=0.1,
-    UA=10) annotation (Placement(transformation(extent={{-10,76},{10,96}})));
+    U=10) annotation (Placement(transformation(extent={{-14,76},{6,96}})));
+
 equation
   connect(pump1.port_b, senTem2.port_a) annotation (Line(
       points={{-76,22},{-56,22}},
@@ -254,20 +253,20 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   connect(senTem6.port_b, plug.port_a) annotation (Line(
-      points={{-38,86},{-10,86}},
+      points={{-38,86},{-14,86}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(plug.port_b, PlugFlowT.port_a) annotation (Line(
-      points={{10,86},{42,86}},
+      points={{6,86},{42,86}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(T2.port, plug.heatPort1) annotation (Line(
-      points={{-24,122},{0,122},{0,92.2}},
+      points={{-24,122},{-4,122},{-4,92.2}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-160,
-            -160},{120,140}}), graphics), Icon(coordinateSystem(extent={{-160,
-            -160},{120,140}})),
+            -160},{120,140}}), graphics), Icon(coordinateSystem(extent={{-160,-160},
+            {120,140}})),
     experiment(StopTime=1500),
     __Dymola_experimentSetupOutput);
 end PlugFlowTemperaturePipe;
