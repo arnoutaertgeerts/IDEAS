@@ -62,7 +62,7 @@ model TestGenericBoiler "Simple test example for boiler"
     dp_nominal=20,
     QNom=10000,
     m_flow_nominal=0.1,
-    redeclare IDEAS.DistrictHeating.Production.Data.BoilerPerformanceMap data)
+    redeclare IDEAS.DistrictHeating.Production.Data.PerformanceMaps.Boiler data)
     annotation (Placement(transformation(extent={{-114,52},{-94,74}})));
 
   inner SimInfoManager sim

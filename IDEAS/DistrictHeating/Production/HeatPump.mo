@@ -10,6 +10,8 @@ model HeatPump
   Modelica.Blocks.Interfaces.BooleanInput on "on/off control for the heatpump"
     annotation (Placement(transformation(extent={{-132,-20},{-92,20}})));
 equation
+  PEl = heatSource.PEl;
+  PFuel = 0;
   connect(on, heatSource.on) annotation (Line(
       points={{-112,0},{-78,0},{-78,52},{-11.8,52},{-11.8,71.2}},
       color={255,0,255},

@@ -24,28 +24,45 @@ partial model PartialHeatSource
   Modelica.Blocks.Interfaces.RealInput THxIn "Condensor temperature" annotation (Placement(transformation(
           extent={{-128,-60},{-88,-20}}), iconTransformation(extent={{-120,-32},
             {-96,-8}})));
-  Modelica.Blocks.Interfaces.RealInput TSet
-    "Setpoint temperature for the fluid.  Not always possible to reach it" annotation (Placement(transformation(
-          extent={{-128,-94},{-88,-54}}), iconTransformation(extent={{-120,-72},
-            {-94,-46}})));
+  Modelica.Blocks.Interfaces.RealInput TSet "Set point temperature"
+                                                                   annotation (Placement(transformation(
+          extent={{-126,-102},{-86,-62}}),iconTransformation(extent={{-120,-72},
+            {-96,-48}})));
   replaceable PartialData data
     annotation (Placement(transformation(extent={{78,78},{98,98}})));
-    annotation (Placement(transformation(extent={{66,74},{86,94}})));
   outer SimInfoManager sim
     annotation (Placement(transformation(extent={{-38,78},{-18,98}})));
-  annotation (Icon(coordinateSystem(extent={{-100,-100},{100,100}},
+    annotation (Placement(transformation(extent={{66,74},{86,94}})),
+              Icon(coordinateSystem(extent={{-100,-100},{100,100}},
           preserveAspectRatio=false),
-                   graphics={Rectangle(
-          extent={{-100,80},{100,-80}},
-          fillColor={255,255,255},
-          fillPattern=FillPattern.Solid,
-          pattern=LinePattern.None,
-          lineColor={0,0,0}), Line(
-          points={{-60,60},{-38,60},{60,60},{40,40},{60,20},{40,0},{60,-20},{40,
-              -40},{60,-60},{-60,-60}},
-          color={255,0,0},
+                   graphics={
+        Line(
+          points={{-98,60},{-66,60},{-40,60},{0,0}},
+          color={0,0,255},
           smooth=Smooth.None),
-        Rectangle(extent={{-100,80},{100,-80}}, lineColor={0,0,255})}),
-                                 Diagram(coordinateSystem(extent={{-100,-100},{100,
+        Line(
+          points={{-100,-60},{-68,-60},{-40,-60},{0,0}},
+          color={0,0,255},
+          smooth=Smooth.None),
+        Line(
+          points={{-100,20},{-38,20},{-6,20}},
+          color={0,0,255},
+          smooth=Smooth.None),
+        Line(
+          points={{-100,-20},{-40,-20},{-2,-20}},
+          color={0,0,255},
+          smooth=Smooth.None),
+        Line(
+          points={{28,0},{90,0},{98,0},{100,0}},
+          color={0,0,255},
+          smooth=Smooth.None),
+      Polygon(
+        origin={65.533,-20.062},
+        lineColor = {255,0,0},
+        fillColor = {255,0,0},
+        fillPattern = FillPattern.Solid,
+        points={{-60.062,-105.533},{-20.062,-65.533},{19.938,-105.533},{19.938,-45.533},
+              {-20.062,-5.533},{-60.062,-45.533},{-60.062,-105.533}},
+          rotation=270)}),       Diagram(coordinateSystem(extent={{-100,-100},{100,
             100}}, preserveAspectRatio=false), graphics));
 end PartialHeatSource;
