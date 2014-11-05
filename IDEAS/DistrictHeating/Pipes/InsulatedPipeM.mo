@@ -1,10 +1,11 @@
 within IDEAS.DistrictHeating.Pipes;
 model InsulatedPipeM "Insulated pipe model with /meter parameters"
+
   //Extensions
   extends IDEAS.Fluid.FixedResistances.Pipe_Insulated(
     redeclare package Medium = Medium,
     UA=G,
-    m=V*Medium.Density,
+    m=V*Medium.density,
     m_flow_nominal=m_flow_nominal,
     dp_nominal=dp_nominal);
 

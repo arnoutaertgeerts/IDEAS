@@ -45,17 +45,17 @@ equation
       color={0,0,127},
       smooth=Smooth.None));
   connect(modulatingProduction.port_a, pipe_Insulated.port_b) annotation (Line(
-      points={{-30,28},{-22,28},{-22,8},{44,8},{44,22}},
+      points={{-29.8,36},{-22,36},{-22,8},{44,8},{44,22}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(modulatingProduction.heatPort, pipe_Insulated.heatPort) annotation (
       Line(
-      points={{-43,22},{-44,22},{-44,-4},{-4,-4},{-4,-28},{2,-28},{2,32},{40,32}},
+      points={{-44,22},{-44,22},{-44,-4},{-4,-4},{-4,-28},{2,-28},{2,32},{40,32}},
       color={191,0,0},
       smooth=Smooth.None));
 
   connect(modulatingProduction.port_b, pump.port_a) annotation (Line(
-      points={{-30,36},{-14,36},{-14,42},{2,42}},
+      points={{-29.8,28},{-14,28},{-14,42},{2,42}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(pipe_Insulated.port_a, pump.port_b) annotation (Line(

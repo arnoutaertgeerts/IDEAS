@@ -32,7 +32,9 @@ model PartialHeater "A partial for a production component which heats a fluid"
   Modelica.SIunits.Power PFuel "Fuel consumption in watt";
   Modelica.Blocks.Interfaces.RealInput TSet
     "Temperature setpoint, acts as on/off signal too" annotation (Placement(
-        transformation(extent={{-126,-20},{-86,20}}), iconTransformation(
+        transformation(extent={{-20,-20},{20,20}},
+        rotation=270,
+        origin={60,124}),                             iconTransformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={-10,120})));
@@ -49,16 +51,16 @@ model PartialHeater "A partial for a production component which heats a fluid"
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-68,-30})));
+        origin={-78,-30})));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalLosses(G=
         UALoss) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={-30,-70})));
+        origin={-40,-70})));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
     "heatPort for thermal losses to environment" annotation (Placement(
-        transformation(extent={{-40,-110},{-20,-90}}), iconTransformation(
-          extent={{-40,-110},{-20,-90}})));
+        transformation(extent={{-50,-110},{-30,-90}}), iconTransformation(
+          extent={{-50,-110},{-30,-90}})));
 
   IDEAS.Fluid.FixedResistances.Pipe_HeatPort pipe_HeatPort(
     redeclare package Medium = Medium,
@@ -81,54 +83,86 @@ model PartialHeater "A partial for a production component which heats a fluid"
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={38,-6})));
+        origin={-10,-10})));
   Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
         Medium) "Fluid inlet"
-    annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
+    annotation (Placement(transformation(extent={{92,30},{112,50}}),
+        iconTransformation(extent={{92,30},{112,50}})));
   Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
         Medium) "Fluid outlet"
-    annotation (Placement(transformation(extent={{90,30},{110,50}})));
+    annotation (Placement(transformation(extent={{92,-50},{112,-30}}),
+        iconTransformation(extent={{92,-50},{112,-30}})));
   IDEAS.Fluid.Sensors.TemperatureTwoPort Tin(redeclare package Medium = Medium,
       m_flow_nominal=m_flow_nominal) "Inlet temperature"
-    annotation (Placement(transformation(extent={{74,-50},{54,-30}})));
+    annotation (Placement(transformation(extent={{80,30},{60,50}})));
 
-  replaceable IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatSource
-    heatSource(
-     QNom=QNom,
-     TEnvironment=heatPort.T,
-     THxIn=Tin.T,
-     hIn=inStream(port_a.h_outflow),
-     m_flowHx=port_a.m_flow,
-     TSet=TSet,
-     redeclare package Medium = Medium)
-      constrainedby
-    IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatSource
-    annotation (Placement(transformation(extent={{-40,60},{-20,80}})), choicesAllMatching=true);
+  Fluid.Sensors.MassFlowRate MassFlow(redeclare package Medium = Medium)
+    annotation (Placement(transformation(extent={{50,30},{30,50}})));
+  Fluid.Sensors.SpecificEnthalpyTwoPort Enthalpy(
+    redeclare package Medium=Medium,
+    m_flow_nominal=m_flow_nominal)
+    annotation (Placement(transformation(extent={{20,30},{0,50}})));
+  replaceable PartialHeatSource heatSource(
+    data=data) annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={-12,80})));
+  replaceable PartialData data
+    annotation (Placement(transformation(extent={{-22,98},{-2,118}})), choicesAllMatching=true, Dialog(group="Datafile"));
 equation
 
   connect(mDry.port, thermalLosses.port_a) annotation (Line(
-      points={{-58,-30},{-58,-46},{-30,-46},{-30,-60}},
+      points={{-68,-30},{-40,-30},{-40,-60}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(thermalLosses.port_b, heatPort) annotation (Line(
-      points={{-30,-80},{-30,-100}},
+      points={{-40,-80},{-40,-100}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(mDry.port, pipe_HeatPort.heatPort) annotation (Line(
-      points={{-58,-30},{-32,-30},{-32,-6},{28,-6}},
+      points={{-68,-30},{-40,-30},{-40,-10},{-20,-10}},
       color={191,0,0},
       smooth=Smooth.None));
-  connect(pipe_HeatPort.port_b, port_b) annotation (Line(
-      points={{38,4},{38,40},{100,40}},
-      color={0,127,255},
-      smooth=Smooth.None));
   connect(port_a, Tin.port_a) annotation (Line(
-      points={{100,-40},{74,-40}},
+      points={{102,40},{80,40}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(Tin.port_b, pipe_HeatPort.port_a) annotation (Line(
-      points={{54,-40},{38,-40},{38,-16}},
+  connect(Tin.port_b, MassFlow.port_a) annotation (Line(
+      points={{60,40},{50,40}},
       color={0,127,255},
+      smooth=Smooth.None));
+  connect(MassFlow.port_b, Enthalpy.port_a) annotation (Line(
+      points={{30,40},{20,40}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(Enthalpy.port_b, pipe_HeatPort.port_b) annotation (Line(
+      points={{0,40},{-10,40},{-10,0}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(pipe_HeatPort.port_a, port_b) annotation (Line(
+      points={{-10,-20},{-10,-40},{102,-40}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(heatSource.heatPort, pipe_HeatPort.heatPort) annotation (Line(
+      points={{-22,80},{-40,80},{-40,-10},{-20,-10}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(TSet, heatSource.TSet) annotation (Line(
+      points={{60,124},{60,85.9},{-1.3,85.9}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  connect(heatSource.THxIn, Tin.T) annotation (Line(
+      points={{-1.2,82},{70,82},{70,51}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  connect(MassFlow.m_flow, heatSource.m_flow) annotation (Line(
+      points={{40,51},{40,78},{-1.2,78}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  connect(Enthalpy.h_out, heatSource.hIn) annotation (Line(
+      points={{10,51},{10,74},{-1.2,74}},
+      color={0,0,127},
       smooth=Smooth.None));
       annotation (
     Diagram(coordinateSystem(extent={{-100,-100},{100,120}},

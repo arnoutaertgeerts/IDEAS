@@ -1,4 +1,5 @@
 PartialHeater
 PartialHeatSource
-PartialModulatingData
-PartialGenericModulatingData
+PartialPerformanceMap
+PartialHeatPump
+PartialData
