@@ -1,12 +1,13 @@
 within IDEAS.DistrictHeating.Production.HeatSources;
 model HeatPump
   //Extensions
-  extends BaseClasses.PartialHeatSource(
-    redeclare IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatPump data);
+  extends BaseClasses.PartialHeatSource;
+
+  parameter IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatPump data;
 
   //Variables
-  Real cop;
   Modelica.SIunits.Power PEl;
+  Real cop;
 
   //Components
   Modelica.Blocks.Tables.CombiTable2D copTable(

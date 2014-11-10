@@ -2,10 +2,16 @@ within IDEAS.DistrictHeating.Production;
 model HeatPump
   //Extensions
   extends IDEAS.DistrictHeating.Production.BaseClasses.PartialHeater(
-    redeclare HeatSources.HeatPump heatSource(
-      QNom=QNom,
-      data=data,
-      UALoss=UALoss));
+    redeclare BaseClasses.PartialHeatPump data,
+      QNomRef=data.QNomRef,
+      etaRef=data.etaRef,
+      TMax=data.TMax,
+      TMin=data.TMin,
+      modulationMin=data.modulationMin,
+      modulationStart=data.modulationStart,
+      redeclare HeatSources.HeatPump heatSource(
+        redeclare package Medium = Medium,
+        data=data));
 
   Modelica.Blocks.Interfaces.BooleanInput on "on/off control for the heatpump"
     annotation (Placement(transformation(extent={{-132,-20},{-92,20}})));

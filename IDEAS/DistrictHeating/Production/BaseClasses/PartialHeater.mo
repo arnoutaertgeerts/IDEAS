@@ -1,12 +1,23 @@
 within IDEAS.DistrictHeating.Production.BaseClasses;
-model PartialHeater "A partial for a production component which heats a fluid"
+partial model PartialHeater
+  "A partial for a production component which heats a fluid"
 
   //Extensions
   extends IDEAS.Fluid.Interfaces.TwoPortFlowResistanceParameters(
     final computeFlowResistance=true, dp_nominal = 0);
   extends IDEAS.Fluid.Interfaces.LumpedVolumeDeclarations(T_start=293.15);
 
-  //Parameters
+  //Data parameters
+  parameter Real QNomRef;
+  parameter Real etaRef
+    "Nominal efficiency (higher heating value)of the xxx boiler at 50/30degC.  See datafile";
+  parameter Real modulationMin(max=29) "Minimal modulation percentage";
+  parameter Real modulationStart(min=min(30, modulationMin + 5))
+    "Min estimated modulation level required for start of the heat source";
+  parameter Modelica.SIunits.Temperature TMax "Maximum set point temperature";
+  parameter Modelica.SIunits.Temperature TMin "Minimum set point temperature";
+
+  //Scalable parameters
   parameter Modelica.SIunits.Power QNom "Nominal power"
   annotation(Dialog(group = "Nominal condition"));
   parameter Modelica.SIunits.Time tauHeatLoss=7200
@@ -46,6 +57,23 @@ model PartialHeater "A partial for a production component which heats a fluid"
         origin={-74,-100})));
 
   //Components
+  replaceable PartialHeatSource heatSource(
+    QNomRef=data.QNomRef,
+    etaRef=data.etaRef,
+    TMax=data.TMax,
+    TMin=data.TMin,
+    modulationMin=data.modulationMin,
+    modulationStart=data.modulationStart,
+    UALoss=UALoss,
+    QNom=QNom)
+    annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={-12,80})));
+  replaceable PartialData data
+    annotation (Placement(transformation(extent={{-22,98},{-2,118}})), choicesAllMatching=true, Dialog(group="Datafile"));
+
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor mDry(C=cDry, T(start=
           T_start)) "Lumped dry mass subject to heat exchange/accumulation"
     annotation (Placement(transformation(
@@ -102,13 +130,6 @@ model PartialHeater "A partial for a production component which heats a fluid"
     redeclare package Medium=Medium,
     m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{20,30},{0,50}})));
-  replaceable PartialHeatSource heatSource annotation (Placement(
-        transformation(
-        extent={{-10,-10},{10,10}},
-        rotation=180,
-        origin={-12,80})));
-  replaceable PartialData data
-    annotation (Placement(transformation(extent={{-22,98},{-2,118}})), choicesAllMatching=true, Dialog(group="Datafile"));
 equation
 
   connect(mDry.port, thermalLosses.port_a) annotation (Line(
@@ -176,7 +197,7 @@ equation
           color={0,0,255},
           smooth=Smooth.None),
       Polygon(
-        origin={27.533,-20.062},
+        origin={47.533,-20.062},
         lineColor = {255,0,0},
         fillColor = {255,0,0},
         fillPattern = FillPattern.Solid,
