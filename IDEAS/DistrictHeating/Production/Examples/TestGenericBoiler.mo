@@ -57,12 +57,17 @@ model TestGenericBoiler "Simple test example for boiler"
   Fluid.Sensors.TemperatureTwoPort boilerT(redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.1)
     annotation (Placement(transformation(extent={{0,-6},{20,14}})));
-  PerformanceMapProduction iPTable3DProduction(
+  PolynomialProduction Production(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
     dp_nominal=20,
     QNom=10000,
     m_flow_nominal=0.1,
-    redeclare IDEAS.DistrictHeating.Production.Data.PerformanceMaps.Boiler data)
+    beta={1.10801352268,-0.00139459489796,7.84565873015e-05,-0.00560282142857,-4.15816326533e-07,
+        3.93071428571e-07,1.587e-05,-3.8671201814e-08,-4.29261904762e-07,2.67019047619e-05},
+    powers={{2,0,0,0},{1,1,0,0},{1,0,1,0},{1,0,0,1},{0,2,0,0},{0,1,1,0},{0,1,0,1},
+        {0,0,2,0},{0,0,1,1},{0,0,0,2}},
+    heatSource,
+    redeclare IDEAS.DistrictHeating.Production.Data.Polynomials.Boiler data)
     annotation (Placement(transformation(extent={{-114,52},{-94,74}})));
 
   inner SimInfoManager sim
@@ -116,20 +121,19 @@ equation
       points={{44,2},{32,2},{32,4},{20,4}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(iPTable3DProduction.port_a, pipe_Insulated.port_b) annotation (Line(
+  connect(Production.port_a, pipe_Insulated.port_b) annotation (Line(
       points={{-93.8,66},{6,66},{6,72}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(iPTable3DProduction.port_b, genericT.port_a) annotation (Line(
+  connect(Production.port_b, genericT.port_a) annotation (Line(
       points={{-93.8,58},{-80,58},{-80,92},{-72,92}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(const.y, iPTable3DProduction.TSet) annotation (Line(
+  connect(const.y, Production.TSet) annotation (Line(
       points={{-115,94},{-105,94},{-105,74}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(iPTable3DProduction.heatPort, pipe_Insulated.heatPort) annotation (
-      Line(
+  connect(Production.heatPort, pipe_Insulated.heatPort) annotation (Line(
       points={{-108,52},{-108,40},{-22,40},{-22,68},{0,68},{0,82},{2,82}},
       color={191,0,0},
       smooth=Smooth.None));

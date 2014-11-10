@@ -6,15 +6,20 @@ partial model PartialHeatSource
       Modelica.Media.Interfaces.PartialMedium "Medium in the component";
 
   //Parameters
-  parameter Real scaler = QNom/data.QNomRef;
+  parameter Real QNomRef;
   parameter Modelica.SIunits.Power QNom "The power at nominal conditions";
+  parameter Real scaler = QNom/QNomRef;
   parameter Modelica.SIunits.ThermalConductance UALoss
     "UA of heat losses of the heat source to environment";
 
+  //Components
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
-    "heatPort connection to water in condensor"
-    annotation (Placement(transformation(extent={{90,-10},{110,10}}),
+    "heatPort connection to water in condensor"  annotation (Placement(transformation(extent={{90,-10},{110,10}}),
         iconTransformation(extent={{90,-10},{110,10}})));
+  outer SimInfoManager sim
+    annotation (Placement(transformation(extent={{-38,78},{-18,98}})));
+
+  //Inputs
   Modelica.Blocks.Interfaces.RealInput hIn "Specific enthalpy at the inlet" annotation (Placement(transformation(
           extent={{-128,60},{-88,100}}), iconTransformation(extent={{-120,48},{-96,
             72}})));
@@ -28,10 +33,7 @@ partial model PartialHeatSource
                                                                    annotation (Placement(transformation(
           extent={{-126,-102},{-86,-62}}),iconTransformation(extent={{-120,-72},
             {-96,-48}})));
-  replaceable PartialData data
-    annotation (Placement(transformation(extent={{78,78},{98,98}})));
-  outer SimInfoManager sim
-    annotation (Placement(transformation(extent={{-38,78},{-18,98}})));
+
     annotation (Placement(transformation(extent={{66,74},{86,94}})),
               Icon(coordinateSystem(extent={{-100,-100},{100,100}},
           preserveAspectRatio=false),

@@ -102,8 +102,7 @@ model PartialHeater "A partial for a production component which heats a fluid"
     redeclare package Medium=Medium,
     m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{20,30},{0,50}})));
-  replaceable PartialHeatSource heatSource(
-    data=data) annotation (Placement(
+  replaceable PartialHeatSource heatSource annotation (Placement(
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=180,
@@ -149,7 +148,7 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   connect(TSet, heatSource.TSet) annotation (Line(
-      points={{60,124},{60,85.9},{-1.3,85.9}},
+      points={{60,124},{60,86},{-1.2,86}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(heatSource.THxIn, Tin.T) annotation (Line(
