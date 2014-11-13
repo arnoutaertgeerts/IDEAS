@@ -9,17 +9,33 @@ package Examples
     parameter Real y;
     parameter Real z;
 
-    parameter Real beta[10];
-    parameter Integer powers[10,4];
+    parameter Real beta[:];
+    parameter Integer powers[:,:];
+
+    parameter Integer n = size(powers, 1);
+    parameter Integer k = size(powers, 2);
 
     //Variables
     Real result;
 
   equation
-    result = IDEAS.DistrictHeating.Production.HeatSources.Poly2ndDegree3Inputs(
-      X=x, Y=y, Z=z, beta=beta, powers=powers);
+    result = IDEAS.DistrictHeating.Production.HeatSources.PolynomialDimensions(
+      X={x,y,z}, beta=beta, powers=powers, n=n, k=k);
 
   end FunctionModel;
+
+  model CombinationModel
+    //Parameters
+    parameter Integer n;
+    parameter Integer k;
+
+    //Variables
+    Real z;
+
+  equation
+    z = Combination(n,k);
+
+  end CombinationModel;
 
   model FunctionTest "Test using the function model"
     //Extensions
@@ -31,8 +47,15 @@ package Examples
           2.67019047619e-05},
       powers={{2,0,0,0},{1,1,0,0},{1,0,1,0},{1,0,0,1},{0,2,0,0},{0,1,1,0},{0,1,
           0,1},{0,0,2,0},{0,0,1,1},{0,0,0,2}},
-      z=60,
-      x=0,
-      y=0) annotation (Placement(transformation(extent={{-10,-6},{10,14}})));
+      x=100,
+      z=77,
+      y=3616) annotation (Placement(transformation(extent={{-10,-6},{10,14}})));
   end FunctionTest;
+
+  model CombinationTest
+    extends Modelica.Icons.Example;
+
+    CombinationModel combinationModel(n=5, k=2)
+      annotation (Placement(transformation(extent={{-8,-8},{12,12}})));
+  end CombinationTest;
 end Examples;

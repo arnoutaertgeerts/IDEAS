@@ -7,12 +7,9 @@ model PolynomialProductionSpeed
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
     QNom=10000,
     m_flow_nominal=0.1,
-    redeclare IDEAS.DistrictHeating.Production.Data.Polynomials.Boiler data,
-    beta={1.10801352268,-0.00139459489796,7.84565873015e-05,-0.00560282142857,-4.15816326533e-07,
-        3.9307142857e-07,1.587e-05,-3.86712018138e-08,-4.29261904761e-07,2.67019047619e-05},
-    powers={{2,0,0,0},{1,1,0,0},{1,0,1,0},{1,0,0,1},{0,2,0,0},{0,1,1,0},{0,1,0,1},
-        {0,0,2,0},{0,0,1,1},{0,0,0,2}},
-    dp_nominal=0)
+    dp_nominal=0,
+    redeclare IDEAS.DistrictHeating.Production.Data.Polynomials.Boiler4thDegree
+      data)
     annotation (Placement(transformation(extent={{-44,16},{-24,38}})));
   Modelica.Blocks.Sources.Constant TSet(k=273 + 60)
     annotation (Placement(transformation(extent={{-92,-30},{-72,-10}})));

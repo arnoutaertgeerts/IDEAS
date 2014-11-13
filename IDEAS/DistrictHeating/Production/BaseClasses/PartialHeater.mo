@@ -58,12 +58,12 @@ partial model PartialHeater
 
   //Components
   replaceable PartialHeatSource heatSource(
-    QNomRef=data.QNomRef,
-    etaRef=data.etaRef,
-    TMax=data.TMax,
-    TMin=data.TMin,
-    modulationMin=data.modulationMin,
-    modulationStart=data.modulationStart,
+    QNomRef=QNomRef,
+    etaRef=etaRef,
+    TMax=TMax,
+    TMin=TMin,
+    modulationMin=modulationMin,
+    modulationStart=modulationStart,
     UALoss=UALoss,
     QNom=QNom)
     annotation (Placement(
@@ -71,8 +71,6 @@ partial model PartialHeater
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-12,80})));
-  replaceable PartialData data
-    annotation (Placement(transformation(extent={{-22,98},{-2,118}})), choicesAllMatching=true, Dialog(group="Datafile"));
 
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor mDry(C=cDry, T(start=
           T_start)) "Lumped dry mass subject to heat exchange/accumulation"
