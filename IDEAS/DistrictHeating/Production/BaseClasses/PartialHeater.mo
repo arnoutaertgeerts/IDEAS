@@ -1,12 +1,23 @@
 within IDEAS.DistrictHeating.Production.BaseClasses;
-model PartialHeater "A partial for a production component which heats a fluid"
+partial model PartialHeater
+  "A partial for a production component which heats a fluid"
 
   //Extensions
   extends IDEAS.Fluid.Interfaces.TwoPortFlowResistanceParameters(
     final computeFlowResistance=true, dp_nominal = 0);
   extends IDEAS.Fluid.Interfaces.LumpedVolumeDeclarations(T_start=293.15);
 
-  //Parameters
+  //Data parameters
+  parameter Real QNomRef;
+  parameter Real etaRef
+    "Nominal efficiency (higher heating value)of the xxx boiler at 50/30degC.  See datafile";
+  parameter Real modulationMin(max=29) "Minimal modulation percentage";
+  parameter Real modulationStart(min=min(30, modulationMin + 5))
+    "Min estimated modulation level required for start of the heat source";
+  parameter Modelica.SIunits.Temperature TMax "Maximum set point temperature";
+  parameter Modelica.SIunits.Temperature TMin "Minimum set point temperature";
+
+  //Scalable parameters
   parameter Modelica.SIunits.Power QNom "Nominal power"
   annotation(Dialog(group = "Nominal condition"));
   parameter Modelica.SIunits.Time tauHeatLoss=7200
@@ -32,7 +43,9 @@ model PartialHeater "A partial for a production component which heats a fluid"
   Modelica.SIunits.Power PFuel "Fuel consumption in watt";
   Modelica.Blocks.Interfaces.RealInput TSet
     "Temperature setpoint, acts as on/off signal too" annotation (Placement(
-        transformation(extent={{-126,-20},{-86,20}}), iconTransformation(
+        transformation(extent={{-20,-20},{20,20}},
+        rotation=270,
+        origin={60,124}),                             iconTransformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
         origin={-10,120})));
@@ -44,21 +57,36 @@ model PartialHeater "A partial for a production component which heats a fluid"
         origin={-74,-100})));
 
   //Components
+  replaceable PartialHeatSource heatSource(
+    QNomRef=QNomRef,
+    etaRef=etaRef,
+    TMax=TMax,
+    TMin=TMin,
+    modulationMin=modulationMin,
+    modulationStart=modulationStart,
+    UALoss=UALoss,
+    QNom=QNom)
+    annotation (Placement(
+        transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={-12,80})));
+
   Modelica.Thermal.HeatTransfer.Components.HeatCapacitor mDry(C=cDry, T(start=
           T_start)) "Lumped dry mass subject to heat exchange/accumulation"
     annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-68,-30})));
+        origin={-78,-30})));
   Modelica.Thermal.HeatTransfer.Components.ThermalConductor thermalLosses(G=
         UALoss) annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=-90,
-        origin={-30,-70})));
+        origin={-40,-70})));
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
     "heatPort for thermal losses to environment" annotation (Placement(
-        transformation(extent={{-40,-110},{-20,-90}}), iconTransformation(
-          extent={{-40,-110},{-20,-90}})));
+        transformation(extent={{-50,-110},{-30,-90}}), iconTransformation(
+          extent={{-50,-110},{-30,-90}})));
 
   IDEAS.Fluid.FixedResistances.Pipe_HeatPort pipe_HeatPort(
     redeclare package Medium = Medium,
@@ -81,54 +109,78 @@ model PartialHeater "A partial for a production component which heats a fluid"
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={38,-6})));
+        origin={-10,-10})));
   Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
         Medium) "Fluid inlet"
-    annotation (Placement(transformation(extent={{90,-50},{110,-30}})));
+    annotation (Placement(transformation(extent={{92,30},{112,50}}),
+        iconTransformation(extent={{92,30},{112,50}})));
   Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
         Medium) "Fluid outlet"
-    annotation (Placement(transformation(extent={{90,30},{110,50}})));
+    annotation (Placement(transformation(extent={{92,-50},{112,-30}}),
+        iconTransformation(extent={{92,-50},{112,-30}})));
   IDEAS.Fluid.Sensors.TemperatureTwoPort Tin(redeclare package Medium = Medium,
       m_flow_nominal=m_flow_nominal) "Inlet temperature"
-    annotation (Placement(transformation(extent={{74,-50},{54,-30}})));
+    annotation (Placement(transformation(extent={{80,30},{60,50}})));
 
-  replaceable IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatSource
-    heatSource(
-     QNom=QNom,
-     TEnvironment=heatPort.T,
-     THxIn=Tin.T,
-     hIn=inStream(port_a.h_outflow),
-     m_flowHx=port_a.m_flow,
-     TSet=TSet,
-     redeclare package Medium = Medium)
-      constrainedby
-    IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatSource
-    annotation (Placement(transformation(extent={{-40,60},{-20,80}})), choicesAllMatching=true);
+  Fluid.Sensors.MassFlowRate MassFlow(redeclare package Medium = Medium)
+    annotation (Placement(transformation(extent={{50,30},{30,50}})));
+  Fluid.Sensors.SpecificEnthalpyTwoPort Enthalpy(
+    redeclare package Medium=Medium,
+    m_flow_nominal=m_flow_nominal)
+    annotation (Placement(transformation(extent={{20,30},{0,50}})));
 equation
 
   connect(mDry.port, thermalLosses.port_a) annotation (Line(
-      points={{-58,-30},{-58,-46},{-30,-46},{-30,-60}},
+      points={{-68,-30},{-40,-30},{-40,-60}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(thermalLosses.port_b, heatPort) annotation (Line(
-      points={{-30,-80},{-30,-100}},
+      points={{-40,-80},{-40,-100}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(mDry.port, pipe_HeatPort.heatPort) annotation (Line(
-      points={{-58,-30},{-32,-30},{-32,-6},{28,-6}},
+      points={{-68,-30},{-40,-30},{-40,-10},{-20,-10}},
       color={191,0,0},
       smooth=Smooth.None));
-  connect(pipe_HeatPort.port_b, port_b) annotation (Line(
-      points={{38,4},{38,40},{100,40}},
-      color={0,127,255},
-      smooth=Smooth.None));
   connect(port_a, Tin.port_a) annotation (Line(
-      points={{100,-40},{74,-40}},
+      points={{102,40},{80,40}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(Tin.port_b, pipe_HeatPort.port_a) annotation (Line(
-      points={{54,-40},{38,-40},{38,-16}},
+  connect(Tin.port_b, MassFlow.port_a) annotation (Line(
+      points={{60,40},{50,40}},
       color={0,127,255},
+      smooth=Smooth.None));
+  connect(MassFlow.port_b, Enthalpy.port_a) annotation (Line(
+      points={{30,40},{20,40}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(Enthalpy.port_b, pipe_HeatPort.port_b) annotation (Line(
+      points={{0,40},{-10,40},{-10,0}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(pipe_HeatPort.port_a, port_b) annotation (Line(
+      points={{-10,-20},{-10,-40},{102,-40}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(heatSource.heatPort, pipe_HeatPort.heatPort) annotation (Line(
+      points={{-22,80},{-40,80},{-40,-10},{-20,-10}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(TSet, heatSource.TSet) annotation (Line(
+      points={{60,124},{60,86},{-1.2,86}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  connect(heatSource.THxIn, Tin.T) annotation (Line(
+      points={{-1.2,82},{70,82},{70,51}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  connect(MassFlow.m_flow, heatSource.m_flow) annotation (Line(
+      points={{40,51},{40,78},{-1.2,78}},
+      color={0,0,127},
+      smooth=Smooth.None));
+  connect(Enthalpy.h_out, heatSource.hIn) annotation (Line(
+      points={{10,51},{10,74},{-1.2,74}},
+      color={0,0,127},
       smooth=Smooth.None));
       annotation (
     Diagram(coordinateSystem(extent={{-100,-100},{100,120}},
@@ -143,7 +195,7 @@ equation
           color={0,0,255},
           smooth=Smooth.None),
       Polygon(
-        origin={27.533,-20.062},
+        origin={47.533,-20.062},
         lineColor = {255,0,0},
         fillColor = {255,0,0},
         fillPattern = FillPattern.Solid,

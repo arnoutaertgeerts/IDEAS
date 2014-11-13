@@ -2,11 +2,6 @@ within IDEAS.DistrictHeating;
 package Production "Production units for district heating"
 
 
-
-
-
-
-
 annotation (Icon(graphics={
         Rectangle(
           lineColor={200,200,200},

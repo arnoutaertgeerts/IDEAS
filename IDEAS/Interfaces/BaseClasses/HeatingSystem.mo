@@ -12,6 +12,8 @@ partial model HeatingSystem "Partial heating/cooling system"
   parameter Boolean isHea=true "true if system is able to heat";
   parameter Boolean isCoo=false "true if system is able to cool";
   parameter Boolean DH=false "true if system is connected to DH network";
+  parameter Integer numberOfConnections if DH
+    "Number of connections to the DH substation";
   // --- Ports
   parameter Integer nConvPorts(min=0) = nZones
     "Number of ports in building for convective heating/cooling";
@@ -46,11 +48,13 @@ partial model HeatingSystem "Partial heating/cooling system"
     "Construction nodes for heat gains by embedded layers"
     annotation (Placement(transformation(extent={{-210,50},{-190,70}})));
   // --- Hydraulic
-  Modelica.Fluid.Interfaces.FluidPort_a port_supply(redeclare package Medium =
+  Modelica.Fluid.Interfaces.FluidPort_a port_supply[numberOfConnections](redeclare
+      package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater) if
                                                        DH
     annotation (Placement(transformation(extent={{-70,90},{-50,110}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_return(redeclare package Medium =
+  Modelica.Fluid.Interfaces.FluidPort_b port_return[numberOfConnections](redeclare
+      package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater) if
                                                        DH
     annotation (Placement(transformation(extent={{-130,90},{-110,110}})));

@@ -1,6 +1,7 @@
-GenericModulatingProduction
-ModulatingProduction
+PolynomialProduction
+PerformanceMapProduction
 PrescribedProduction
+HeatPump
 HeatSources
 Data
 BaseClasses

@@ -2,8 +2,6 @@ within IDEAS.DistrictHeating.Production;
 package HeatSources 
 
 
-
-
 annotation (Icon(graphics={
         Rectangle(
           lineColor={200,200,200},

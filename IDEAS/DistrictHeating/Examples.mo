@@ -27,7 +27,8 @@ package Examples
       redeclare Buildings.Examples.BaseClasses.structure building,
       redeclare IDEAS.Occupants.Standards.None occupant(TSet_val=296.15),
       redeclare IDEAS.HeatingSystems.Heating_Radiators_DH heatingSystem(
-          dTSupRetNom=20, TSupNom=318.15))
+          dTSupRetNom=20, TSupNom=318.15),
+      numberOfConnections=1)
                annotation (Placement(transformation(extent={{-18,22},{2,42}})));
     IDEAS.DistrictHeating.Substations.SingleHeatExchanger hXWithBypass
       annotation (Placement(transformation(extent={{-18,-26},{2,-6}})));
@@ -66,7 +67,8 @@ package Examples
       DH=true,
       redeclare Buildings.Examples.BaseClasses.structure building,
       redeclare IDEAS.HeatingSystems.Heating_Radiators_DH heatingSystem(
-          dTSupRetNom=20, TSupNom=318.15))
+          dTSupRetNom=20, TSupNom=318.15),
+      numberOfConnections=1)
                annotation (Placement(transformation(extent={{-78,22},{-58,42}})));
     IDEAS.DistrictHeating.Substations.SingleHeatExchanger hXWithBypass1
       annotation (Placement(transformation(extent={{-78,-26},{-58,-6}})));
@@ -89,7 +91,7 @@ package Examples
              annotation (Placement(transformation(extent={{-46,-30},{-26,-22}})));
 
     Modelica.Blocks.Sources.Constant const(k=100000)
-      annotation (Placement(transformation(extent={{28,-70},{48,-50}})));
+      annotation (Placement(transformation(extent={{30,-70},{50,-50}})));
     Fluid.Sources.FixedBoundary bou(
       nPorts=1,
       redeclare package Medium =
@@ -98,7 +100,8 @@ package Examples
       p=100000)
       annotation (Placement(transformation(extent={{-20,-68},{0,-48}})));
 
-    Production.ModulatingProduction boiler(
+    Production.GenericModulatingProduction
+                                    boiler(
       redeclare package Medium =
           Modelica.Media.Water.ConstantPropertyLiquidWater,
       QNom=30000,
@@ -147,28 +150,12 @@ package Examples
         color={0,0,0},
         smooth=Smooth.None));
     connect(fan1.dp_in, const.y) annotation (Line(
-        points={{62.2,-10},{62,-10},{62,-60},{49,-60}},
+        points={{62.2,-10},{62,-10},{62,-60},{51,-60}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(pipe_Insulated1.port_a, bou.ports[1]) annotation (Line(
         points={{22,-30},{12,-30},{12,-58},{0,-58}},
         color={0,127,255},
-        smooth=Smooth.None));
-    connect(hXWithBypass1.flowPort_b1[1], building1.port_return) annotation (Line(
-        points={{-70,-6},{-70,22},{-69.6,22}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(hXWithBypass1.flowPort_a1[1], building1.port_supply) annotation (Line(
-        points={{-66,-6},{-66,22.1},{-66.7,22.1}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_b1[1], building.port_return) annotation (Line(
-        points={{-10,-6},{-10,8},{-10,22},{-9.6,22}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_a1[1], building.port_supply) annotation (Line(
-        points={{-6,-6},{-6,8},{-6,22.1},{-6.7,22.1}},
-        color={0,0,0},
         smooth=Smooth.None));
 
     //BoilerViaPartials.TSet = sim.Te;
@@ -184,8 +171,25 @@ package Examples
         points={{75,38},{85,38},{85,0}},
         color={0,0,127},
         smooth=Smooth.None));
-    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-140,
-              -100},{100,100}}),      graphics), Icon(coordinateSystem(extent={{-140,
+    connect(hXWithBypass1.flowPort_b1[1], building1.port_return[1]) annotation
+      (Line(
+        points={{-70,-6},{-70,8},{-70,22},{-69.6,22}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(hXWithBypass1.flowPort_a1, building1.port_supply) annotation (Line(
+        points={{-66,-6},{-66,8},{-66,22},{-66.4,22}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(hXWithBypass.flowPort_b1, building.port_return) annotation (Line(
+        points={{-10,-6},{-10,8},{-10,22},{-9.6,22}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(hXWithBypass.flowPort_a1, building.port_supply) annotation (Line(
+        points={{-6,-6},{-6,8},{-6,22},{-6.4,22}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -100},{100,100}}),      graphics), Icon(coordinateSystem(extent={{-100,
               -100},{100,100}})));
   end Example;
 
@@ -203,33 +207,29 @@ package Examples
     Modelica.Blocks.Sources.RealExpression realExpression(y=sim.Tground)
       annotation (Placement(transformation(extent={{-136,-86},{-116,-66}})));
   equation
-    connect(prescribedTemperature.port, pipe_Insulated4.heatPort) annotation (
-        Line(
-        points={{-86,-74},{-70,-74},{-70,-44},{-124,-44},{-124,-18},{-108,-18}},
-        color={191,0,0},
-        smooth=Smooth.None));
     connect(prescribedTemperature.port, pipe_Insulated3.heatPort) annotation (
         Line(
         points={{-86,-74},{-36,-74},{-36,-30}},
         color={191,0,0},
         smooth=Smooth.None));
-    connect(prescribedTemperature.port, pipe_Insulated2.heatPort) annotation (
+    connect(realExpression.y, prescribedTemperature.T) annotation (Line(
+        points={{-115,-76},{-112,-76},{-112,-74},{-108,-74}},
+        color={0,0,127},
+        smooth=Smooth.None));
+    connect(pipe_Insulated2.heatPort, pipe_Insulated3.heatPort) annotation (
         Line(
-        points={{-86,-74},{-36,-74},{-36,-10}},
+        points={{-36,-10},{-36,-16},{-50,-16},{-50,-74},{-36,-74},{-36,-30}},
+        color={191,0,0},
+        smooth=Smooth.None));
+    connect(pipe_Insulated.heatPort, pipe_Insulated1.heatPort) annotation (Line(
+        points={{30,-2},{30,-12},{18,-12},{18,-74},{24,-74},{24,-48},{32,-48},{
+            32,-34}},
         color={191,0,0},
         smooth=Smooth.None));
     connect(prescribedTemperature.port, pipe_Insulated1.heatPort) annotation (
         Line(
-        points={{-86,-74},{32,-74},{32,-34}},
+        points={{-86,-74},{24,-74},{24,-48},{32,-48},{32,-34}},
         color={191,0,0},
-        smooth=Smooth.None));
-    connect(prescribedTemperature.port, pipe_Insulated.heatPort) annotation (Line(
-        points={{-86,-74},{32,-74},{32,-2},{30,-2}},
-        color={191,0,0},
-        smooth=Smooth.None));
-    connect(realExpression.y, prescribedTemperature.T) annotation (Line(
-        points={{-115,-76},{-112,-76},{-112,-74},{-108,-74}},
-        color={0,0,127},
         smooth=Smooth.None));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-140,
               -100},{100,100}}), graphics));

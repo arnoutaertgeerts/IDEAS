@@ -2,4 +2,5 @@ PlugFlowLosslessPipe
 PlugFlowPipe
 PlugFlowHeatPort
 InsulatedPlugFlow
+InsulatedPipeM
 PlugFlowTemperaturePipe

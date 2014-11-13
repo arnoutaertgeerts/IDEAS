@@ -198,14 +198,6 @@ equation
       points={{-200,20},{-156,20},{-156,80},{142.5,80},{142.5,44}},
       color={191,0,0},
       smooth=Smooth.None));
-  connect(port_supply, pipeSupply.port_a) annotation (Line(
-      points={{-60,100},{-60,100},{-60,58},{-16,58}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(port_return, pipeReturn.port_b) annotation (Line(
-      points={{-120,100},{-120,100},{-120,24},{-68,24},{-68,-92},{-18,-92}},
-      color={0,127,255},
-      smooth=Smooth.None));
   connect(pipeSupply.port_b, senTemEm_in.port_a) annotation (Line(
       points={{4,58},{20,58},{20,54},{62,54},{62,52}},
       color={0,127,255},
@@ -216,6 +208,14 @@ equation
       smooth=Smooth.None));
   connect(absolutePressure.ports[1], senTemEm_in.port_a) annotation (Line(
       points={{18,76},{18,58},{20,58},{20,54},{62,54},{62,52}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(pipeSupply.port_a, port_supply[1]) annotation (Line(
+      points={{-16,58},{-60,58},{-60,100}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(pipeReturn.port_b, port_return[1]) annotation (Line(
+      points={{-18,-92},{-108,-92},{-108,58},{-120,58},{-120,100}},
       color={0,127,255},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
