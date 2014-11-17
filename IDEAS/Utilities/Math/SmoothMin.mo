@@ -14,7 +14,7 @@ equation
           textString="dX=%deltaX%")}),
 Documentation(info="<html>
 <p>
-Once continuously differentiable approximation to the <i>max(.,.)</i> function.
+Once continuously differentiable approximation to the <i>min(.,.)</i> function.
 </p>
 </html>",
 revisions="<html>
