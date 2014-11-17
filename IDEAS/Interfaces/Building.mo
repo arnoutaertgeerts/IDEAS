@@ -9,7 +9,7 @@ model Building
   parameter Boolean DH=false
     "true/false if building is/is not in district heating network";
 
-  parameter Integer numberOfConnections if DH
+  parameter Integer numberOfConnections=1 if DH
     "Number of connections to the DH substation";
   replaceable IDEAS.Interfaces.BaseClasses.Structure building
     "Building structure" annotation (Placement(transformation(extent={{-66,-10},
