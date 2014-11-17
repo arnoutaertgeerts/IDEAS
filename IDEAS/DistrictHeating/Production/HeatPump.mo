@@ -1,26 +1,35 @@
 within IDEAS.DistrictHeating.Production;
 model HeatPump
   //Extensions
-  extends IDEAS.DistrictHeating.Production.BaseClasses.PartialHeater(
-    redeclare BaseClasses.PartialHeatPump data,
+  extends IDEAS.DistrictHeating.Production.BaseClasses.PartialHeatPump(
       QNomRef=data.QNomRef,
-      etaRef=data.etaRef,
       TMax=data.TMax,
       TMin=data.TMin,
       modulationMin=data.modulationMin,
       modulationStart=data.modulationStart,
+      m_flow_nominal=data.m_flow_nominal,
+      m_flow_nominal_brine=data.m_flow_nominal_brine,
+      mBrine=data.mBrine,
       redeclare HeatSources.HeatPump heatSource(
         redeclare package Medium = Medium,
-        data=data));
+        copData=data.copData,
+        powerData=data.powerData),
+    redeclare HeatSources.HeatPump partialHeatSourceHP);
 
-  Modelica.Blocks.Interfaces.BooleanInput on "on/off control for the heatpump"
-    annotation (Placement(transformation(extent={{-132,-20},{-92,20}})));
+  replaceable BaseClasses.PartialHeatPumpData data
+    annotation (Placement(transformation(extent={{-2,96},{18,116}})));
 equation
   PEl = heatSource.PEl;
   PFuel = 0;
-  connect(on, heatSource.on) annotation (Line(
-      points={{-112,0},{-78,0},{-78,52},{-11.8,52},{-11.8,71.2}},
-      color={255,0,255},
+  connect(partialHeatSourceHP.heatPortEvaporator, evaporator.heatPort)
+    annotation (Line(
+      points={{-2,80},{-40,80},{-40,10},{-50,10}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(partialHeatSourceHP.heatPortCondensor, pipe_HeatPort.heatPort)
+    annotation (Line(
+      points={{-2,76},{-12,76},{-12,76},{-20,76},{-20,-10},{-6,-10}},
+      color={191,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,120}}), graphics));

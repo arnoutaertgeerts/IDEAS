@@ -1,6 +1,8 @@
 PartialHeater
+PartialHeatPump
+PartialHeatSourceHP
 PartialHeatSource
 PartialPerformanceMap
-PartialHeatPump
+PartialHeatPumpData
 PartialPolynomialData
 PartialData
