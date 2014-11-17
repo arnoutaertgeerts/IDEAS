@@ -100,14 +100,14 @@ package Examples
       p=100000)
       annotation (Placement(transformation(extent={{-20,-68},{0,-48}})));
 
-    Production.GenericModulatingProduction
-                                    boiler(
+    Production.PolynomialProduction boiler(
       redeclare package Medium =
           Modelica.Media.Water.ConstantPropertyLiquidWater,
       QNom=30000,
       m_flow_nominal=0.1,
-      redeclare IDEAS.DistrictHeating.Production.Data.GenericBoiler
-        productionData) annotation (Placement(transformation(
+      redeclare
+        IDEAS.DistrictHeating.Production.Data.Polynomials.Boiler2ndDegree data)
+                        annotation (Placement(transformation(
           extent={{-10,11},{10,-11}},
           rotation=180,
           origin={84,-13})));
@@ -160,19 +160,19 @@ package Examples
 
     //BoilerViaPartials.TSet = sim.Te;
     connect(fan1.port_a, boiler.port_b) annotation (Line(
-        points={{72,2},{74,2},{74,-8}},
+        points={{72,2},{73.8,2},{73.8,-16}},
         color={0,127,255},
         smooth=Smooth.None));
     connect(pipe_Insulated1.port_b, boiler.port_a) annotation (Line(
-        points={{42,-30},{58,-30},{58,-16},{74,-16}},
+        points={{42,-30},{58,-30},{58,-8},{73.8,-8}},
         color={0,127,255},
         smooth=Smooth.None));
     connect(const1.y, boiler.TSet) annotation (Line(
         points={{75,38},{85,38},{85,0}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(hXWithBypass1.flowPort_b1[1], building1.port_return[1]) annotation
-      (Line(
+    connect(hXWithBypass1.flowPort_b1[1], building1.port_return[1]) annotation (
+       Line(
         points={{-70,-6},{-70,8},{-70,22},{-69.6,22}},
         color={0,0,0},
         smooth=Smooth.None));
