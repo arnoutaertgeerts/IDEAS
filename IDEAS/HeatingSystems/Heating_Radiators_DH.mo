@@ -21,7 +21,7 @@ model Heating_Radiators_DH
     redeclare each package Medium = Medium),
     pumpRad(each filteredMassFlowRate=true));
   Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow[nZones] fixedHeatFlow(Q_flow=0)
-    annotation (Placement(transformation(extent={{-144,16},{-154,26}})));
+    annotation (Placement(transformation(extent={{-162,56},{-172,66}})));
 equation
   QHeaSys = -sum(emission.heatPortCon.Q_flow) - sum(emission.heatPortRad.Q_flow);
 
@@ -38,12 +38,12 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   connect(heatPortEmb, fixedHeatFlow.port) annotation (Line(
-      points={{-200,60},{-178,60},{-178,21},{-154,21}},
+      points={{-200,60},{-178,60},{-178,61},{-172,61}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (
-    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{200,
-            100}}),     graphics),
+    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{
+            200,100}}), graphics),
     Icon(coordinateSystem(preserveAspectRatio=true, extent={{-200,-100},{200,
             100}})),
     Documentation(info="<html>

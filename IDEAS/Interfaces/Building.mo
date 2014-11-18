@@ -49,17 +49,16 @@ model Building
   Modelica.Electrical.QuasiStationary.SinglePhase.Basic.Ground ground if
     standAlone
     annotation (Placement(transformation(extent={{60,-80},{80,-60}})));
- Modelica.Fluid.Interfaces.FluidPort_a port_return[numberOfConnections](redeclare
-      package Medium =
-        Modelica.Media.Water.ConstantPropertyLiquidWater) if
+ Modelica.Fluid.Interfaces.FluidPort_a port_in[numberOfConnections](redeclare
+      package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater) if
                                                   DH
     annotation (Placement(transformation(extent={{-26,-110},{-6,-90}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_supply[numberOfConnections](redeclare
-      package Medium =
+  Modelica.Fluid.Interfaces.FluidPort_b port_out[numberOfConnections](
+      redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater) if
                                                   DH annotation (Placement(
-        transformation(extent={{6,-110},{26,-90}}), iconTransformation(extent={{6,-110},
-            {26,-90}})));
+        transformation(extent={{6,-110},{26,-90}}), iconTransformation(extent={
+            {6,-110},{26,-90}})));
 equation
   connect(building.heatPortCon, occupant.heatPortCon) annotation (Line(
       points={{-36,2},{-26,2},{-26,-30},{-18,-30}},
@@ -135,19 +134,19 @@ equation
       color={0,0,0},
       smooth=Smooth.None));
   connect(occupant.TSet, heatingSystem.TSet) annotation (Line(
-      points={{1,-22},{1,-16},{0,-16},{0,-10.2}},
+      points={{1,-22},{1,-16},{-0.2,-16},{-0.2,-10.4}},
       color={0,0,127},
       smooth=Smooth.None));
 
-  connect(port_return, heatingSystem.port_return) annotation (Line(
-      points={{-16,-100},{-14,-100},{-14,10},{-12,10}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(port_supply, heatingSystem.port_supply) annotation (Line(
-      points={{16,-100},{6,-100},{6,10},{-6,10}},
-      color={0,127,255},
-      smooth=Smooth.None));
 
+  connect(heatingSystem.port_supply, port_in) annotation (Line(
+      points={{-6,10},{-2,10},{-2,-100},{-16,-100}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(heatingSystem.port_return, port_out) annotation (Line(
+      points={{-12,10},{-12,-76},{16,-76},{16,-100}},
+      color={0,127,255},
+      smooth=Smooth.None));
   annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
             {100,100}}),
                    graphics={

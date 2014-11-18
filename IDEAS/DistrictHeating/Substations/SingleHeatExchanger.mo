@@ -6,9 +6,9 @@ model SingleHeatExchanger "Substation with a single heat exchanger"
           Modelica.Media.Water.ConstantPropertyLiquidWater),
     flowPort_return_in(redeclare package Medium =
           Modelica.Media.Water.ConstantPropertyLiquidWater),
-    flowPort_b1(redeclare package Medium =
+    flowPort_sec_in(redeclare package Medium =
           Modelica.Media.Water.ConstantPropertyLiquidWater),
-    flowPort_a1(redeclare package Medium =
+    flowPort_sec_out(redeclare package Medium =
           Modelica.Media.Water.ConstantPropertyLiquidWater),
     flowPort_supply_in(redeclare package Medium =
           Modelica.Media.Water.ConstantPropertyLiquidWater),
@@ -71,7 +71,7 @@ model SingleHeatExchanger "Substation with a single heat exchanger"
   Fluid.Sensors.MassFlowRate senMasFlo1(redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater) annotation (Placement(
         transformation(
-        extent={{-10,-10},{10,10}},
+        extent={{10,-10},{-10,10}},
         rotation=270,
         origin={-20,76})));
   Control.SupplyTControl supplyTControl
@@ -104,20 +104,26 @@ equation
       points={{24,-80},{100,-80}},
       color={0,127,255},
       smooth=Smooth.None));
+<<<<<<< HEAD
   connect(temperature1.port_b, hex.port_b1) annotation (Line(
       points={{20,54},{20,26},{4,26}},
       color={0,127,255},
       smooth=Smooth.None));
+=======
+>>>>>>> upstream/DistrictHeating
   connect(hex.port_b2, spl1.port_3) annotation (Line(
       points={{-16,14},{-26,14},{-26,-70}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(hex.port_a2, val.port_b) annotation (Line(
       points={{4,14},{72,14},{72,6}},
+<<<<<<< HEAD
       color={0,127,255},
       smooth=Smooth.None));
   connect(senMasFlo1.port_b, hex.port_a1) annotation (Line(
       points={{-20,66},{-20,26},{-16,26}},
+=======
+>>>>>>> upstream/DistrictHeating
       color={0,127,255},
       smooth=Smooth.None));
   connect(senMasFlo1.m_flow, supplyTControl.sensFlow) annotation (Line(
@@ -132,14 +138,6 @@ equation
       points={{62.6,84},{66,84},{66,66},{48,66},{48,-4},{60,-4}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(senMasFlo1.port_a, flowPort_b1[1]) annotation (Line(
-      points={{-20,86},{-20,100}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(temperature1.port_a, flowPort_a1[1]) annotation (Line(
-      points={{20,74},{20,100}},
-      color={0,127,255},
-      smooth=Smooth.None));
   connect(Tsupply.port_a, spl2.port_2) annotation (Line(
       points={{8,-40},{62,-40}},
       color={0,127,255},
@@ -147,6 +145,22 @@ equation
   connect(Tsupply.port_b, flowPort_supply_out) annotation (Line(
       points={{-12,-40},{-100,-40}},
       color={0,127,255},
+      smooth=Smooth.None));
+  connect(temperature1.port_b, hex.port_a1) annotation (Line(
+      points={{20,54},{20,40},{-34,40},{-34,26},{-16,26}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(hex.port_b1, senMasFlo1.port_a) annotation (Line(
+      points={{4,26},{8,26},{8,52},{-20,52},{-20,66}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(senMasFlo1.port_b, flowPort_sec_out[1]) annotation (Line(
+      points={{-20,86},{-20,100}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(flowPort_sec_in[1], temperature1.port_a) annotation (Line(
+      points={{20,100},{20,74}},
+      color={0,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}}), graphics));

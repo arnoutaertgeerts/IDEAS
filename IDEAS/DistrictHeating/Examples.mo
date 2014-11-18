@@ -33,7 +33,6 @@ package Examples
     IDEAS.DistrictHeating.Substations.SingleHeatExchanger hXWithBypass
       annotation (Placement(transformation(extent={{-18,-26},{2,-6}})));
 
-
     Fluid.Movers.FlowMachine_dp fan1(
       redeclare package Medium =
           Modelica.Media.Water.ConstantPropertyLiquidWater,
@@ -56,7 +55,6 @@ package Examples
                annotation (Placement(transformation(extent={{-78,22},{-58,42}})));
     IDEAS.DistrictHeating.Substations.SingleHeatExchanger hXWithBypass1
       annotation (Placement(transformation(extent={{-78,-26},{-58,-6}})));
-
 
     Modelica.Blocks.Sources.Constant const(k=10000)
       annotation (Placement(transformation(extent={{30,-70},{50,-50}})));
@@ -108,23 +106,6 @@ package Examples
         points={{85,-82},{89,-82},{89,-26}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(hXWithBypass1.flowPort_b1[1], building1.port_return[1]) annotation (
-       Line(
-        points={{-70,-6},{-70,8},{-70,22},{-69.6,22}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(hXWithBypass1.flowPort_a1, building1.port_supply) annotation (Line(
-        points={{-66,-6},{-66,8},{-66,22},{-66.4,22}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_b1, building.port_return) annotation (Line(
-        points={{-10,-6},{-10,8},{-10,22},{-9.6,22}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_a1, building.port_supply) annotation (Line(
-        points={{-6,-6},{-6,8},{-6,22},{-6.4,22}},
-        color={0,0,0},
-        smooth=Smooth.None));
     connect(hXWithBypass1.flowPort_return_out, insulatedPipeM1.port_a)
       annotation (Line(
         points={{-58,-24},{-50,-24}},
@@ -171,14 +152,27 @@ package Examples
         points={{0,-58},{12,-58},{12,-24},{20,-24}},
         color={0,127,255},
         smooth=Smooth.None));
-    connect(hXWithBypass1.flowPort_supply_out, hXWithBypass1.flowPort_return_in)
-      annotation (Line(
-        points={{-78,-20},{-90,-20},{-90,-24},{-78,-24}},
-        color={0,0,0},
+    connect(building1.port_in, hXWithBypass1.flowPort_sec_out) annotation (Line(
+        points={{-69.6,22},{-70,22},{-70,-6}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(building1.port_out, hXWithBypass1.flowPort_sec_in) annotation (Line(
+        points={{-66.4,22},{-66,22},{-66,-6}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(building.port_in, hXWithBypass.flowPort_sec_out) annotation (Line(
+        points={{-9.6,22},{-10,22},{-10,-6}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(building.port_out, hXWithBypass.flowPort_sec_in) annotation (Line(
+        points={{-6.4,22},{-6,22},{-6,-6}},
+        color={0,127,255},
         smooth=Smooth.None));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}),      graphics), Icon(coordinateSystem(extent={{-100,
-              -100},{100,100}})));
+              -100},{100,100}})),
+      experiment(StopTime=1e+006, Interval=3600),
+      __Dymola_experimentSetupOutput);
   end Example;
 
   model Example2 "Extension of example 1, including distribution heat losses"

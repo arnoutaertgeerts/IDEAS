@@ -32,6 +32,19 @@ model InsulatedPipeM "Insulated pipe model with /meter parameters"
     "Port for heat exchange with mixing volume" annotation (Placement(
         transformation(extent={{-10,-108},{10,-88}}), iconTransformation(extent=
            {{-10,52},{10,72}})));
+equation
+  connect(port_a, pipe.port_b) annotation (Line(
+      points={{-100,0},{-10,0}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(pipe.port_a, port_b) annotation (Line(
+      points={{10,0},{100,0}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(pipe.heatPort, heatPort) annotation (Line(
+      points={{0,-4},{0,-98}},
+      color={191,0,0},
+      smooth=Smooth.None));
     annotation (Placement(transformation(extent={{10,-4},{-10,4}})), Icon(
         graphics={
         Line(
@@ -54,20 +67,7 @@ model InsulatedPipeM "Insulated pipe model with /meter parameters"
           extent={{-60,20},{60,-20}},
           lineColor={100,100,100},
           fillColor={255,255,255},
-          fillPattern=FillPattern.Solid)}));
-equation
-  connect(port_a, pipe.port_b) annotation (Line(
-      points={{-100,0},{-10,0}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(pipe.port_a, port_b) annotation (Line(
-      points={{10,0},{100,0}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(pipe.heatPort, heatPort) annotation (Line(
-      points={{0,-4},{0,-98}},
-      color={191,0,0},
-      smooth=Smooth.None));
-  annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+          fillPattern=FillPattern.Solid)}),
+              Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}}), graphics));
 end InsulatedPipeM;
