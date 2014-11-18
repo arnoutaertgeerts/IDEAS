@@ -56,7 +56,7 @@ package Examples
     IDEAS.DistrictHeating.Substations.SingleHeatExchanger hXWithBypass1
       annotation (Placement(transformation(extent={{-80,-4},{-60,16}})));
 
-    Modelica.Blocks.Sources.Constant const(k=1e6)
+    Modelica.Blocks.Sources.Constant const(k=1e5)
       annotation (Placement(transformation(extent={{20,-60},{40,-40}})));
     Fluid.Sources.FixedBoundary bou(
       redeclare package Medium =
@@ -94,14 +94,6 @@ package Examples
     Pipes.InsulatedPipeM insulatedPipeM3(redeclare package Medium =
           Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.1)
       annotation (Placement(transformation(extent={{40,24},{20,14}})));
-    Pipes.InsulatedPipeM insulatedPipeM4(
-      m_flow_nominal=0.1,
-      redeclare package Medium =
-          Modelica.Media.Water.ConstantPropertyLiquidWater,
-      pressureDrop=200000) annotation (Placement(transformation(
-          extent={{-10,-5},{10,5}},
-          rotation=270,
-          origin={-90,-1})));
   equation
     connect(fan1.dp_in, const.y) annotation (Line(
         points={{60.2,8},{60,8},{60,-50},{41,-50}},
@@ -173,16 +165,6 @@ package Examples
         smooth=Smooth.None));
     connect(fan1.port_b, insulatedPipeM3.port_a) annotation (Line(
         points={{50,20},{40,20}},
-        color={0,127,255},
-        smooth=Smooth.None));
-    connect(hXWithBypass1.flowPort_supply_out, insulatedPipeM4.port_a)
-      annotation (Line(
-        points={{-80,2},{-80,12},{-90,12},{-90,8}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(insulatedPipeM4.port_b, hXWithBypass1.flowPort_return_in)
-      annotation (Line(
-        points={{-90,-12},{-90,-16},{-80,-16},{-80,-2}},
         color={0,127,255},
         smooth=Smooth.None));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
