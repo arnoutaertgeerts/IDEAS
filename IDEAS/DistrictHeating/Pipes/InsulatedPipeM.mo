@@ -24,7 +24,7 @@ model InsulatedPipeM "Insulated pipe model with /meter parameters"
   Fluid.FixedResistances.Pipe_Insulated pipe(
     redeclare package Medium = Medium,
     UA=G,
-    m=V*1000,
+    m=V*Medium.BaseProperties.d,
     m_flow_nominal=m_flow_nominal,
     dp_nominal=dp_nominal)
     annotation (Placement(transformation(extent={{10,-4},{-10,4}})));

@@ -105,7 +105,7 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
   connect(temperature1.port_b, hex.port_b1) annotation (Line(
-      points={{20,54},{20,54},{20,26},{4,26}},
+      points={{20,54},{20,26},{4,26}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(hex.port_b2, spl1.port_3) annotation (Line(
@@ -113,7 +113,7 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
   connect(hex.port_a2, val.port_b) annotation (Line(
-      points={{4,14},{72,14},{72,10},{72,10},{72,6}},
+      points={{4,14},{72,14},{72,6}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(senMasFlo1.port_b, hex.port_a1) annotation (Line(
