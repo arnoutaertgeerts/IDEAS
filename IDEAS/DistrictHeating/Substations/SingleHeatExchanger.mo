@@ -22,12 +22,6 @@ model SingleHeatExchanger "Substation with a single heat exchanger"
     m_flow_nominal={0.25,-0.25,-0.25},
     dp_nominal={20,-20,-20}) "Splitter for bypass"
     annotation (Placement(transformation(extent={{-16,-70},{-36,-90}})));
-  IDEAS.Fluid.FixedResistances.SplitterFixedResistanceDpM spl2(
-    redeclare package Medium =
-        Modelica.Media.Water.ConstantPropertyLiquidWater,
-    m_flow_nominal={0.25,-0.25,-0.25},
-    dp_nominal={20,-20,-20}) "Splitter for bypass"
-    annotation (Placement(transformation(extent={{82,-30},{62,-50}})));
 
   Fluid.Actuators.Valves.TwoWayLinear val(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
@@ -35,13 +29,13 @@ model SingleHeatExchanger "Substation with a single heat exchanger"
     dpValve_nominal=20)                   annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={72,-4})));
+        origin={72,0})));
 
   Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(
                                                         redeclare package
       Medium = Modelica.Media.Water.ConstantPropertyLiquidWater)
     "Sensor of the return temperature" annotation (Placement(transformation(
-        extent={{-10,-10},{10,10}},
+        extent={{10,-10},{-10,10}},
         rotation=270,
         origin={20,64})));
   outer SimInfoManager sim
@@ -67,32 +61,30 @@ model SingleHeatExchanger "Substation with a single heat exchanger"
     m2_flow_nominal=0.25,
     dp1_nominal=200,
     dp2_nominal=200)
-    annotation (Placement(transformation(extent={{-16,10},{4,30}})));
+    annotation (Placement(transformation(extent={{-10,10},{10,30}})));
   Fluid.Sensors.MassFlowRate senMasFlo1(redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater) annotation (Placement(
         transformation(
-        extent={{10,-10},{-10,10}},
+        extent={{-10,-10},{10,10}},
         rotation=270,
         origin={-20,76})));
   Control.SupplyTControl supplyTControl
-    annotation (Placement(transformation(extent={{42,74},{62,94}})));
+    annotation (Placement(transformation(extent={{54,60},{74,80}})));
+  IDEAS.Fluid.FixedResistances.SplitterFixedResistanceDpM spl2(
+    redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater,
+    m_flow_nominal={0.25,-0.25,-0.25},
+    dp_nominal={20,-20,-20}) "Splitter for bypass"
+    annotation (Placement(transformation(extent={{62,-30},{82,-50}})));
 equation
   //Connections
   connect(flowPort_supply_in, flowPort_supply_in) annotation (Line(
       points={{100,-40},{100,-40}},
       color={0,0,0},
       smooth=Smooth.None));
-  connect(spl2.port_1, flowPort_supply_in) annotation (Line(
-      points={{82,-40},{100,-40}},
-      color={0,127,255},
-      smooth=Smooth.None));
 
   connect(spl1.port_2, flowPort_return_in) annotation (Line(
       points={{-36,-80},{-100,-80}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(spl2.port_3, val.port_a) annotation (Line(
-      points={{72,-30},{72,-14}},
       color={0,127,255},
       smooth=Smooth.None));
 
@@ -104,63 +96,58 @@ equation
       points={{24,-80},{100,-80}},
       color={0,127,255},
       smooth=Smooth.None));
-<<<<<<< HEAD
-  connect(temperature1.port_b, hex.port_b1) annotation (Line(
-      points={{20,54},{20,26},{4,26}},
-      color={0,127,255},
+  connect(flowPort_supply_out, Tsupply.port_b) annotation (Line(
+      points={{-100,-40},{-12,-40}},
+      color={0,0,0},
       smooth=Smooth.None));
-=======
->>>>>>> upstream/DistrictHeating
   connect(hex.port_b2, spl1.port_3) annotation (Line(
-      points={{-16,14},{-26,14},{-26,-70}},
+      points={{-10,14},{-26,14},{-26,-70}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(hex.port_a2, val.port_b) annotation (Line(
-      points={{4,14},{72,14},{72,6}},
-<<<<<<< HEAD
+      points={{10,14},{72,14},{72,10}},
       color={0,127,255},
+      smooth=Smooth.None));
+  connect(temperature1.port_b, flowPort_sec_in[1]) annotation (Line(
+      points={{20,74},{20,100}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(hex.port_b1, temperature1.port_a) annotation (Line(
+      points={{10,26},{20,26},{20,54}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(flowPort_sec_out[1], senMasFlo1.port_a) annotation (Line(
+      points={{-20,100},{-20,86}},
+      color={0,0,0},
       smooth=Smooth.None));
   connect(senMasFlo1.port_b, hex.port_a1) annotation (Line(
-      points={{-20,66},{-20,26},{-16,26}},
-=======
->>>>>>> upstream/DistrictHeating
+      points={{-20,66},{-20,26},{-10,26}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(senMasFlo1.m_flow, supplyTControl.sensFlow) annotation (Line(
-      points={{-9,76},{-4,76},{-4,89.8},{41.6,89.8}},
+  connect(temperature1.T, supplyTControl.sensTemp) annotation (Line(
+      points={{31,64},{53.4,64}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(temperature1.T, supplyTControl.sensTemp) annotation (Line(
-      points={{31,64},{36,64},{36,78},{41.4,78}},
+  connect(senMasFlo1.m_flow, supplyTControl.sensFlow) annotation (Line(
+      points={{-9,76},{22,76},{22,75.8},{53.6,75.8}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(supplyTControl.y, val.y) annotation (Line(
-      points={{62.6,84},{66,84},{66,66},{48,66},{48,-4},{60,-4}},
+      points={{74.6,70},{80,70},{80,40},{40,40},{40,8.88178e-016},{60,
+          8.88178e-016}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(Tsupply.port_a, spl2.port_2) annotation (Line(
+  connect(val.port_a, spl2.port_3) annotation (Line(
+      points={{72,-10},{72,-30}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(spl2.port_2, flowPort_supply_in) annotation (Line(
+      points={{82,-40},{100,-40}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(Tsupply.port_a, spl2.port_1) annotation (Line(
       points={{8,-40},{62,-40}},
       color={0,127,255},
-      smooth=Smooth.None));
-  connect(Tsupply.port_b, flowPort_supply_out) annotation (Line(
-      points={{-12,-40},{-100,-40}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(temperature1.port_b, hex.port_a1) annotation (Line(
-      points={{20,54},{20,40},{-34,40},{-34,26},{-16,26}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(hex.port_b1, senMasFlo1.port_a) annotation (Line(
-      points={{4,26},{8,26},{8,52},{-20,52},{-20,66}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(senMasFlo1.port_b, flowPort_sec_out[1]) annotation (Line(
-      points={{-20,86},{-20,100}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(flowPort_sec_in[1], temperature1.port_a) annotation (Line(
-      points={{20,100},{20,74}},
-      color={0,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -100},{100,100}}), graphics));
