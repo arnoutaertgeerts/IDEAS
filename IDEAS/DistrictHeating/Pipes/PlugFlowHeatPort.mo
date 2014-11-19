@@ -18,10 +18,14 @@ model PlugFlowHeatPort
     annotation (Evaluate=true, Dialog(tab="Dynamics", group="Equations"));
 
   //Interface
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a[2] heatPort1
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort1
     "Port for heat exchange with mixing volume" annotation (Placement(
-        transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},
-            {10,110}})));
+        transformation(extent={{30,90},{50,110}}),  iconTransformation(extent={{30,90},
+            {50,110}})));
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort2
+    "Port for heat exchange with mixing volume" annotation (Placement(
+        transformation(extent={{-50,90},{-30,110}}),iconTransformation(extent={{-50,90},
+            {-30,110}})));
 
   //Components
   DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe1(
@@ -42,7 +46,7 @@ model PlugFlowHeatPort
     p_start=p_start,
     allowFlowReversal=allowFlowReversal,
     final V=V/2,
-    nPorts=2) annotation (Placement(transformation(extent={{52,0},{32,20}})));
+    nPorts=2) annotation (Placement(transformation(extent={{50,0},{70,20}})));
 
   Fluid.MixingVolumes.MixingVolume vol1(
     redeclare package Medium = Medium,
@@ -56,31 +60,31 @@ model PlugFlowHeatPort
     allowFlowReversal=allowFlowReversal,
     nPorts=2,
     final V=V/2)
-    annotation (Placement(transformation(extent={{-44,0},{-64,20}})));
+    annotation (Placement(transformation(extent={{-50,0},{-70,20}})));
 
 equation
   connect(port_a, vol1.ports[1]) annotation (Line(
-      points={{-100,0},{-52,0}},
+      points={{-100,0},{-58,0}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(vol1.ports[2], plugFlowPipe1.port_a) annotation (Line(
-      points={{-56,0},{-10,0}},
+      points={{-62,0},{-10,0}},
       color={0,127,255},
       smooth=Smooth.None));
+  connect(vol1.heatPort, heatPort2) annotation (Line(
+      points={{-50,10},{-40,10},{-40,100}},
+      color={191,0,0},
+      smooth=Smooth.None));
   connect(plugFlowPipe1.port_b, vol.ports[1]) annotation (Line(
-      points={{10,0},{44,0}},
+      points={{10,0},{58,0}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(vol.ports[2], port_b) annotation (Line(
-      points={{40,0},{100,0}},
+      points={{62,0},{100,0}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(vol1.heatPort, heatPort1[1]) annotation (Line(
-      points={{-44,10},{-20,10},{-20,80},{0,80},{0,95}},
-      color={191,0,0},
-      smooth=Smooth.None));
-  connect(vol.heatPort, heatPort1[2]) annotation (Line(
-      points={{52,10},{56,10},{56,80},{14,80},{14,105},{0,105}},
+  connect(heatPort1, vol.heatPort) annotation (Line(
+      points={{40,100},{40,10},{50,10}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Icon(graphics={
@@ -126,7 +130,11 @@ equation
           visible=showDesignFlowDirection),                                                                                                    Polygon(          points={{
               -10,-35},{-10,15},{0,35},{10,15},{10,-35},{-10,-35}},                                                                                                    lineColor={255,0,0},
             fillPattern =                                                                                                   FillPattern.Forward,          fillColor={255,255,255},
-          origin={0,59},
+          origin={-40,59},
+          rotation=180),                                                                                                    Polygon(          points={{
+              -10,-35},{-10,15},{0,35},{10,15},{10,-35},{-10,-35}},                                                                                                    lineColor={255,0,0},
+            fillPattern =                                                                                                   FillPattern.Forward,          fillColor={255,255,255},
+          origin={40,59},
           rotation=180)}), Diagram(coordinateSystem(preserveAspectRatio=false,
           extent={{-100,-100},{100,100}}), graphics));
 end PlugFlowHeatPort;

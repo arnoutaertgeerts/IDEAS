@@ -32,11 +32,6 @@ equation
   heatPortCondensor.Q_flow=-PEl*cop;
   heatPortEvaporator.Q_flow=PEl*(cop-1);
 
-  //Approximation!!
-  powerTable.u2 = sim.Te;
-  copTable.u2 = sim.Te;
-
-  //Tin
   connect(TCondensor, powerTable.u1) annotation (Line(
       points={{-108,-40},{-40,-40},{-40,-14},{-12,-14}},
       color={0,0,127},

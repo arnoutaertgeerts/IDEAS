@@ -11,7 +11,7 @@ model InsulatedPipeM "Insulated pipe model with /meter parameters"
   parameter Modelica.SIunits.Length pipeLength=10;
   parameter Modelica.SIunits.Length pipeDiameter=0.1;
   parameter Modelica.SIunits.Density rho = 1000;
-  parameter PressureLength pressureDrop = 20;
+  parameter Types.PressurePerLength pressureDrop=20;
 
   parameter Modelica.SIunits.CoefficientOfHeatTransfer U=0.2
     "Heat transfer coefficient";

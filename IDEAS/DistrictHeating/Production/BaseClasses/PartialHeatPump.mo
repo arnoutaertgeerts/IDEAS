@@ -212,23 +212,23 @@ equation
       points={{-60,0},{-60,-40},{-100,-40}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(partialHeatSourceHP.hIn, Enthalpy.h_out) annotation (Line(
+  connect(heatSource.hIn, Enthalpy.h_out) annotation (Line(
       points={{18.8,72},{26,72},{26,51}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(partialHeatSourceHP.m_flow, MassFlow.m_flow) annotation (Line(
+  connect(heatSource.m_flow, MassFlow.m_flow) annotation (Line(
       points={{18.8,75},{52,75},{52,51}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(partialHeatSourceHP.TCondensor, Tin.T) annotation (Line(
+  connect(heatSource.TCondensor, Tin.T) annotation (Line(
       points={{18.8,81},{80,81},{80,51}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(partialHeatSourceHP.TSet, TSet) annotation (Line(
+  connect(heatSource.TSet, TSet) annotation (Line(
       points={{18.8,84},{60,84},{60,124}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(T_in_evap.T, partialHeatSourceHP.TEvaporator) annotation (Line(
+  connect(T_in_evap.T, heatSource.TEvaporator) annotation (Line(
       points={{-82,51},{-82,102},{28,102},{28,78},{18.8,78}},
       color={0,0,127},
       smooth=Smooth.None));

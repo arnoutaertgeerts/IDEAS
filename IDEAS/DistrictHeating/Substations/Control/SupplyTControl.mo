@@ -11,9 +11,9 @@ model SupplyTControl
     TSupMin=318.15,
     TRet_nominal=293.15,
     TOut_nominal=273.15)
-    annotation (Placement(transformation(extent={{-80,-34},{-60,-14}})));
+    annotation (Placement(transformation(extent={{-80,-20},{-60,0}})));
   Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=0.0001)
-    annotation (Placement(transformation(extent={{-56,48},{-36,68}})));
+    annotation (Placement(transformation(extent={{-42,48},{-22,68}})));
   Modelica.Blocks.Math.BooleanToReal booleanToReal
     annotation (Placement(transformation(extent={{-8,48},{12,68}})));
   Modelica.Blocks.Math.Product product
@@ -28,7 +28,7 @@ model SupplyTControl
     annotation (Placement(transformation(extent={{-94,78},{-74,98}})));
 equation
   connect(conPID.u_s,heatingCurve. TSup) annotation (Line(
-      points={{-20,-4},{-36,-4},{-36,-18},{-59,-18}},
+      points={{-20,-4},{-59,-4}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(conPID.y, product.u2) annotation (Line(
@@ -40,11 +40,11 @@ equation
       color={0,0,127},
       smooth=Smooth.None));
   connect(sensFlow, greaterThreshold.u) annotation (Line(
-      points={{-104,58},{-58,58}},
+      points={{-104,58},{-44,58}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(greaterThreshold.y, booleanToReal.u) annotation (Line(
-      points={{-35,58},{-10,58}},
+      points={{-21,58},{-10,58}},
       color={255,0,255},
       smooth=Smooth.None));
   connect(sensTemp, conPID.u_m) annotation (Line(

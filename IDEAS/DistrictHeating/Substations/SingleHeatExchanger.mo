@@ -21,7 +21,7 @@ model SingleHeatExchanger "Substation with a single heat exchanger"
         Modelica.Media.Water.ConstantPropertyLiquidWater,
     m_flow_nominal={0.25,-0.25,-0.25},
     dp_nominal={20,-20,-20}) "Splitter for bypass"
-    annotation (Placement(transformation(extent={{-16,-70},{-36,-90}})));
+    annotation (Placement(transformation(extent={{-10,-70},{-30,-90}})));
 
   Fluid.Actuators.Valves.TwoWayLinear val(
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
@@ -29,7 +29,7 @@ model SingleHeatExchanger "Substation with a single heat exchanger"
     dpValve_nominal=20)                   annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={72,0})));
+        origin={72,-8})));
 
   outer SimInfoManager sim
     annotation (Placement(transformation(extent={{-98,80},{-78,100}})));
@@ -83,25 +83,24 @@ equation
       smooth=Smooth.None));
 
   connect(spl1.port_2, flowPort_return_in) annotation (Line(
-      points={{-36,-80},{-100,-80}},
+      points={{-30,-80},{-100,-80}},
       color={0,127,255},
       smooth=Smooth.None));
 
   connect(hex.port_b2, spl1.port_3) annotation (Line(
-      points={{-10,14},{-26,14},{-26,-70}},
+      points={{-10,14},{-20,14},{-20,-70}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(hex.port_a2, val.port_b) annotation (Line(
-      points={{10,14},{72,14},{72,10}},
+      points={{10,14},{72,14},{72,2}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(supplyTControl.y, val.y) annotation (Line(
-      points={{74.6,70},{80,70},{80,40},{40,40},{40,8.88178e-016},{60,
-          8.88178e-016}},
+      points={{74.6,70},{80,70},{80,40},{40,40},{40,-8},{60,-8}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(val.port_a, spl2.port_3) annotation (Line(
-      points={{72,-10},{72,-30}},
+      points={{72,-18},{72,-30}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(spl2.port_2, flowPort_supply_in) annotation (Line(
@@ -117,7 +116,7 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
   connect(spl1.port_1, TReturn.port_a) annotation (Line(
-      points={{-16,-80},{30,-80}},
+      points={{-10,-80},{30,-80}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(Tsupply.port_b, flowPort_supply_out) annotation (Line(
