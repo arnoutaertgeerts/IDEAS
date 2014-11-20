@@ -78,22 +78,46 @@ package Examples
       dp_nominal=200)   annotation (Placement(transformation(
           extent={{-10,-11},{10,11}},
           rotation=180,
-          origin={90,1})));
+          origin={90,5})));
 
     Modelica.Blocks.Sources.Constant const1(k=343)
       annotation (Placement(transformation(extent={{60,-80},{80,-60}})));
-    Pipes.InsulatedPipeM insulatedPipeM(redeclare package Medium =
-          Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.1)
-      annotation (Placement(transformation(extent={{-50,-24},{-30,-14}})));
-    Pipes.InsulatedPipeM insulatedPipeM1(redeclare package Medium =
-          Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.1)
-      annotation (Placement(transformation(extent={{20,-24},{40,-14}})));
-    Pipes.InsulatedPipeM insulatedPipeM2(redeclare package Medium =
-          Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.1)
-      annotation (Placement(transformation(extent={{-30,24},{-50,14}})));
-    Pipes.InsulatedPipeM insulatedPipeM3(redeclare package Medium =
-          Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.1)
-      annotation (Placement(transformation(extent={{40,24},{20,14}})));
+    Modelica.Blocks.Sources.Constant TGround(k=273 + 7)
+      annotation (Placement(transformation(extent={{-76,-40},{-56,-20}})));
+    Pipes.PreinsulatedPipes
+                      preinsulatedPipe(
+      redeclare package Medium1 =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      redeclare package Medium2 =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      m1_flow_nominal=0.1,
+      m2_flow_nominal=0.1,
+      L=100,
+      rho=1000,
+      lambdaCasing=60,
+      Hr=1.28,
+      E=0.73,
+      lambdaGround=1.5,
+      lambdaInsulation=0.0265,
+      Dp=0.0889,
+      Dc=0.1578) annotation (Placement(transformation(extent={{-30,-12},{-50,12}})));
+    Pipes.PreinsulatedPipes
+                      preinsulatedPipe1(
+      redeclare package Medium1 =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      redeclare package Medium2 =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      m1_flow_nominal=0.1,
+      m2_flow_nominal=0.1,
+      L=100,
+      rho=1000,
+      lambdaCasing=60,
+      Hr=1.28,
+      E=0.73,
+      lambdaGround=1.5,
+      lambdaInsulation=0.0265,
+      Dp=0.0889,
+      Dc=0.1578) annotation (Placement(transformation(extent={{32,-12},{12,12}})));
   equation
     connect(fan1.dp_in, const.y) annotation (Line(
         points={{60.2,8},{60,8},{60,-50},{41,-50}},
@@ -102,11 +126,11 @@ package Examples
 
     //BoilerViaPartials.TSet = sim.Te;
     connect(const1.y, boiler.TSet) annotation (Line(
-        points={{81,-70},{91,-70},{91,-12}},
+        points={{81,-70},{91,-70},{91,-8}},
         color={0,0,127},
         smooth=Smooth.None));
     connect(fan1.port_a, boiler.port_b) annotation (Line(
-        points={{70,20},{79.8,20},{79.8,4}},
+        points={{70,20},{79.8,20},{79.8,8}},
         color={0,127,255},
         smooth=Smooth.None));
     connect(building1.port_in, hXWithBypass1.flowPort_sec_out) annotation (Line(
@@ -126,46 +150,54 @@ package Examples
         color={0,127,255},
         smooth=Smooth.None));
     connect(bou.ports[1], boiler.port_b) annotation (Line(
-        points={{80,30},{80,20},{79.8,20},{79.8,4}},
+        points={{80,30},{80,20},{79.8,20},{79.8,8}},
         color={0,127,255},
         smooth=Smooth.None));
-    connect(hXWithBypass1.flowPort_return_out, insulatedPipeM.port_a)
+    connect(hXWithBypass1.flowPort_supply_in, preinsulatedPipe.port_b1)
       annotation (Line(
-        points={{-60,-2},{-56,-2},{-56,-20},{-50,-20}},
+        points={{-60,2},{-60,6},{-50,6}},
         color={0,0,0},
         smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_return_in, insulatedPipeM.port_b) annotation
-      (Line(
-        points={{-20,-2},{-26,-2},{-26,-20},{-30,-20}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_return_out, insulatedPipeM1.port_a)
+    connect(preinsulatedPipe.port_a1, hXWithBypass.flowPort_supply_out)
       annotation (Line(
-        points={{0,-2},{10,-2},{10,-20},{20,-20}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(boiler.port_a, insulatedPipeM1.port_b) annotation (Line(
-        points={{79.8,-4},{80,-4},{80,-20},{40,-20}},
+        points={{-30,6},{-20,6},{-20,2}},
         color={0,127,255},
         smooth=Smooth.None));
-    connect(hXWithBypass1.flowPort_supply_in, insulatedPipeM2.port_b)
+    connect(hXWithBypass1.flowPort_return_out, preinsulatedPipe.port_a2)
       annotation (Line(
-        points={{-60,2},{-56,2},{-56,20},{-50,20}},
+        points={{-60,-2},{-60,-6},{-50,-6}},
         color={0,0,0},
         smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_supply_out, insulatedPipeM2.port_a)
+    connect(preinsulatedPipe.port_b2, hXWithBypass.flowPort_return_in)
       annotation (Line(
-        points={{-20,2},{-26,2},{-26,20},{-30,20}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(hXWithBypass.flowPort_supply_in, insulatedPipeM3.port_b)
-      annotation (Line(
-        points={{0,2},{10,2},{10,20},{20,20}},
-        color={0,0,0},
-        smooth=Smooth.None));
-    connect(fan1.port_b, insulatedPipeM3.port_a) annotation (Line(
-        points={{50,20},{40,20}},
+        points={{-30,-6},{-20,-6},{-20,-2}},
         color={0,127,255},
+        smooth=Smooth.None));
+    connect(hXWithBypass.flowPort_supply_in, preinsulatedPipe1.port_b1)
+      annotation (Line(
+        points={{0,2},{0,6},{12,6}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(hXWithBypass.flowPort_return_out, preinsulatedPipe1.port_a2)
+      annotation (Line(
+        points={{0,-2},{0,-6},{12,-6}},
+        color={0,0,0},
+        smooth=Smooth.None));
+    connect(preinsulatedPipe1.port_a1, fan1.port_b) annotation (Line(
+        points={{32,6},{40,6},{40,20},{50,20}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(preinsulatedPipe1.port_b2, boiler.port_a) annotation (Line(
+        points={{32,-6},{79.8,-6},{79.8,0}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(TGround.y, preinsulatedPipe.Tg) annotation (Line(
+        points={{-55,-30},{-40,-30},{-40,-12.8}},
+        color={0,0,127},
+        smooth=Smooth.None));
+    connect(TGround.y, preinsulatedPipe1.Tg) annotation (Line(
+        points={{-55,-30},{22,-30},{22,-12.8}},
+        color={0,0,127},
         smooth=Smooth.None));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}),      graphics), Icon(coordinateSystem(extent={{-100,

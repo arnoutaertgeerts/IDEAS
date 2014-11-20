@@ -1,4 +1,4 @@
-within IDEAS.DistrictHeating.Pipes;
+within IDEAS.DistrictHeating.Pipes.Examples;
 model PlugFlowTemperaturePipe
   extends Modelica.Icons.Example;
   import IDEAS;
@@ -26,7 +26,8 @@ model PlugFlowTemperaturePipe
         rotation=0,
         origin={-46,22})));
   IDEAS.Fluid.Sources.FixedBoundary bou2(
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
+    redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater,
     nPorts=3,
     p=100000,
     T=373.15) annotation (Placement(transformation(
@@ -35,7 +36,8 @@ model PlugFlowTemperaturePipe
         origin={-134,22})));
 
   IDEAS.Fluid.Sources.FixedBoundary bou3(
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
+    redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater,
     use_T=false,
     use_p=true,
     p=100000,
@@ -45,7 +47,8 @@ model PlugFlowTemperaturePipe
         origin={102,22})));
 
   Modelica.Fluid.Pipes.DynamicPipe pipe(
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
+    redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
     momentumDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
@@ -79,7 +82,8 @@ model PlugFlowTemperaturePipe
         rotation=0,
         origin={50,-56})));
   Modelica.Fluid.Pipes.DynamicPipe pipe1(
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
+    redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater,
     energyDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
     massDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
     momentumDynamics=Modelica.Fluid.Types.Dynamics.SteadyStateInitial,
@@ -138,7 +142,8 @@ model PlugFlowTemperaturePipe
   Modelica.Thermal.HeatTransfer.Sources.FixedTemperature[2] T1(T=293.15)
     annotation (Placement(transformation(extent={{-22,-106},{-2,-86}})));
   IDEAS.Fluid.Sources.FixedBoundary bou1(
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
+    redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater,
     nPorts=1,
     p=100000,
     T=373.15) annotation (Placement(transformation(
@@ -146,7 +151,8 @@ model PlugFlowTemperaturePipe
         rotation=0,
         origin={-128,-130})));
   IDEAS.Fluid.Sources.FixedBoundary bou4(
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
+    redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater,
     use_T=false,
     use_p=true,
     p=100000,
@@ -155,13 +161,15 @@ model PlugFlowTemperaturePipe
         rotation=180,
         origin={98,-130})));
   IDEAS.Fluid.FixedResistances.Pipe_Insulated pipe_Insulated(
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
+    redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater,
     m_flow_nominal=0.1,
     m=1000*plug.pipeLength*plug.pipeDiameter*plug.pipeDiameter/4*Modelica.Constants.pi,
     UA=0.08) annotation (Placement(transformation(extent={{0,-126},{20,-134}})));
 
   IDEAS.DistrictHeating.Pipes.InsulatedPlugFlow plug(
-    redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
+    redeclare package Medium =
+        Modelica.Media.Water.ConstantPropertyLiquidWater,
     m_flow_nominal=0.1,
     pipeLength=32,
     pipeDiameter=0.1,

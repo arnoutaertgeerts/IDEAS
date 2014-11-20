@@ -2,10 +2,8 @@ PlugFlowLosslessPipe
 PlugFlowPipe
 PlugFlowHeatPort
 InsulatedPlugFlow
-InsulatedPipeM
-PlugFlowTemperaturePipe
 PreinsulatedPipes
-TwinPipe
+TwinPipeGround
 Examples
 Types
 BaseClasses

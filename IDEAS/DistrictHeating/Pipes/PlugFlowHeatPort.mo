@@ -18,14 +18,10 @@ model PlugFlowHeatPort
     annotation (Evaluate=true, Dialog(tab="Dynamics", group="Equations"));
 
   //Interface
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort1
+  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort[2]
     "Port for heat exchange with mixing volume" annotation (Placement(
-        transformation(extent={{30,90},{50,110}}),  iconTransformation(extent={{30,90},
-            {50,110}})));
-  Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort2
-    "Port for heat exchange with mixing volume" annotation (Placement(
-        transformation(extent={{-50,90},{-30,110}}),iconTransformation(extent={{-50,90},
-            {-30,110}})));
+        transformation(extent={{-10,90},{10,110}}), iconTransformation(extent={{-10,90},
+            {10,110}})));
 
   //Components
   DistrictHeating.Pipes.PlugFlowPipe plugFlowPipe1(
@@ -71,10 +67,6 @@ equation
       points={{-62,0},{-10,0}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(vol1.heatPort, heatPort2) annotation (Line(
-      points={{-50,10},{-40,10},{-40,100}},
-      color={191,0,0},
-      smooth=Smooth.None));
   connect(plugFlowPipe1.port_b, vol.ports[1]) annotation (Line(
       points={{10,0},{58,0}},
       color={0,127,255},
@@ -83,8 +75,12 @@ equation
       points={{62,0},{100,0}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(heatPort1, vol.heatPort) annotation (Line(
-      points={{40,100},{40,10},{50,10}},
+  connect(vol.heatPort, heatPort[2]) annotation (Line(
+      points={{50,10},{0,10},{0,105}},
+      color={191,0,0},
+      smooth=Smooth.None));
+  connect(vol1.heatPort, heatPort[1]) annotation (Line(
+      points={{-50,10},{0,10},{0,95}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Icon(graphics={
@@ -127,14 +123,10 @@ equation
           points={{55,-85},{-60,-85}},
           color={0,128,255},
           smooth=Smooth.None,
-          visible=showDesignFlowDirection),                                                                                                    Polygon(          points={{
+          visible=showDesignFlowDirection),                                                                                 Polygon(          points={{
               -10,-35},{-10,15},{0,35},{10,15},{10,-35},{-10,-35}},                                                                                                    lineColor={255,0,0},
             fillPattern =                                                                                                   FillPattern.Forward,          fillColor={255,255,255},
-          origin={-40,59},
-          rotation=180),                                                                                                    Polygon(          points={{
-              -10,-35},{-10,15},{0,35},{10,15},{10,-35},{-10,-35}},                                                                                                    lineColor={255,0,0},
-            fillPattern =                                                                                                   FillPattern.Forward,          fillColor={255,255,255},
-          origin={40,59},
+          origin={0,59},
           rotation=180)}), Diagram(coordinateSystem(preserveAspectRatio=false,
           extent={{-100,-100},{100,100}}), graphics));
 end PlugFlowHeatPort;

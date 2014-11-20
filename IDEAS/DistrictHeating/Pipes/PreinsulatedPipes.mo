@@ -4,8 +4,21 @@ model PreinsulatedPipes
 
   //Extensions
   extends BaseClasses.DistrictHeatingPipe(
-  U1 = (Rg+Ri)/((Rg+Ri)^2-Rm^2),
-  U2 = Rm/((Rg+Ri)^2-Rm^2));
+    hs=1/hsInvers,
+    ha=1/haInvers);
+
+  //Parameters
+protected
+  parameter Real hsInvers=
+    Modelica.Math.log(2*Heff/ro) + beta +
+    Modelica.Math.log(sqrt(1 + (Heff/D)^2));
+  parameter Real haInvers=
+    Modelica.Math.log(2*Heff/ro) + beta -
+    Modelica.Math.log(sqrt(1 + (Heff/D)^2));
+
+equation
+  Qs=(Ts-Tg)*2*Modelica.Constants.pi*lambdaG*hs;
+  Qa=Ta*2*Modelica.Constants.pi*lambdaG*ha;
 
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
             -120},{100,120}}), graphics));
