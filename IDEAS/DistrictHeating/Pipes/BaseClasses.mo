@@ -43,7 +43,10 @@ package BaseClasses "Base-classes for the pipe models"
           transformation(
           extent={{-20,-20},{20,20}},
           rotation=90,
-          origin={0,-128})));
+          origin={0,-142}), iconTransformation(
+          extent={{-20,-20},{20,20}},
+          rotation=90,
+          origin={0,-142})));
 
     //Variables
     Modelica.SIunits.Temperature T1;
@@ -155,129 +158,57 @@ package BaseClasses "Base-classes for the pipe models"
         color={0,0,127},
         smooth=Smooth.None));
 
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-120},
-              {100,120}}), graphics={
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+              -140},{100,140}}),
+                           graphics={
           Polygon(
-            points={{18,-76},{58,-91},{18,-106},{18,-76}},
-            lineColor={0,128,255},
-            smooth=Smooth.None,
-            fillColor={0,128,255},
-            fillPattern=FillPattern.Solid,
-            visible=showDesignFlowDirection),
-          Polygon(
-            points={{18,-81},{48,-91},{18,-101},{18,-81}},
-            lineColor={255,255,255},
-            smooth=Smooth.None,
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid,
-            visible=allowFlowReversal),
-          Line(
-            points={{53,-91},{-62,-91}},
-            color={0,128,255},
-            smooth=Smooth.None,
-            visible=showDesignFlowDirection),
-          Polygon(
-            points={{18,-76},{58,-91},{18,-106},{18,-76}},
-            lineColor={0,128,255},
-            smooth=Smooth.None,
-            fillColor={0,128,255},
-            fillPattern=FillPattern.Solid,
-            visible=showDesignFlowDirection),
-          Polygon(
-            points={{18,-81},{48,-91},{18,-101},{18,-81}},
-            lineColor={255,255,255},
-            smooth=Smooth.None,
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid,
-            visible=allowFlowReversal),
-          Polygon(
-            points={{18,-81},{48,-91},{18,-101},{18,-81}},
-            lineColor={255,255,255},
-            smooth=Smooth.None,
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Solid,
-            visible=allowFlowReversal),
-          Rectangle(
-            extent={{-100,100},{100,18}},
-            lineColor={0,0,0},
-            fillPattern=FillPattern.HorizontalCylinder,
-            fillColor={192,192,192}),
-          Rectangle(
-            extent={{-100,82},{100,36}},
-            lineColor={0,0,0},
-            fillPattern=FillPattern.HorizontalCylinder,
-            fillColor={255,0,0}),
-          Line(
-            points={{53,-91},{-62,-91}},
-            color={0,128,255},
-            smooth=Smooth.None,
-            visible=showDesignFlowDirection),
-          Rectangle(
-            extent={{-100,110},{100,100}},
-            lineColor={175,175,175},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Backward),
-          Rectangle(
-            extent={{-100,-8},{100,-18}},
-            lineColor={175,175,175},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Backward),
-          Polygon(
-            points={{18,74},{58,60},{18,44},{18,74}},
-            smooth=Smooth.None,
-            fillColor={255,255,255},
-            fillPattern=FillPattern.HorizontalCylinder,
-            pattern=LinePattern.None),
-          Rectangle(
-            extent={{-100,-18},{100,-100}},
-            lineColor={0,0,0},
-            fillPattern=FillPattern.HorizontalCylinder,
-            fillColor={192,192,192}),
-          Rectangle(
-            extent={{-100,-36},{100,-82}},
-            lineColor={0,0,0},
-            fillPattern=FillPattern.HorizontalCylinder,
-            fillColor={0,127,255}),
-          Rectangle(
-            extent={{-100,-100},{100,-110}},
-            lineColor={175,175,175},
-            fillColor={255,255,255},
-            fillPattern=FillPattern.Backward),
-          Polygon(
-            points={{18,70},{48,60},{18,48},{18,70}},
+            points={{30,22},{60,12},{30,0},{30,22}},
             smooth=Smooth.None,
             fillColor={255,0,0},
             fillPattern=FillPattern.HorizontalCylinder,
             pattern=LinePattern.None,
             lineColor={0,0,0}),
-          Line(
-            points={{-60,60},{58,60}},
-            color={255,255,255},
-            smooth=Smooth.None),
+          Ellipse(
+            extent={{30,-92},{-30,-32}},
+            lineColor={0,0,255},
+            fillColor={0,0,255},
+            fillPattern=FillPattern.Sphere),
           Polygon(
-            points={{-20,-44},{-60,-58},{-20,-72},{-20,-44}},
+            points={{30,18},{52,12},{30,4},{30,18}},
             smooth=Smooth.None,
             fillColor={255,255,255},
-            fillPattern=FillPattern.HorizontalCylinder,
-            pattern=LinePattern.None),
-          Polygon(
-            points={{-20,-48},{-50,-58},{-20,-68},{-20,-48}},
-            smooth=Smooth.None,
-            fillColor={0,128,255},
             fillPattern=FillPattern.HorizontalCylinder,
             pattern=LinePattern.None,
             lineColor={0,0,0}),
           Line(
-            points={{62,-58},{-52,-58}},
-            color={255,255,255},
+            points={{-60,12},{56,12}},
+            color={255,0,0},
             smooth=Smooth.None),
-          Rectangle(
-            extent={{-100,18},{100,8}},
-            lineColor={175,175,175},
+          Polygon(
+            points={{-28,0},{-58,-10},{-28,-22},{-28,0}},
+            smooth=Smooth.None,
+            fillColor={0,0,255},
+            fillPattern=FillPattern.HorizontalCylinder,
+            pattern=LinePattern.None,
+            lineColor={0,0,0}),
+          Polygon(
+            points={{-28,-4},{-50,-10},{-28,-18},{-28,-4}},
+            smooth=Smooth.None,
             fillColor={255,255,255},
-            fillPattern=FillPattern.Backward)}),
-                                   Diagram(coordinateSystem(extent={{-100,-120},{100,
-              120}})),
+            fillPattern=FillPattern.HorizontalCylinder,
+            pattern=LinePattern.None,
+            lineColor={0,0,0}),
+          Line(
+            points={{62,-10},{-50,-10}},
+            color={0,0,255},
+            smooth=Smooth.None),
+          Ellipse(
+            extent={{30,30},{-30,90}},
+            lineColor={255,0,0},
+            fillColor={255,0,0},
+            fillPattern=FillPattern.Sphere)}),
+                                   Diagram(coordinateSystem(extent={{-100,-140},
+              {100,140}})),
                 Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -120},{100,120}}), graphics));
   end DistrictHeatingPipe;

@@ -272,9 +272,9 @@ equation
       points={{-24,122},{-4,122},{-4,92.2}},
       color={191,0,0},
       smooth=Smooth.None));
-  annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-160,
-            -160},{120,140}}), graphics), Icon(coordinateSystem(extent={{-160,-160},
-            {120,140}})),
+  annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+            -100},{100,100}}), graphics), Icon(coordinateSystem(extent={{-100,
+            -100},{100,100}})),
     experiment(StopTime=1500),
     __Dymola_experimentSetupOutput);
 end PlugFlowTemperaturePipe;

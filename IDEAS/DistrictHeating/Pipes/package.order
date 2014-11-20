@@ -4,6 +4,7 @@ PlugFlowHeatPort
 InsulatedPlugFlow
 PreinsulatedPipes
 TwinPipeGround
+DoublePipes
 Examples
-Types
 BaseClasses
+Types
