@@ -128,6 +128,10 @@ partial model PartialHeater
     redeclare package Medium=Medium,
     m_flow_nominal=m_flow_nominal)
     annotation (Placement(transformation(extent={{20,30},{0,50}})));
+  Fluid.Sensors.TemperatureTwoPort       TOut(
+                                             redeclare package Medium = Medium,
+      m_flow_nominal=m_flow_nominal) "Outlet temperature"
+    annotation (Placement(transformation(extent={{30,-50},{50,-30}})));
 equation
 
   connect(mDry.port, thermalLosses.port_a) annotation (Line(
@@ -158,10 +162,6 @@ equation
       points={{0,40},{-10,40},{-10,0}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(pipe_HeatPort.port_a, port_b) annotation (Line(
-      points={{-10,-20},{-10,-40},{102,-40}},
-      color={0,127,255},
-      smooth=Smooth.None));
   connect(heatSource.heatPort, pipe_HeatPort.heatPort) annotation (Line(
       points={{-22,80},{-40,80},{-40,-10},{-20,-10}},
       color={191,0,0},
@@ -181,6 +181,14 @@ equation
   connect(Enthalpy.h_out, heatSource.hIn) annotation (Line(
       points={{10,51},{10,74},{-1.2,74}},
       color={0,0,127},
+      smooth=Smooth.None));
+  connect(pipe_HeatPort.port_a, TOut.port_a) annotation (Line(
+      points={{-10,-20},{-10,-40},{30,-40}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(TOut.port_b, port_b) annotation (Line(
+      points={{50,-40},{102,-40}},
+      color={0,127,255},
       smooth=Smooth.None));
       annotation (
     Diagram(coordinateSystem(extent={{-100,-100},{100,120}},

@@ -31,9 +31,9 @@ initial equation
         + String(dpFixed_nominal) + " Pa.");
 equation
  kVal = phi*Kv_SI;
- if (dpFixed_nominal > Modelica.Constants.eps) then 
+ if (dpFixed_nominal > Modelica.Constants.eps) then
    k = sqrt(1/(1/kFixed^2 + 1/kVal^2));
- else 
+ else
    k = kVal;
  end if;
 

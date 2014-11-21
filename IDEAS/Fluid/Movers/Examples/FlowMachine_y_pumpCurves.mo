@@ -40,7 +40,6 @@ model FlowMachine_y_pumpCurves
     nPorts=4) annotation (Placement(transformation(extent={{-70,78},{-50,98}},
           rotation=0)));
 
-
   IDEAS.Fluid.Sources.Boundary_pT sou1(
     redeclare package Medium = Medium,
     use_p_in=false,

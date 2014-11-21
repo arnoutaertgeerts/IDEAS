@@ -2,8 +2,7 @@ within IDEAS.Fluid.Actuators.Valves.Examples;
 model ThreeWayValves "Three way valves with different opening characteristics"
   extends Modelica.Icons.Example;
 
- package Medium = IDEAS.Media.Water.Simple
-    "Medium in the component";
+ package Medium = IDEAS.Media.Water.Simple "Medium in the component";
 
   IDEAS.Fluid.Actuators.Valves.ThreeWayLinear valLin(
     redeclare package Medium = Medium,

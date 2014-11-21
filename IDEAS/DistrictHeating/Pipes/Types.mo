@@ -5,5 +5,8 @@ package Types
   type PressurePerLength =
                         Real (
       final quantity="PressurePerLength",
-      final unit="pa/m");
+      final unit="Pa/m");
+  type PowerPerLength =
+    Real (final quantity="PowerPerLength",
+      final unit="W/m");
 end Types;

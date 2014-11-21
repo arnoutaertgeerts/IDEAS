@@ -6,7 +6,8 @@ package DoublePipes
     //Extensions
     extends BaseClasses.DistrictHeatingPipe(
       hs=1/hsInvers,
-      ha=1/haInvers);
+      ha=1/haInvers,
+      Do=0.25);
 
     //Parameters
   protected
@@ -23,8 +24,7 @@ package DoublePipes
 
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -120},{100,120}}), graphics), Icon(coordinateSystem(
-            preserveAspectRatio=false, extent={{-100,-140},{100,140}}),
-          graphics={
+            preserveAspectRatio=false, extent={{-100,-140},{100,140}}), graphics={
           Ellipse(
             extent={{-40,-20},{40,-100}},
             lineColor={135,135,135},
@@ -56,12 +56,11 @@ package DoublePipes
             fillPattern=FillPattern.Backward),
           Line(
             points={{-100,-114},{-100,-140},{-100,-114},{100,-114},{100,-140}},
-
             color={255,255,255},
             smooth=Smooth.None)}));
   end PreinsulatedPipes;
 
-  model TwinPipeGround "Twin pipe model for symmetric pipes"
+  model TwinPipeGround "Twin pipe model for symmetric pipes in the ground"
 
     //Extensions
     extends BaseClasses.DistrictHeatingPipe(
@@ -69,7 +68,7 @@ package DoublePipes
       ha=1/haInvers);
 
     //Parameters
-    parameter Modelica.SIunits.Length Dc
+    parameter Modelica.SIunits.Length Dc=1
       "Outer diameter of the larger circumscribing pipe";
   protected
     parameter Modelica.SIunits.Length rc=Dc/2
@@ -88,8 +87,8 @@ package DoublePipes
   equation
     Qs=(Ts-Tg)*2*Modelica.Constants.pi*lambdaI*hs;
     Qa=Ta*2*Modelica.Constants.pi*lambdaI*ha;
-    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-              -140},{100,140}}),
+    annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-140},
+              {100,140}}),
                      graphics={
           Ellipse(
             extent={{100,-100},{-100,100}},
@@ -149,12 +148,11 @@ package DoublePipes
             fillPattern=FillPattern.Backward),
           Line(
             points={{-100,-114},{-100,-140},{-100,-114},{100,-114},{100,-140}},
-
             color={255,255,255},
             smooth=Smooth.None)}));
   end TwinPipeGround;
 
-  model TwinPipeAir "Twin pipe model for symmetric pipes"
+  model TwinPipeAir "Twin pipe model for symmetric pipes above the ground"
 
     //Extensions
     extends BaseClasses.DistrictHeatingPipe(

@@ -3,7 +3,6 @@ model PlugFlowLosslessPipe
   "Pipe with a temperature plug flow without pressure losses"
    //Extensions
   extends IDEAS.Fluid.Interfaces.PartialTwoPortInterface;
-  final parameter Boolean from_dp=true "Used to satisfy replaceable models";
 
   //Parameters
   parameter Modelica.SIunits.Length L "Pipe length";
@@ -55,10 +54,6 @@ equation
           lineColor={0,0,0},
           fillPattern=FillPattern.HorizontalCylinder,
           fillColor={217,236,256}),
-        Text(
-          extent={{-104,-50},{18,-116}},
-          lineColor={0,0,255},
-          textString="dp_nominal=0"),
         Rectangle(
           extent={{-20,50},{20,-48}},
           lineColor={175,175,175},

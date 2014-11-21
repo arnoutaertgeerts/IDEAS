@@ -1,7 +1,7 @@
 within IDEAS.HeatingSystems;
 model Heating_Radiators_DH
   "DH heating (with heating curve) with radiator. No TES, no DHW"
-  extends IDEAS.HeatingSystems.Interfaces.Partial_HydraulicHeating_District(
+  extends IDEAS.DistrictHeating.HeatingSystems.PartialHydraulicHeatingDH(
     final isHea=true,
     final isCoo=false,
     final nConvPorts=nZones,
@@ -28,12 +28,12 @@ equation
   P[1] = 0;
   Q[1] = 0;
   connect(emission.heatPortCon, heatPortCon) annotation (Line(
-      points={{142.5,44},{142.5,70},{142,70},{142,96},{-178,96},{-178,20},{-200,
+      points={{-155,-26},{-155,70},{142,70},{142,96},{-178,96},{-178,20},{-200,
           20}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(emission.heatPortRad, heatPortRad) annotation (Line(
-      points={{148.5,44},{148.5,72},{148,72},{148,100},{-180,100},{-180,-20},{
+      points={{-159,-26},{-159,72},{148,72},{148,100},{-180,100},{-180,-20},{
           -200,-20}},
       color={191,0,0},
       smooth=Smooth.None));

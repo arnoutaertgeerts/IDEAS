@@ -44,10 +44,10 @@ model TestHeatpump
   Fluid.Sources.MassFlowSource_T source(
     nPorts=1,
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
     m_flow=0.1,
     T=303.15)
     annotation (Placement(transformation(extent={{-88,-10},{-68,10}})));
+
 equation
   connect(pipe_Insulated.port_a,pump. port_b) annotation (Line(
       points={{84,50},{62,50}},

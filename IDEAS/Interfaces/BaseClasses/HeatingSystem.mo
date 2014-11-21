@@ -3,7 +3,7 @@ partial model HeatingSystem "Partial heating/cooling system"
 
   outer IDEAS.SimInfoManager sim
     "Simulation information manager for climate data"
-    annotation (Placement(transformation(extent={{-200,80},{-180,100}})));
+    annotation (Placement(transformation(extent={{160,-100},{180,-80}})));
 
   // *********** Building characteristics and  interface ***********
   // --- General
@@ -48,23 +48,13 @@ partial model HeatingSystem "Partial heating/cooling system"
     "Construction nodes for heat gains by embedded layers"
     annotation (Placement(transformation(extent={{-210,50},{-190,70}})));
   // --- Hydraulic
-  Modelica.Fluid.Interfaces.FluidPort_a port_supply[numberOfConnections](redeclare
-      package Medium =
-        Modelica.Media.Water.ConstantPropertyLiquidWater) if
-                                                       DH
-    annotation (Placement(transformation(extent={{-70,90},{-50,110}})));
-  Modelica.Fluid.Interfaces.FluidPort_b port_return[numberOfConnections](redeclare
-      package Medium =
-        Modelica.Media.Water.ConstantPropertyLiquidWater) if
-                                                       DH
-    annotation (Placement(transformation(extent={{-130,90},{-110,110}})));
   // --- Electrical
   Modelica.Electrical.QuasiStationary.MultiPhase.Interfaces.PositivePlug
     plugLoad(m=1) if nLoads >= 1 "Electricity connection to the Inhome feeder"
     annotation (Placement(transformation(extent={{190,-10},{210,10}})));
   Electric.BaseClasses.WattsLawPlug wattsLawPlug(each numPha=1, final nLoads=
         nLoads) if nLoads >= 1
-    annotation (Placement(transformation(extent={{184,-8},{190,8}})));
+    annotation (Placement(transformation(extent={{168,-10},{188,10}})));
 
   // --- Sensor
   Modelica.Blocks.Interfaces.RealInput[nTemSen] TSensor(final quantity="ThermodynamicTemperature",unit="K",displayUnit="degC", min=0)
@@ -89,9 +79,9 @@ protected
    Modelica.SIunits.Power[nLoads_min] Q "Passive power for each of the loads";
 public
   Modelica.Blocks.Sources.RealExpression[nLoads_min] P_val(y=P)
-    annotation (Placement(transformation(extent={{172,-2},{180,14}})));
+    annotation (Placement(transformation(extent={{148,0},{156,16}})));
   Modelica.Blocks.Sources.RealExpression[nLoads_min] Q_val(y=Q)
-    annotation (Placement(transformation(extent={{172,-12},{180,4}})));
+    annotation (Placement(transformation(extent={{148,-10},{156,6}})));
   Modelica.Blocks.Interfaces.RealInput[nZones] TSet(
     final quantity="ThermodynamicTemperature",
     unit="K",
@@ -106,19 +96,29 @@ public
         rotation=90,
         origin={0,-102})));
   outer Modelica.Fluid.System system
-  annotation (Placement(transformation(extent={{-180,80},{-160,100}})));
+  annotation (Placement(transformation(extent={{180,-100},{200,-80}})));
+  Modelica.Fluid.Interfaces.FluidPort_a portSupplyIn(redeclare package Medium
+      = Modelica.Media.Water.ConstantPropertyLiquidWater) if
+                                                       DH annotation (Placement(
+        transformation(extent={{50,90},{70,110}}), iconTransformation(extent={{
+            50,90},{70,110}})));
+  Modelica.Fluid.Interfaces.FluidPort_b portReturnOut(redeclare package Medium
+      = Modelica.Media.Water.ConstantPropertyLiquidWater) if
+                                                       DH annotation (Placement(
+        transformation(extent={{10,90},{30,110}}), iconTransformation(extent={{
+            10,90},{30,110}})));
 equation
   if nLoads >= 1 then
     connect(wattsLawPlug.vi, plugLoad) annotation (Line(
-      points={{190,0},{200,0}},
+      points={{188,0},{200,0}},
       color={85,170,255},
       smooth=Smooth.None));
     connect(P_val.y, wattsLawPlug.P) annotation (Line(
-      points={{180.4,6},{182,6},{182,6},{184,6},{184,4},{184,4.8}},
+      points={{156.4,8},{162,8},{162,6},{168,6}},
       color={0,0,127},
       smooth=Smooth.None));
     connect(Q_val.y, wattsLawPlug.Q) annotation (Line(
-          points={{180.4,-4},{181.35,-4},{181.35,1.6},{184,1.6}},
+          points={{156.4,-2},{163.35,-2},{163.35,2},{168,2}},
           color={0,0,127},
           smooth=Smooth.None));
   end if;

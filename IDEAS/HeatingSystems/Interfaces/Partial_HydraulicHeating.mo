@@ -1,6 +1,7 @@
 within IDEAS.HeatingSystems.Interfaces;
 partial model Partial_HydraulicHeating "Hydraulic multi-zone heating "
-  replaceable package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater;
+  replaceable package Medium =
+    Modelica.Media.Water.ConstantPropertyLiquidWater;
   extends IDEAS.Interfaces.BaseClasses.HeatingSystem(
     isHea = true,
     isCoo = false,
@@ -132,7 +133,7 @@ partial model Partial_HydraulicHeating "Hydraulic multi-zone heating "
   Fluid.Sensors.TemperatureTwoPort senTemEm_in(redeclare package Medium =
         Medium, m_flow_nominal=sum(m_flow_nominal))
     "Inlet temperature of the emission system"
-    annotation (Placement(transformation(extent={{62,42},{82,62}})));
+    annotation (Placement(transformation(extent={{60,42},{80,62}})));
   Fluid.Sensors.TemperatureTwoPort senTemHea_out(redeclare package Medium =
         Medium, m_flow_nominal=sum(m_flow_nominal))
     "Outlet temperature of the heater"
@@ -165,7 +166,7 @@ equation
         color={191,0,0},
         smooth=Smooth.None));
     connect(senTemEm_in.port_b, pumpRad[i].port_a) annotation (Line(
-        points={{82,52},{88,52}},
+        points={{80,52},{88,52}},
         color={0,127,255},
         smooth=Smooth.None));
   end for;
@@ -215,7 +216,7 @@ equation
       color={0,0,127},
       smooth=Smooth.None));
   connect(idealCtrlMixer.port_b, senTemEm_in.port_a) annotation (Line(
-      points={{56,58},{60,58},{60,52},{62,52}},
+      points={{56,58},{60,58},{60,52}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(heater.port_b, senTemHea_out.port_a) annotation (Line(

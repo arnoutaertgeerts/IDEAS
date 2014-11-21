@@ -226,8 +226,8 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   annotation (
-    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{200,
-            100}}),     graphics),
+    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{
+            200,100}}), graphics),
     Icon(coordinateSystem(preserveAspectRatio=true, extent={{-200,-100},{200,
             100}})),
     Documentation(info="<html>
