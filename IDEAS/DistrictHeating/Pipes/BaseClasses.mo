@@ -80,7 +80,7 @@ package BaseClasses "Base-classes for the pipe models"
     Fluid.Sensors.TemperatureTwoPort TIn2(redeclare package Medium = Medium2,
         m_flow_nominal=m2_flow_nominal)
       annotation (Placement(transformation(extent={{80,-70},{60,-50}})));
-    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow1
+    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow Q2Losses
       annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=270,
@@ -98,7 +98,7 @@ package BaseClasses "Base-classes for the pipe models"
       m_flow_nominal=m2_flow_nominal,
       dp_nominal=dp_nominal*L)
       annotation (Placement(transformation(extent={{10,-70},{-10,-50}})));
-    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow prescribedHeatFlow2
+    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow Q1Losses
       annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=270,
@@ -135,19 +135,19 @@ package BaseClasses "Base-classes for the pipe models"
         points={{80,-60},{100,-60}},
         color={0,127,255},
         smooth=Smooth.None));
-    connect(prescribedHeatFlow1.port, Pipe2.heatPort) annotation (Line(
+    connect(Q2Losses.port, Pipe2.heatPort) annotation (Line(
         points={{0,-44},{0,-50}},
         color={191,0,0},
         smooth=Smooth.None));
-    connect(prescribedHeatFlow2.port, Pipe1.heatPort) annotation (Line(
+    connect(Q1Losses.port, Pipe1.heatPort) annotation (Line(
         points={{0,78},{0,70}},
         color={191,0,0},
         smooth=Smooth.None));
-    connect(SupplyHeatLosses.y, prescribedHeatFlow2.Q_flow) annotation (Line(
+    connect(SupplyHeatLosses.y, Q1Losses.Q_flow) annotation (Line(
         points={{-19,106},{0,106},{0,98}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(ReturnHeatLosses.y, prescribedHeatFlow1.Q_flow) annotation (Line(
+    connect(ReturnHeatLosses.y, Q2Losses.Q_flow) annotation (Line(
         points={{-19,-12},{0,-12},{0,-24}},
         color={0,0,127},
         smooth=Smooth.None));

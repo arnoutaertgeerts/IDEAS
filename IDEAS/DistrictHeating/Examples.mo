@@ -288,9 +288,9 @@ package Examples
     extends Modelica.Icons.Example;
 
     inner IDEAS.SimInfoManager sim(occBeh=false, DHW=false)
-      annotation (Placement(transformation(extent={{-40,60},{-20,80}})));
+      annotation (Placement(transformation(extent={{40,80},{60,100}})));
     inner Modelica.Fluid.System system
-      annotation (Placement(transformation(extent={{20,60},{40,80}})));
+      annotation (Placement(transformation(extent={{80,80},{100,100}})));
     IDEAS.Interfaces.BuildingDH
                               building(
       redeclare IDEAS.Interfaces.BaseClasses.CausalInhomeFeeder inHomeGrid,
@@ -301,17 +301,7 @@ package Examples
       redeclare IDEAS.DistrictHeating.HeatingSystems.DirectSh heatingSystem(
           redeclare package Medium =
             Modelica.Media.Water.ConstantPropertyLiquidWater))
-               annotation (Placement(transformation(extent={{-48,24},{-28,44}})));
-
-    Fluid.Sources.FixedBoundary bou(
-      redeclare package Medium =
-          Modelica.Media.Water.ConstantPropertyLiquidWater,
-      use_T=false,
-      nPorts=1,
-      p=100000)
-      annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-          rotation=270,
-          origin={84,34})));
+               annotation (Placement(transformation(extent={{-48,26},{-28,46}})));
 
     Production.PolynomialProduction boiler(
       redeclare package Medium =
@@ -334,7 +324,7 @@ package Examples
       m_flow_nominal=0.5,
       Tsupply(allowFlowReversal=false),
       TReturn(allowFlowReversal=false))
-      annotation (Placement(transformation(extent={{-76,0},{-56,16}})));
+      annotation (Placement(transformation(extent={{-74,0},{-54,16}})));
     Interfaces.DHConnection dHConnection1(redeclare
         IDEAS.DistrictHeating.Pipes.DoublePipes.TwinPipeGround
         districtHeatingPipe, redeclare package Medium =
@@ -352,9 +342,7 @@ package Examples
       redeclare IDEAS.DistrictHeating.HeatingSystems.DirectSh heatingSystem(
           redeclare package Medium =
             Modelica.Media.Water.ConstantPropertyLiquidWater))
-               annotation (Placement(transformation(extent={{-76,24},{-56,44}})));
-    Modelica.Blocks.Sources.Constant TGround(k=273 + 8)
-      annotation (Placement(transformation(extent={{-96,-40},{-76,-20}})));
+               annotation (Placement(transformation(extent={{-74,26},{-54,46}})));
     Modelica.Fluid.Sensors.TemperatureTwoPort supply(redeclare package Medium
         = Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.5)
       annotation (Placement(transformation(extent={{60,18},{40,38}})));
@@ -372,7 +360,13 @@ package Examples
           rotation=180,
           origin={10,28})));
     Modelica.Blocks.Sources.Constant const2(k=1e5)
-      annotation (Placement(transformation(extent={{-38,-52},{-18,-32}})));
+      annotation (Placement(transformation(extent={{-40,-60},{-20,-40}})));
+    Modelica.Fluid.Sources.FixedBoundary boundary(
+      nPorts=1,
+      redeclare package Medium =
+          Modelica.Media.Water.ConstantPropertyLiquidWater,
+      use_T=false)
+      annotation (Placement(transformation(extent={{-42,-22},{-22,-2}})));
   equation
 
     //BoilerViaPartials.TSet = sim.Te;
@@ -380,37 +374,25 @@ package Examples
         points={{61,-40},{81,-40},{81,-8}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(bou.ports[1], boiler.port_b) annotation (Line(
-        points={{84,24},{84,20},{69.8,20},{69.8,8}},
-        color={0,127,255},
-        smooth=Smooth.None));
     connect(building.flowPortSupplyIn, dHConnection1.flowPortOut) annotation (
         Line(
-        points={{-36,24.2},{-36,16}},
+        points={{-36,26.2},{-36,16}},
         color={0,0,0},
         smooth=Smooth.None));
     connect(building.flowPortReturnOut, dHConnection1.flowPortIn) annotation (
         Line(
-        points={{-40,24.2},{-40,16}},
+        points={{-40,26.2},{-40,16}},
         color={0,0,0},
         smooth=Smooth.None));
     connect(building1.flowPortReturnOut, dHConnection.flowPortIn) annotation (
         Line(
-        points={{-68,24.2},{-68,16}},
+        points={{-66,26.2},{-66,16}},
         color={0,0,0},
         smooth=Smooth.None));
     connect(dHConnection.flowPortOut, building1.flowPortSupplyIn) annotation (
         Line(
-        points={{-64,16},{-64,24.2}},
+        points={{-62,16},{-62,26.2}},
         color={0,0,0},
-        smooth=Smooth.None));
-    connect(TGround.y, dHConnection.TAmbient) annotation (Line(
-        points={{-75,-30},{-68,-30},{-68,-1}},
-        color={0,0,127},
-        smooth=Smooth.None));
-    connect(TGround.y, dHConnection1.TAmbient) annotation (Line(
-        points={{-75,-30},{-40,-30},{-40,-1}},
-        color={0,0,127},
         smooth=Smooth.None));
     connect(returnT.port_b, boiler.port_a) annotation (Line(
         points={{40,-8},{69.8,-8},{69.8,0}},
@@ -418,7 +400,7 @@ package Examples
         smooth=Smooth.None));
     connect(dHConnection.flowPort_supply_in, dHConnection1.flowPort_supply_out)
       annotation (Line(
-        points={{-56,10},{-48,10}},
+        points={{-54,10},{-48,10}},
         color={0,0,0},
         smooth=Smooth.None));
     connect(supply.port_a, boiler.port_b) annotation (Line(
@@ -427,7 +409,7 @@ package Examples
         smooth=Smooth.None));
     connect(dHConnection.flowPort_return_out, dHConnection1.flowPort_return_in)
       annotation (Line(
-        points={{-56,6},{-48,6}},
+        points={{-54,6},{-48,6}},
         color={0,0,0},
         smooth=Smooth.None));
     connect(dHConnection1.flowPort_return_out, returnT.port_a) annotation (Line(
@@ -443,8 +425,12 @@ package Examples
         color={0,127,255},
         smooth=Smooth.None));
     connect(const2.y, fan1.dp_in) annotation (Line(
-        points={{-17,-42},{-12,-42},{-12,10},{10.2,10},{10.2,16}},
+        points={{-19,-50},{10.2,-50},{10.2,16}},
         color={0,0,127},
+        smooth=Smooth.None));
+    connect(boundary.ports[1], returnT.port_a) annotation (Line(
+        points={{-22,-12},{-12,-12},{-12,6},{0,6},{0,-8},{20,-8}},
+        color={0,127,255},
         smooth=Smooth.None));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -100},{100,100}}),      graphics), Icon(coordinateSystem(extent={{-100,
