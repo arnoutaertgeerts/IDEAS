@@ -65,8 +65,8 @@ equation
       points={{-50,80},{-10,80}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(storageTank_OneIntHX.port_a, dHW_ProfileReader.port_cold) annotation
-    (Line(
+  connect(storageTank_OneIntHX.port_a, dHW_ProfileReader.port_cold) annotation (
+     Line(
       points={{78,-10.7692},{100,-10.7692},{100,-34}},
       color={0,127,255},
       smooth=Smooth.None));

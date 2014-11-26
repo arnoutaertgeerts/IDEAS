@@ -18,8 +18,8 @@ model Substation2
     annotation (Placement(transformation(extent={{-170,70},{-150,90}})));
   Fluid.Interfaces.FlowPort_a flowPortDHWIn(redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater)
-    "Return of cold water from DHW" annotation (Placement(transformation(extent
-          ={{-170,-90},{-150,-70}}), iconTransformation(extent={{-170,-90},{
+    "Return of cold water from DHW" annotation (Placement(transformation(extent=
+           {{-170,-90},{-150,-70}}), iconTransformation(extent={{-170,-90},{
             -150,-70}})));
   Fluid.Interfaces.FlowPort_b flowPortDHWOut(redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater)

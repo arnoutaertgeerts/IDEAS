@@ -83,9 +83,9 @@ model PreinsulatedPipesExample
     QNom=10000,
     m_flow_nominal=0.5,
     redeclare package Medium = Modelica.Media.Water.ConstantPropertyLiquidWater,
-
     redeclare IDEAS.DistrictHeating.Production.Data.Polynomials.Boiler2ndDegree
       data) annotation (Placement(transformation(extent={{-98,-28},{-78,-50}})));
+
   Fluid.Sensors.TemperatureTwoPort TReturn1(
                                            redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater, m_flow_nominal=0.1)
@@ -104,8 +104,8 @@ model PreinsulatedPipesExample
     T=343.15) annotation (Placement(transformation(extent={{10,-10},{-10,10}},
         rotation=90,
         origin={18,12})));
-  Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow prescribedHeatFlow(Q_flow
-      =-8000)
+  Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow prescribedHeatFlow(Q_flow=
+       -8000)
     annotation (Placement(transformation(extent={{104,-32},{84,-10}})));
   Fluid.Movers.Pump pump(m_flow_nominal=0.5, redeclare package Medium =
         Modelica.Media.Water.ConstantPropertyLiquidWater)

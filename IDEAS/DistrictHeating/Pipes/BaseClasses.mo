@@ -34,7 +34,7 @@ package BaseClasses "Base-classes for the pipe models"
     final parameter Modelica.SIunits.Length D = E/2
       "Half the distance between the center of the pipes";
 
-    parameter Types.PressurePerLength dp_nominal=200
+    parameter Types.PressurePerLength dp_nominal=20
       "Nominal pressure drop/meter over the pipe";
     parameter Modelica.SIunits.MassFlowRate m_flow_nominal=0.1;
 
@@ -80,8 +80,8 @@ package BaseClasses "Base-classes for the pipe models"
     Fluid.Sensors.TemperatureTwoPort TIn2(redeclare package Medium = Medium2,
         m_flow_nominal=m2_flow_nominal)
       annotation (Placement(transformation(extent={{80,-70},{60,-50}})));
-    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow Q2Losses
-      annotation (Placement(transformation(
+    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow Q2Losses annotation (
+       Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=270,
           origin={0,-34})));
@@ -98,8 +98,8 @@ package BaseClasses "Base-classes for the pipe models"
       m_flow_nominal=m2_flow_nominal,
       dp_nominal=dp_nominal*L)
       annotation (Placement(transformation(extent={{10,-70},{-10,-50}})));
-    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow Q1Losses
-      annotation (Placement(transformation(
+    Modelica.Thermal.HeatTransfer.Sources.PrescribedHeatFlow Q1Losses annotation (
+       Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=270,
           origin={0,88})));
@@ -216,8 +216,8 @@ package BaseClasses "Base-classes for the pipe models"
             lineColor={255,0,0},
             fillColor={255,0,0},
             fillPattern=FillPattern.Sphere)}),
-                                   Diagram(coordinateSystem(extent={{-100,-140},
-              {100,140}}, preserveAspectRatio=false),
+                                   Diagram(coordinateSystem(extent={{-100,-140},{100,
+              140}},      preserveAspectRatio=false),
                       graphics),
                 Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
               -120},{100,120}}), graphics));
