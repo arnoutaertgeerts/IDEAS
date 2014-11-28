@@ -7,8 +7,7 @@ model IndirectSH
         TOutNom=303.15),
     pipeSupply(m=1, UA=10),
     pipeReturn(m=1, UA=10),
-    redeclare HydraulicCircuits.SinglePump
-                                      hydraulicCircuitSH(
+    redeclare HydraulicCircuits.SinglePump hydraulicCircuitSH(
       m1_flow_nominal=m_flow_zone,
       m2_flow_nominal=m_flow_zone,
       redeclare package Medium1 = Medium,
@@ -26,9 +25,10 @@ model IndirectSH
       m2_flow_nominal=m_flow_nominal,
       efficiency=0.9,
       m=1,
-      p=200000,
-      dp1_nominal=20000000,
-      dp2_nominal=200));
+      dp2_nominal(displayUnit="Pa") = 200,
+      dp1_nominal(displayUnit="Pa") = 200,
+      p(displayUnit="bar") = 200000),
+    redeclare Control.SupplyTControl partialHXControl);
 
   Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow fixedHeatFlow[nZones](Q_flow=0)
                                                                             annotation (
@@ -36,15 +36,7 @@ model IndirectSH
         extent={{-10,-10},{10,10}},
         rotation=180,
         origin={-180,60})));
-  Control.Hysteresis hysteresis(
-    release=true,
-    uLow=273.15 + 68,
-    realTrue=0,
-    realFalse=1,
-    uHigh=273.15 + 70)
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-        rotation=0,
-        origin={-118,-80})));
+
   HydraulicCircuits.Mixer mixer(
     redeclare package Medium1 = Medium,
     redeclare package Medium2 = Medium,
@@ -58,6 +50,7 @@ model IndirectSH
         extent={{-10,-10},{10,10}},
         rotation=90,
         origin={-82,-14})));
+
   Fluid.Sources.FixedBoundary bou(
     use_T=false,
     redeclare package Medium = Medium,
@@ -65,7 +58,8 @@ model IndirectSH
     nPorts=1)
     annotation (Placement(transformation(extent={{-10,-10},{10,10}},
         rotation=270,
-        origin={-116,-28})));
+        origin={-106,-28})));
+
 equation
   QHeaSys = -sum(emission.heatPortCon.Q_flow) - sum(emission.heatPortRad.Q_flow);
   P[1] = 0;
@@ -91,29 +85,17 @@ equation
       points={{-160,-104},{-160,-66},{-144,-66},{-144,-14},{-93.4,-14}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(heatExchanger.supplyT, hysteresis.u) annotation (Line(
-      points={{-92.8,-54},{-136,-54},{-136,-80},{-129.2,-80}},
-      color={0,0,127},
-      smooth=Smooth.None));
-  connect(hysteresis.y, heatExchanger.u) annotation (Line(
-      points={{-107.2,-80},{-102,-80},{-102,-58},{-93.4,-58}},
-      color={0,0,127},
-      smooth=Smooth.None));
-  connect(mixer.port_a1, heatExchanger.port_b1) annotation (Line(
-      points={{-88,-24},{-88,-48}},
+  connect(heatExchanger.port_b1, mixer.port_a1) annotation (Line(
+      points={{-88,-58},{-88,-24}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(mixer.port_b2, heatExchanger.port_a2) annotation (Line(
-      points={{-76,-24},{-76,-48}},
+  connect(heatExchanger.port_a2, mixer.port_b2) annotation (Line(
+      points={{-76,-58},{-76,-24}},
       color={0,127,255},
       smooth=Smooth.None));
-  connect(bou.ports[1], heatExchanger.port_b1) annotation (Line(
-      points={{-116,-38},{-116,-42},{-88,-42},{-88,-48}},
+  connect(bou.ports[1], mixer.port_a1) annotation (Line(
+      points={{-106,-38},{-106,-46},{-88,-46},{-88,-24}},
       color={0,127,255},
-      smooth=Smooth.None));
-  connect(heatExchanger.senM, hysteresis.u1) annotation (Line(
-      points={{-92.6,-50},{-118,-50},{-118,-69.2}},
-      color={0,0,127},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
             -100},{200,100}}), graphics));

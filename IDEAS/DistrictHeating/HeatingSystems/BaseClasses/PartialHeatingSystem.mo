@@ -52,7 +52,9 @@ partial model PartialHeatingSystem
     annotation (Placement(transformation(extent={{-92,4},{-72,24}})));
 
   replaceable Fluid.HeatExchangers.Radiators.Radiator emission[nZones](
-      redeclare package Medium = Medium)
+      redeclare package Medium = Medium,
+      QNom=QNom,
+      each powerFactor=3.37)
     annotation (Placement(transformation(extent={{-106,64},{-126,84}})));
 
   Fluid.FixedResistances.Pipe_Insulated pipeSupply[nZones](

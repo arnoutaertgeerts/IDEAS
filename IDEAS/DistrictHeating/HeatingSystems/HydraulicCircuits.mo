@@ -216,6 +216,78 @@ package HydraulicCircuits "Collection of basic hydraulic circuits"
             rotation=180)}));
   end Direct;
 
+  model Splitter
+    extends BaseClasses.HydraulicCircuitPartial;
+
+    Fluid.FixedResistances.SplitterFixedResistanceDpM spl1(
+      redeclare replaceable package Medium = Medium1,
+      m_flow_nominal={m1_flow_nominal,m1_flow_nominal,-m1_flow_nominal},
+      dp_nominal={-20,20,-20})
+      annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+          rotation=0,
+          origin={40,60})));
+    Fluid.FixedResistances.SplitterFixedResistanceDpM spl2(
+      redeclare replaceable package Medium = Medium1,
+      m_flow_nominal={m1_flow_nominal,m1_flow_nominal,-m1_flow_nominal},
+      dp_nominal={-20,20,-20})
+      annotation (Placement(transformation(extent={{10,-10},{-10,10}},
+          rotation=0,
+          origin={-40,-60})));
+    Modelica.Fluid.Interfaces.FluidPort_a port_a3(
+                       redeclare final package Medium = Medium1,
+                       m_flow(min=if allowFlowReversal1 then -Modelica.Constants.inf else 0),
+                       h_outflow(start=h_outflow_a1_start))
+      "Fluid connector a1 (positive design flow direction is from port_a1 to port_b1)"
+      annotation (Placement(transformation(extent={{-50,-110},{-30,-90}},
+              rotation=0)));
+    Modelica.Fluid.Interfaces.FluidPort_b port_b3(
+                       redeclare final package Medium = Medium1,
+                       m_flow(max=if allowFlowReversal1 then +Modelica.Constants.inf else 0),
+                       h_outflow(start=h_outflow_b1_start))
+      "Fluid connector b1 (positive design flow direction is from port_a1 to port_b1)"
+      annotation (Placement(transformation(extent={{50,-110},{30,-90}},rotation=
+               0), iconTransformation(extent={{50,-110},{30,-90}})));
+  equation
+    connect(pipe_Insulated2.port_b, spl1.port_2) annotation (Line(
+        points={{-60,60},{30,60}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(spl1.port_1, port_b1) annotation (Line(
+        points={{50,60},{100,60}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(pipe_Insulated1.port_a, spl2.port_2) annotation (Line(
+        points={{-60,-60},{-50,-60}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(spl2.port_1, port_a2) annotation (Line(
+        points={{-30,-60},{100,-60}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(spl2.port_3, port_a3) annotation (Line(
+        points={{-40,-70},{-40,-100}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(spl1.port_3, port_b3) annotation (Line(
+        points={{40,50},{40,-100}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(port_b3, port_b3) annotation (Line(
+        points={{40,-100},{40,-100}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
+              -100,-100},{100,100}}), graphics), Icon(coordinateSystem(
+            preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+          graphics={Line(
+            points={{40,-100},{40,60}},
+            color={0,128,255},
+            smooth=Smooth.None), Line(
+            points={{-40,-100},{-40,-60}},
+            color={0,128,255},
+            smooth=Smooth.None)}));
+  end Splitter;
+
   model SinglePump "Base circuit controlled by a single pump"
 
     //Extensions
@@ -273,16 +345,16 @@ package HydraulicCircuits "Collection of basic hydraulic circuits"
 
   model HeatExchanger
     extends BaseClasses.HydraulicCircuitPartial(pipe_Insulated2(m=m/2,
-          m_flow_nominal=m1_flow_nominal), pipe_Insulated1(m=m/2,
-          m_flow_nominal=m2_flow_nominal));
+          m_flow_nominal=m1_flow_nominal), pipe_Insulated1(m=m/2, m_flow_nominal=
+            m2_flow_nominal));
 
     //Parameters
-    parameter Modelica.SIunits.Pressure p=2
+    parameter Modelica.SIunits.Pressure p=200000
       "Absolute pressure on the secondary side";
     parameter Real efficiency=0.9 "Efficiency of the heat exchanger";
-    parameter Modelica.SIunits.PressureDifference dp1_nominal=200
+    parameter Modelica.SIunits.Pressure dp1_nominal=200
       "Pressure drop on the primary side";
-    parameter Modelica.SIunits.PressureDifference dp2_nominal=200
+    parameter Modelica.SIunits.Pressure dp2_nominal=200
       "Pressure drop on the secondary side";
 
     //Components
@@ -298,13 +370,13 @@ package HydraulicCircuits "Collection of basic hydraulic circuits"
           extent={{-10,10},{10,-10}},
           rotation=270,
           origin={0,0})));
-    Fluid.Sensors.MassFlowRate senMasFlo(redeclare package Medium = Medium1)
+    Fluid.Sensors.MassFlowRate senMasFlo2(redeclare package Medium = Medium1)
       annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=0,
-          origin={40,34})));
-    Fluid.Sensors.TemperatureTwoPort senSupplyT(redeclare package Medium =
-          Medium1, m_flow_nominal=m1_flow_nominal)
+          origin={60,34})));
+    Fluid.Sensors.TemperatureTwoPort senTem1(redeclare package Medium = Medium1,
+        m_flow_nominal=m1_flow_nominal)
       annotation (Placement(transformation(extent={{-34,0},{-14,20}})));
     Direct direct(
       redeclare package Medium1 = Medium1,
@@ -313,23 +385,43 @@ package HydraulicCircuits "Collection of basic hydraulic circuits"
       m2_flow_nominal=m2_flow_nominal,
       m=m/2)
       annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
-    Modelica.Blocks.Interfaces.RealOutput supplyT
-      "Temperature of the supply line on the primary side" annotation (Placement(
-          transformation(
+    Modelica.Blocks.Interfaces.RealOutput senT1
+      "Temperature of the supply line on the primary side" annotation (
+        Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=90,
-          origin={40,108})));
-    Modelica.Blocks.Interfaces.RealOutput senM "Massflow at the secondary side"
-      annotation (Placement(transformation(
+          origin={-40,106})));
+    Modelica.Blocks.Interfaces.RealOutput senMassFlow2
+      "Massflow at the secondary side" annotation (Placement(transformation(
           extent={{-10,-10},{10,10}},
           rotation=90,
           origin={80,106})));
+    Fluid.Sensors.MassFlowRate senMasFlo1(
+                                         redeclare package Medium = Medium1)
+      annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=0,
+          origin={-68,30})));
+    Modelica.Blocks.Interfaces.RealOutput senMassFlow1
+      "Massflow at the secondary side" annotation (Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={-80,106})));
+    Fluid.Sensors.TemperatureTwoPort senTem2(redeclare package Medium = Medium1,
+        m_flow_nominal=m1_flow_nominal)
+      annotation (Placement(transformation(extent={{18,24},{38,44}})));
+    Modelica.Blocks.Interfaces.RealOutput senT2
+      "Temperature of the supply line on the primary side" annotation (
+        Placement(transformation(
+          extent={{-10,-10},{10,10}},
+          rotation=90,
+          origin={40,106})));
   equation
-    connect(senMasFlo.port_b, port_b1) annotation (Line(
-        points={{50,34},{74,34},{74,60},{100,60}},
+    connect(senMasFlo2.port_b, port_b1) annotation (Line(
+        points={{70,34},{74,34},{74,60},{100,60}},
         color={0,127,255},
         smooth=Smooth.None));
-    connect(direct.port_b1, senSupplyT.port_a) annotation (Line(
+    connect(direct.port_b1, senTem1.port_a) annotation (Line(
         points={{-40,6},{-36,6},{-36,10},{-34,10}},
         color={0,127,255},
         smooth=Smooth.None));
@@ -337,16 +429,12 @@ package HydraulicCircuits "Collection of basic hydraulic circuits"
         points={{0,114},{0,80},{-50,80},{-50,11.4}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(senSupplyT.T, supplyT) annotation (Line(
-        points={{-24,21},{-24,72},{40,72},{40,108}},
+    connect(senTem1.T, senT1) annotation (Line(
+        points={{-24,21},{-24,52},{-40,52},{-40,106}},
         color={0,0,127},
         smooth=Smooth.None));
-    connect(senSupplyT.port_b, hex.port_a1) annotation (Line(
+    connect(senTem1.port_b, hex.port_a1) annotation (Line(
         points={{-14,10},{-6,10}},
-        color={0,127,255},
-        smooth=Smooth.None));
-    connect(hex.port_b2, senMasFlo.port_a) annotation (Line(
-        points={{6,10},{6,34},{30,34}},
         color={0,127,255},
         smooth=Smooth.None));
     connect(hex.port_a2, port_a2) annotation (Line(
@@ -357,16 +445,36 @@ package HydraulicCircuits "Collection of basic hydraulic circuits"
         points={{-40,-6},{-36,-6},{-36,-10},{-6,-10}},
         color={0,127,255},
         smooth=Smooth.None));
-    connect(pipe_Insulated2.port_b, direct.port_a1) annotation (Line(
-        points={{-60,60},{-56,60},{-56,20},{-80,20},{-80,6},{-60,6}},
-        color={0,127,255},
-        smooth=Smooth.None));
     connect(pipe_Insulated1.port_a, direct.port_b2) annotation (Line(
-        points={{-60,-60},{-48,-60},{-48,-40},{-80,-40},{-80,-6},{-60,-6}},
+        points={{-68,-60},{-48,-60},{-48,-40},{-80,-40},{-80,-6},{-60,-6}},
         color={0,127,255},
         smooth=Smooth.None));
-    connect(senMasFlo.m_flow, senM) annotation (Line(
-        points={{40,45},{40,60},{60,60},{60,80},{80,80},{80,106}},
+    connect(senMasFlo2.m_flow, senMassFlow2) annotation (Line(
+        points={{60,45},{60,80},{80,80},{80,106}},
+        color={0,0,127},
+        smooth=Smooth.None));
+    connect(pipe_Insulated2.port_b, senMasFlo1.port_b) annotation (Line(
+        points={{-70,60},{-56,60},{-56,30},{-58,30}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(senMasFlo1.port_a, direct.port_a1) annotation (Line(
+        points={{-78,30},{-80,30},{-80,6},{-60,6}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(senMasFlo1.m_flow, senMassFlow1) annotation (Line(
+        points={{-68,41},{-68,48},{-80,48},{-80,106}},
+        color={0,0,127},
+        smooth=Smooth.None));
+    connect(hex.port_b2, senTem2.port_a) annotation (Line(
+        points={{6,10},{6,34},{18,34}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(senTem2.port_b, senMasFlo2.port_a) annotation (Line(
+        points={{38,34},{50,34}},
+        color={0,127,255},
+        smooth=Smooth.None));
+    connect(senTem2.T, senT2) annotation (Line(
+        points={{28,45},{28,80},{40,80},{40,106}},
         color={0,0,127},
         smooth=Smooth.None));
     annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -507,7 +615,7 @@ package HydraulicCircuits "Collection of basic hydraulic circuits"
                                        annotation (Placement(transformation(
             extent={{-10,4},{10,-4}},
             rotation=0,
-            origin={-70,60})));
+            origin={-80,60})));
       Fluid.FixedResistances.Pipe_Insulated pipe_Insulated1(
         redeclare package Medium = Medium1,
         m=m,
@@ -516,14 +624,14 @@ package HydraulicCircuits "Collection of basic hydraulic circuits"
                                        annotation (Placement(transformation(
             extent={{-10,4},{10,-4}},
             rotation=180,
-            origin={-70,-60})));
+            origin={-78,-60})));
     equation
       connect(port_a1, pipe_Insulated2.port_a) annotation (Line(
-          points={{-100,60},{-80,60}},
+          points={{-100,60},{-90,60}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(port_b2, pipe_Insulated1.port_b) annotation (Line(
-          points={{-100,-60},{-80,-60}},
+          points={{-100,-60},{-88,-60}},
           color={0,127,255},
           smooth=Smooth.None));
       annotation (Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
