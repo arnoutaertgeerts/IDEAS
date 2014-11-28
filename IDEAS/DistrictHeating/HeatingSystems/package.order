@@ -1,6 +1,7 @@
-DirectSh
-DhwBoilerDirectSh
-IndirectShBoilerDhw
-PartialHydraulicHeatingDH
-SpaceHeating
-PartialWithBaseCircuits
+DirectSH
+DirectSHBoilerDHW
+IndirectSH
+IndirectSHBoilerDHW
+HydraulicCircuits
+Control
+BaseClasses

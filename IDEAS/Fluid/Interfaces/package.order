@@ -13,8 +13,8 @@ LumpedVolumeDeclarations
 OnOffInterface
 PartialFourPortInterface
 PartialTwoPort
-PartialTwoPortInterfaceVertical
 PartialTwoPortVertical
+PartialTwoPortInterfaceVertical
 PartialTwoPortInterface
 PartialTwoPortTransport
 StaticFourPortHeatMassExchanger

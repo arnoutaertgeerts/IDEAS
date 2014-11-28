@@ -13,7 +13,8 @@ model Partial3WayValve "Partial for 3-way valves"
         Medium) "Fluid outlet"
     annotation (Placement(transformation(extent={{90,-10},{110,10}})));
 
-  MixingVolumes.MixingVolume vol(nPorts=2,
+  MixingVolumes.MixingVolume vol(
+    nPorts=2,
     redeclare package Medium = Medium,
     m_flow_nominal=m_flow_nominal,
     energyDynamics=energyDynamics,

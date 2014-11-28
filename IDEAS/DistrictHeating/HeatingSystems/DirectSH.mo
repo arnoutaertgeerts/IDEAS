@@ -1,85 +1,52 @@
 within IDEAS.DistrictHeating.HeatingSystems;
-model DirectSh
-  extends IDEAS.DistrictHeating.HeatingSystems.PartialHydraulicHeatingDH(
-    final isHea=true,
-    final isCoo=false,
-    final nConvPorts=nZones,
-    final nRadPorts=nZones,
-    final nTemSen=nZones,
-    final nEmbPorts=nZones,
-    nLoads=1,
-    nZones=1,
-    minSup=true,
-    TSupMin=273.15+30,
-    redeclare Fluid.HeatExchangers.Radiators.Radiator emission[nZones](
-      each TInNom=TSupNom,
-      each TOutNom=TSupNom - dTSupRetNom,
-      TZoneNom=TRoomNom,
-      QNom=QNom,
-      each powerFactor=3.37,
-    redeclare each package Medium = Medium),
-    pumpRad(each filteredMassFlowRate=true));
+model DirectSH
+  extends BaseClasses.PartialHeatingSystem(
+    redeclare replaceable package Medium = IDEAS.Media.Water.Simple,
+    redeclare Fluid.HeatExchangers.Radiators.Radiator emission(
+      redeclare package Medium = Medium),
+    redeclare replaceable HydraulicCircuits.Direct hydraulicCircuitSH(
+      m1_flow_nominal=m_flow_nominal,
+      m2_flow_nominal=m_flow_nominal,
+      redeclare package Medium1 = Medium,
+      redeclare package Medium2 = Medium,
+      from_dp=true),
+    pipeSupply(m=1, UA=10),
+    pipeReturn(m=1, UA=10),
+    redeclare Control.Hysteresis controlSH(
+      release=false,
+      uLow=273.15 + 21,
+      realTrue=0,
+      realFalse=1,
+      uHigh=273.15 + 23));
 
-  Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow[nZones] fixedHeatFlow(Q_flow=0)
-    annotation (Placement(transformation(extent={{-180,56},{-190,66}})));
-  Fluid.Sources.FixedBoundary absolutePressure1(
-    redeclare package Medium = Medium,
-    use_T=false,
-    nPorts=1)
-    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
-        rotation=90,
-        origin={0,-42})));
-  Fluid.Valves.Thermostatic3WayValve idealCtrlMixer(
-    redeclare package Medium = Medium, m_flow_nominal=sum(m_flow_nominal))
-                                   annotation (Placement(
-        transformation(
-        extent={{10,10},{-10,-10}},
-        rotation=90,
-        origin={-20,46})));
+  Modelica.Thermal.HeatTransfer.Sources.FixedHeatFlow fixedHeatFlow[nZones](Q_flow=0)
+                                                                            annotation (
+     Placement(transformation(
+        extent={{-10,-10},{10,10}},
+        rotation=180,
+        origin={-180,60})));
 equation
   QHeaSys = -sum(emission.heatPortCon.Q_flow) - sum(emission.heatPortRad.Q_flow);
-
   P[1] = 0;
   Q[1] = 0;
 
-  connect(emission.heatPortRad, heatPortRad) annotation (Line(
-      points={{-159,-26},{-160,-26},{-160,-20},{-200,-20}},
+  connect(port_a, zoneSplitter.port_a) annotation (Line(
+      points={{-60,-100},{-60,-80},{-88,-80},{-88,0.2}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(zoneSplitter.port_b, port_b) annotation (Line(
+      points={{-76,0},{-76,-72},{60,-72},{60,-100}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(fixedHeatFlow.port, heatPortEmb) annotation (Line(
+      points={{-190,60},{-200,60}},
       color={191,0,0},
       smooth=Smooth.None));
-  connect(emission.heatPortCon, heatPortCon) annotation (Line(
-      points={{-155,-26},{-154,-26},{-154,20},{-200,20}},
-      color={191,0,0},
-      smooth=Smooth.None));
-  connect(heatPortEmb, fixedHeatFlow.port) annotation (Line(
-      points={{-200,60},{-196,60},{-196,61},{-190,61},{-190,61}},
-      color={191,0,0},
-      smooth=Smooth.None));
-  connect(pipeReturn.port_b, portReturnOut) annotation (Line(
-      points={{-50,80},{20,80},{20,100}},
-      color={0,127,255},
-      smooth=Smooth.None));
-
-  connect(absolutePressure1.ports[1], senTemEm_in.port_a) annotation (Line(
-      points={{8.88178e-016,-32},{8.88178e-016,-20},{-20,-20},{-20,-36},{-26,-36}},
-      color={0,127,255},
-      smooth=Smooth.None));
-
-  connect(spl.port_3, idealCtrlMixer.port_a2) annotation (Line(
-      points={{-110,70},{-110,46},{-30,46}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(idealCtrlMixer.port_a1, portSupplyIn) annotation (Line(
-      points={{-20,56},{-20,60},{60,60},{60,100}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(idealCtrlMixer.port_b, pipeSupply.port_a) annotation (Line(
-      points={{-20,36},{-20,16}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(heatingCurve.TSup, idealCtrlMixer.TMixedSet) annotation (Line(
-      points={{-103,28},{-4,28},{-4,46},{-10,46}},
+  connect(TSensor, controlSH.u) annotation (Line(
+      points={{-204,-60},{-140,-60},{-140,38},{-129.2,38}},
       color={0,0,127},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
-            -100},{200,100}}), graphics));
-end DirectSh;
+            -100},{200,100}}), graphics), Icon(coordinateSystem(
+          preserveAspectRatio=false, extent={{-200,-100},{200,100}}), graphics));
+end DirectSH;

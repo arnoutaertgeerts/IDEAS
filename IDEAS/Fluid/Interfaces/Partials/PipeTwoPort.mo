@@ -1,6 +1,7 @@
 within IDEAS.Fluid.Interfaces.Partials;
 model PipeTwoPort "Two port containing a volume and pressure drop"
-  extends IDEAS.Fluid.Interfaces.Partials.PartialTwoPort(vol(nPorts=2));
+  extends IDEAS.Fluid.Interfaces.Partials.PartialTwoPort(vol(
+    nPorts=2));
   extends IDEAS.Fluid.Interfaces.TwoPortFlowResistanceParameters(
     dp_nominal = 0);
 
