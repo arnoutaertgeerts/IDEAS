@@ -8,14 +8,14 @@ partial model PartialHeatExchanger
         transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-82,-64})));
+        origin={-82,-58})));
 equation
-  connect(port_a, heatExchanger.port_a1) annotation (Line(
-      points={{-60,-100},{-60,-86},{-88,-86},{-88,-74}},
+  connect(heatExchanger.port_a1, port_a) annotation (Line(
+      points={{-88,-68},{-88,-80},{-60,-80},{-60,-100}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(heatExchanger.port_b2, port_b) annotation (Line(
-      points={{-76,-74},{-76,-80},{60,-80},{60,-100}},
+      points={{-76,-68},{-76,-72},{60,-72},{60,-100}},
       color={0,127,255},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,

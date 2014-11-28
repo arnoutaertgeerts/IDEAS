@@ -43,7 +43,7 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   connect(TSensor, controlSH.u) annotation (Line(
-      points={{-204,-60},{-140,-60},{-140,38},{-129.2,38}},
+      points={{-204,-60},{-140,-60},{-140,36},{-127.2,36}},
       color={0,0,127},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,

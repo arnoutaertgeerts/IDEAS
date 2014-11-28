@@ -125,7 +125,7 @@ equation
           smooth=Smooth.None,
           visible=showDesignFlowDirection),                                                                                 Polygon(          points={{
               -10,-35},{-10,15},{0,35},{10,15},{10,-35},{-10,-35}},                                                                                                    lineColor={255,0,0},
-            fillPattern=                                                                                                    FillPattern.Forward,          fillColor={255,255,255},
+            fillPattern =                                                                                                   FillPattern.Forward,          fillColor={255,255,255},
           origin={0,59},
           rotation=180)}), Diagram(coordinateSystem(preserveAspectRatio=false,
           extent={{-100,-100},{100,100}}), graphics));

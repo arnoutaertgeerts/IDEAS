@@ -42,18 +42,18 @@ partial model PartialHeatingSystem
         transformation(
         extent={{10,10},{-10,-10}},
         rotation=270,
-        origin={-82,36})),choicesAllMatching=true);
+        origin={-82,40})),choicesAllMatching=true);
 
   HydraulicCircuits.ZoneSplitter zoneSplitter(
     redeclare final package Medium = Medium,
     n=nZones,
     m_flow_nominal=sum(m_flow_zone),
     V=sum(m_flow_zone)*30/1000)
-    annotation (Placement(transformation(extent={{-92,0},{-72,20}})));
+    annotation (Placement(transformation(extent={{-92,4},{-72,24}})));
 
   replaceable Fluid.HeatExchangers.Radiators.Radiator emission[nZones](
       redeclare package Medium = Medium)
-    annotation (Placement(transformation(extent={{-106,60},{-126,80}})));
+    annotation (Placement(transformation(extent={{-106,64},{-126,84}})));
 
   Fluid.FixedResistances.Pipe_Insulated pipeSupply[nZones](
     redeclare package Medium=Medium,
@@ -64,7 +64,7 @@ partial model PartialHeatingSystem
         transformation(
         extent={{-10,-4},{10,4}},
         rotation=90,
-        origin={-88,60})));
+        origin={-88,64})));
   Fluid.FixedResistances.Pipe_Insulated pipeReturn[nZones](
     redeclare package Medium = Medium,
     m_flow_nominal=m_flow_zone,
@@ -74,48 +74,48 @@ partial model PartialHeatingSystem
         transformation(
         extent={{10,-4},{-10,4}},
         rotation=90,
-        origin={-76,72})));
+        origin={-76,76})));
 
   replaceable Control.PartialControl controlSH[nZones]
-    annotation (Placement(transformation(extent={{-126,26},{-106,46}})));
+    annotation (Placement(transformation(extent={{-126,30},{-106,50}})));
 equation
   connect(zoneSplitter.port_bN, hydraulicCircuitSH.port_a1) annotation (
       Line(
-      points={{-88,20.2},{-88,26}},
+      points={{-88,24.2},{-88,30}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(zoneSplitter.port_aN, hydraulicCircuitSH.port_b2) annotation (
       Line(
-      points={{-76,20.2},{-76,26}},
+      points={{-76,24.2},{-76,30}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(hydraulicCircuitSH.port_b1, pipeSupply.port_a) annotation (Line(
-      points={{-88,46},{-88,50}},
+      points={{-88,50},{-88,54}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(hydraulicCircuitSH.port_a2, pipeReturn.port_b) annotation (Line(
-      points={{-76,46},{-76,62}},
+      points={{-76,50},{-76,66}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(pipeSupply.port_b, emission.port_a) annotation (Line(
-      points={{-88,70},{-106,70}},
+      points={{-88,74},{-106,74}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(emission.port_b, pipeReturn.port_a) annotation (Line(
-      points={{-126,70},{-136,70},{-136,90},{-76,90},{-76,82}},
+      points={{-126,74},{-136,74},{-136,94},{-76,94},{-76,86}},
       color={0,127,255},
       smooth=Smooth.None));
 
   connect(emission.heatPortCon, heatPortCon) annotation (Line(
-      points={{-121,80},{-120,80},{-120,88},{-176,88},{-176,20},{-200,20}},
+      points={{-121,84},{-120,84},{-120,92},{-176,92},{-176,20},{-200,20}},
       color={191,0,0},
       smooth=Smooth.None));
   connect(controlSH.y, hydraulicCircuitSH.u) annotation (Line(
-      points={{-105.2,36},{-93.4,36}},
+      points={{-105.2,40},{-93.4,40}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(emission.heatPortRad, heatPortRad) annotation (Line(
-      points={{-125,80},{-166,80},{-166,-20},{-200,-20}},
+      points={{-125,84},{-166,84},{-166,-20},{-200,-20}},
       color={191,0,0},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,

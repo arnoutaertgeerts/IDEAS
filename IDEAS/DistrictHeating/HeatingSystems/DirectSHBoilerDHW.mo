@@ -32,11 +32,11 @@ model DirectSHBoilerDHW
         origin={10,-32})));
 equation
   connect(port_a, zoneSplitter.port_a) annotation (Line(
-      points={{-60,-100},{-60,-80},{-88,-80},{-88,-35.8}},
+      points={{-60,-100},{-60,-80},{-88,-80},{-88,0.2}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(port_b, zoneSplitter.port_b) annotation (Line(
-      points={{60,-100},{60,-60},{-76,-60},{-76,-36}},
+      points={{60,-100},{60,-60},{-76,-60},{-76,0}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(storageTank_OneIntHX.port_a, dHW.port_cold) annotation (Line(
@@ -67,11 +67,11 @@ equation
       color={0,127,255},
       smooth=Smooth.None));
   connect(direct.port_a1, zoneSplitter.port_a) annotation (Line(
-      points={{4,-42},{4,-80},{-88,-80},{-88,-35.8}},
+      points={{4,-42},{4,-80},{-88,-80},{-88,0.2}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(direct.port_b2, zoneSplitter.port_b) annotation (Line(
-      points={{16,-42},{16,-60},{-76,-60},{-76,-36}},
+      points={{16,-42},{16,-60},{-76,-60},{-76,0}},
       color={0,127,255},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,

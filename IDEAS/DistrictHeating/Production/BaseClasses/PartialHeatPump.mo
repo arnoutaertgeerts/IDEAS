@@ -252,10 +252,10 @@ equation
           rotation=180),
       Polygon(
         origin={49.533,-20.062},
-        lineColor=  {255,0,0},
-        fillColor=  {255,0,0},
-        fillPattern=  FillPattern.Solid,
-        points=  {{-40,-90},{-20,-70},{0,-90},{0,-50},{-20,-30},{-40,-50},{-40,-90}},
+        lineColor = {255,0,0},
+        fillColor = {255,0,0},
+        fillPattern = FillPattern.Solid,
+        points = {{-40,-90},{-20,-70},{0,-90},{0,-50},{-20,-30},{-40,-50},{-40,-90}},
           rotation=270)}),
     Documentation(info="<html>
 <p><b>Description</b> </p>

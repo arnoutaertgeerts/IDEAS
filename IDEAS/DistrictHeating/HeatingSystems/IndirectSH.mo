@@ -3,7 +3,8 @@ model IndirectSH
   //Extensions
   extends BaseClasses.PartialHeatExchanger(
     redeclare replaceable package Medium = IDEAS.Media.Water.Simple,
-    redeclare Fluid.HeatExchangers.Radiators.Radiator emission,
+    redeclare Fluid.HeatExchangers.Radiators.Radiator emission(TInNom=323.15,
+        TOutNom=303.15),
     pipeSupply(m=1, UA=10),
     pipeReturn(m=1, UA=10),
     redeclare HydraulicCircuits.SinglePump
@@ -23,8 +24,9 @@ model IndirectSH
       redeclare package Medium2 = Medium,
       m1_flow_nominal=m_flow_nominal,
       m2_flow_nominal=m_flow_nominal,
-      p=200000,
       efficiency=0.9,
+      m=1,
+      p=200000,
       dp1_nominal=20000000,
       dp2_nominal=200));
 
@@ -47,16 +49,23 @@ model IndirectSH
     redeclare package Medium1 = Medium,
     redeclare package Medium2 = Medium,
     m1_flow_nominal=m_flow_nominal,
-    m2_flow_nominal=m_flow_nominal) annotation (Placement(transformation(
+    m2_flow_nominal=m_flow_nominal,
+    TSup_nominal=323.15,
+    TSupMin=313.15,
+    TRet_nominal=303.15,
+    TRoo_nominal=294.15,
+    TOut_nominal=265.15)            annotation (Placement(transformation(
         extent={{-10,-10},{10,10}},
         rotation=90,
-        origin={-82,-20})));
+        origin={-82,-14})));
   Fluid.Sources.FixedBoundary bou(
-    nPorts=1,
     use_T=false,
     redeclare package Medium = Medium,
-    p=200000)
-    annotation (Placement(transformation(extent={{-120,-50},{-100,-30}})));
+    p=200000,
+    nPorts=1)
+    annotation (Placement(transformation(extent={{-10,-10},{10,10}},
+        rotation=270,
+        origin={-116,-28})));
 equation
   QHeaSys = -sum(emission.heatPortCon.Q_flow) - sum(emission.heatPortRad.Q_flow);
   P[1] = 0;
@@ -67,44 +76,44 @@ equation
       color={191,0,0},
       smooth=Smooth.None));
   connect(TSensor, controlSH.u) annotation (Line(
-      points={{-204,-60},{-152,-60},{-152,36},{-127.2,36}},
+      points={{-204,-60},{-152,-60},{-152,40},{-127.2,40}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(zoneSplitter.port_a, mixer.port_b1) annotation (Line(
-      points={{-88,0.2},{-88,-10}},
+      points={{-88,4.2},{-88,-4}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(zoneSplitter.port_b, mixer.port_a2) annotation (Line(
-      points={{-76,0},{-76,-10}},
+      points={{-76,4},{-76,-4}},
       color={0,127,255},
       smooth=Smooth.None));
   connect(TSet[1], mixer.u) annotation (Line(
-      points={{-160,-104},{-160,-66},{-144,-66},{-144,-20},{-93.4,-20}},
-      color={0,0,127},
-      smooth=Smooth.None));
-  connect(heatExchanger.port_b1, mixer.port_a1) annotation (Line(
-      points={{-88,-54},{-88,-30}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(heatExchanger.port_a2, mixer.port_b2) annotation (Line(
-      points={{-76,-54},{-76,-30}},
-      color={0,127,255},
-      smooth=Smooth.None));
-  connect(heatExchanger.m, hysteresis.u1) annotation (Line(
-      points={{-92.6,-56},{-118,-56},{-118,-69.2}},
+      points={{-160,-104},{-160,-66},{-144,-66},{-144,-14},{-93.4,-14}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(heatExchanger.supplyT, hysteresis.u) annotation (Line(
-      points={{-92.8,-60},{-136,-60},{-136,-80},{-129.2,-80}},
+      points={{-92.8,-54},{-136,-54},{-136,-80},{-129.2,-80}},
       color={0,0,127},
       smooth=Smooth.None));
   connect(hysteresis.y, heatExchanger.u) annotation (Line(
-      points={{-107.2,-80},{-102,-80},{-102,-64},{-93.4,-64}},
+      points={{-107.2,-80},{-102,-80},{-102,-58},{-93.4,-58}},
       color={0,0,127},
       smooth=Smooth.None));
-  connect(bou.ports[1], mixer.port_a1) annotation (Line(
-      points={{-100,-40},{-88,-40},{-88,-30}},
+  connect(mixer.port_a1, heatExchanger.port_b1) annotation (Line(
+      points={{-88,-24},{-88,-48}},
       color={0,127,255},
+      smooth=Smooth.None));
+  connect(mixer.port_b2, heatExchanger.port_a2) annotation (Line(
+      points={{-76,-24},{-76,-48}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(bou.ports[1], heatExchanger.port_b1) annotation (Line(
+      points={{-116,-38},{-116,-42},{-88,-42},{-88,-48}},
+      color={0,127,255},
+      smooth=Smooth.None));
+  connect(heatExchanger.senM, hysteresis.u1) annotation (Line(
+      points={{-92.6,-50},{-118,-50},{-118,-69.2}},
+      color={0,0,127},
       smooth=Smooth.None));
   annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
             -100},{200,100}}), graphics));

@@ -323,11 +323,11 @@ package Examples
       TReturn(allowFlowReversal=false),
       redeclare package Medium = IDEAS.Media.Water.Simple)
       annotation (Placement(transformation(extent={{-74,0},{-54,16}})));
-    Interfaces.DHConnection dHConnection1(redeclare
-        IDEAS.DistrictHeating.Pipes.DoublePipes.TwinPipeGround
-        districtHeatingPipe,
+    Interfaces.DHConnection dHConnection1(
       m_flow_nominal=0.5,
-      redeclare package Medium = IDEAS.Media.Water.Simple)
+      redeclare package Medium = IDEAS.Media.Water.Simple,
+      redeclare IDEAS.DistrictHeating.Pipes.DoublePipes.TwinPipeGround
+        districtHeatingPipe(L=100))
       annotation (Placement(transformation(extent={{-48,0},{-28,16}})));
     IDEAS.Interfaces.BuildingDH
                               building1(
